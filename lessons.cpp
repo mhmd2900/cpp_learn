@@ -10,6 +10,18 @@
 // cout << 5e3 << endl  ;       5000
 
 
+
+/////////////////////////////    arthmetic operators
+// a = 10 ;
+// b = a++ ;     a = 11     b = 10
+// b = a-- ;     a = 9      b = 10
+// b = ++a ;     a = 11     b = 11
+// b = --a ;     a = 9      b = 9
+
+
+
+
+
 //////////////////////////////  arabic
 // #include<fcntl.h>
 // _setmode(_fileno(stdout) , _O_U8TEXT) ;
