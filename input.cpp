@@ -88,10 +88,10 @@ system ( "color 0F") ;
                                                                                 ///////////////////////////    input string
                                                                                 string input_word ( const string& message )
                                                                                 {
-                                                                                string pass ; 
                                                                                 while ( true )
                                                                                 {     
                                                                                 cout << message ;
+                                                                                string pass ;   // tight scope
 
                                                                                 if (getline(cin, pass) && !pass.empty())      return pass;          // target
                                                                                 if (cin.eof())          {cout << " EOF , goodbye \n";   exit(0) ;}  // EOF  ,  exit needs <cstdlib>
@@ -102,30 +102,22 @@ system ( "color 0F") ;
                                                                               
                                                                               
                                                                               ///////////////////    input string ( charchters )
-                                                                              string input_wordch ( string message )
+                                                                              string input_wordch ( const string& message )
                                                                               {  
-                                                                                  cout << message ;
-                                                                                  string password ;
-                                                                                  char ch ;
                                                                                   while (true)
                                                                                   {
-                                                                                      while ( cin.get(ch) )
-                                                                                      {
-                                                                                      if ( ch == '\r')
-                                                                                      continue ;
-                                                                                      if ( ch == '\n')
-                                                                                      break ;
-                                                                                      password += ch ;
-                                                                                      }
-                                                                              
-                                                                                      if (! password.empty())
-                                                                                      return password ;
-                                                                              
-                                                                                      else 
-                                                                                      {
-                                                                                      cin.clear();
-                                                                                      cout << " empty password , not acceted , repeat \n" ;
-                                                                                      }
+                                                                                      cout << message ;
+                                                                                      string password ; // fresh empty string each attempt
+                                                                                      char ch ; // narrow scope 
+
+                                                                                      while ( cin.get(ch) )  {
+                                                                                        if ( ch == '\r')   continue ;
+                                                                                        if ( ch == '\n')   break ;
+                                                                                        password += ch ;     }
+
+                                                                                      if (!password.empty())   return password ;  // target
+                                                                                      if ( cin.eof())  { cout << " EOF , goodbye \n" ;  exit(0) ; } // EOF  ,  exit needs <cstdlib>
+                                                                                      else  cout << " empty password , not acceted , repeat \n" ; // empty
                                                                                   }
                                                                               }
 
