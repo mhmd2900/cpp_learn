@@ -25,12 +25,16 @@
 // -- if ignore is smaller than buffer , it will show the recent charachters in buffer
 // -- after formatted cin 
 //          ├── target ═══► ignore ( remove \n if upcoming getline ) + return target
-//          ├── ctrl z (eofbit) ═══► return 0    
+//          ├── ctrl z (eofbit) ═══► exit    
 //          └── type mismatch (failbit) ═══► clear & ignore & loop
-// -- after unformatted cin    getline   cin.get
+
+
+// -- after unformatted cin 
 //          ├── target ═══► return target
-//          ├── ctrl z (eofbit) ═══► return 0    
-//          └── empty ═══► loop
+//          ├── ctrl z (eofbit) ═══► exit   
+//          ├── empty ═══► loop
+//          └── no need for clear ( as all input is valid ) & no need for ignore ( getline ignore \n at end )
+       
 
 
 
