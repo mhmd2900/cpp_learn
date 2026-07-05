@@ -62,7 +62,26 @@ system ( "color 0F") ;
                                                                                     } 
                                                                                 }
 
+                                                                    ///////////////  want to repeat
+                                                                    bool want_to_repeat ()
+                                                                    {
+                                                                        while ( true )
+                                                                        {
+                                                                        cout << " Do you want to repeat ?   [y/n] \n";
+                                                                        char ch ;
 
+                                                                        if ( cin>>ch )  {       cin.ignore( numeric_limits<streamsize>::max() , '\n');  
+                                                                                                if (ch == 'y' || ch == 'Y') return true;
+                                                                                                if (ch == 'n' || ch == 'N') return false; } 
+                                                                        if ( cin.eof())          {  cout << " EOF , goodbye \n" ;  exit(0) ; }
+                                                                        if ( cin.fail())         {  cin.clear();   cin.ignore( numeric_limits<streamsize>::max() , '\n'); }
+                                                                          cout << "Invalid choice, please enter y or n\n";
+                                                                        }
+                                                                    }
+
+
+
+                                                                      
 
                                                                               ///////////////////////////    input string
                                                                               string input_word ( const string& message )
@@ -100,22 +119,4 @@ system ( "color 0F") ;
                                                                                   }
                                                                               }
 
-///////////////  want to repeat
-bool want_to_repeat ()
-{
-cout << " Do you want to repeat ?   [y/n] \n";
-char ch ;
-while ( true )
-{
-if ( cin>>ch && ( ch =='y' || ch == 'Y'))
-return true ;
-else if ( ch =='n' || ch == 'N')
-return false ;
-  
-cin.clear();
-cout << " plz only enter y or n   , thank you   \n" ;
-// cout << " input can not be empty !  ,  and EOF is not allowed \n"; // used only if invalid user input
-// but , during 2nd recall of this function
-// there is no way to diff. between user invalid input or remaining \n ( both not meet the condition )
-}
-}
+                                                            
