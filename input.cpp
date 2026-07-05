@@ -94,7 +94,7 @@ system ( "color 0F") ;
                                                                                 cout << message ;
 
                                                                                 if (getline(cin, pass) && !pass.empty())      return pass;          // target
-                                                                                if (cin.eof())          {cout << " EOF , goodbye \n";   exit(0) ;}  // EOF    //exit needs #include<cstdlib>
+                                                                                if (cin.eof())          {cout << " EOF , goodbye \n";   exit(0) ;}  // EOF  ,  exit needs <cstdlib>
                                                                                 cout << " input can not be empty ! \n";                             // empty
                                                                                 }
                                                                                 }
