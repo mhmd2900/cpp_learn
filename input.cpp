@@ -2,8 +2,8 @@
 // #include <string>
 // #include <array>
 // #include <vector>
-// #include <limits>   // input number
-// #include <cstdlib>  // random
+// #include <limits>   // input_number
+// #include <cstdlib>  // random , input_word 
 // #include <ctime>    // random
 // #include <cmath>    // for sqrt used in prime numbers ,, fabs for sqrr
 // #include<iomanip>     // for setw
