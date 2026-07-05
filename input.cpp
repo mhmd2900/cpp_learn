@@ -84,21 +84,21 @@ system ( "color 0F") ;
                                                                                 }
                                                                                
 
+
                                                                                 ///////////////////////////    input string
-                                                                                string input_word ( string message )
+                                                                                string input_word ( const string& message )
                                                                                 {
-                                                                                cout << message ;
                                                                                 string pass ; 
                                                                                 while ( true )
                                                                                 {     
-                                                                                if (getline(cin, pass) && !pass.empty())  // getline succeded + not empty
-                                                                                return pass;
-                                                                                
-                                                                                // getline succeded + empty    OR    FAILED (eof, failbit) + empty 
-                                                                                cin.clear();
-                                                                                cout << " input can not be empty !  ,  and EOF is not allowed \n";
+                                                                                cout << message ;
+
+                                                                                if (getline(cin, pass) && !pass.empty())      return pass;          // target
+                                                                                if (cin.eof())          {cout << " EOF , goodbye \n";   exit(0) ;}  // EOF
+                                                                                cout << " input can not be empty ! \n";                             // empty
                                                                                 }
                                                                                 }
+
                                                                               
                                                                               
                                                                               ///////////////////    input string ( charchters )
