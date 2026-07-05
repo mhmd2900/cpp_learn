@@ -66,19 +66,19 @@ system ( "color 0F") ;
 
 
 
-                                                                                ///////////////////////////    input string
-                                                                                string input_word ( const string& message )
-                                                                                {
-                                                                                while ( true )
-                                                                                {     
-                                                                                cout << message ;
-                                                                                string pass ;   // tight scope
-
-                                                                                if (getline(cin, pass) && !pass.empty())      return pass;          // target
-                                                                                if (cin.eof())          {cout << " EOF , goodbye \n";   exit(0) ;}  // EOF  ,  exit needs <cstdlib>
-                                                                                cout << " input can not be empty ! \n";                             // empty
-                                                                                }
-                                                                                }
+                                                                              ///////////////////////////    input string
+                                                                              string input_word ( const string& message )
+                                                                              {
+                                                                                  while ( true )
+                                                                                  {     
+                                                                                  cout << message ;
+                                                                                  string pass ;   // tight scope
+    
+                                                                                  if (getline(cin, pass) && !pass.empty())      return pass;          // target
+                                                                                  if (cin.eof())          {cout << " EOF , goodbye \n";   exit(0) ;}  // EOF  ,  exit needs <cstdlib>
+                                                                                  cout << " input can not be empty ! \n";                             // empty
+                                                                                  }
+                                                                              }
 
                                                                               
                                                                               
