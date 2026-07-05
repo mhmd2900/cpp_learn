@@ -19,6 +19,19 @@
 // b = --a ;     a = 9      b = 9
 
 
+////////////////////////////    input 
+// -- ignore eats from oldest to newest in buffer
+// -- if ignore is bigger than buffer , it will eat from the coming input
+// -- if ignore is smaller than buffer , it will show the recent charachters in buffer
+// -- after formatted cin 
+//          ├── target ═══► ignore ( remove \n if upcoming getline ) + return target
+//          ├── ctrl z (eofbit) ═══► return 0    
+//          └── type mismatch (failbit) ═══► clear & ignore & loop
+// -- after unformatted cin    getline   cin.get
+//          ├── target ═══► return target
+//          ├── ctrl z (eofbit) ═══► return 0    
+//          └── empty ═══► loop
+
 
 
 
