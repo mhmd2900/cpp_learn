@@ -8,7 +8,8 @@
 // cout << INT_MIN << endl  ;   -2147483648
 // cout << INT_MAX << endl  ;   2147483647
 // cout << 5e3 << endl  ;       5000
-
+// str = to_string (a) ;
+// b = stoi (str) ;
 
 
 /////////////////////////////    arthmetic operators
