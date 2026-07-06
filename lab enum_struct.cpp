@@ -1,5 +1,6 @@
 #include<iostream>
 #include<string>
+#include<cctype>
 #include"mlib.h"
 using namespace std;
 
@@ -46,7 +47,7 @@ stspeciality medicine , surgery  ;
 
 
 
-                                    encode str_to_encode ( const string& name )
+                                    encode str_to_encode ( const string& name ) // & due to large struct , const to protect it
                                     {
                                     string temp = name ;       for ( char& ch : temp ) ch = tolower(ch) ;     // tolower <cctype>
 
@@ -56,7 +57,7 @@ stspeciality medicine , surgery  ;
                                     }
 
 
-                                    string encode_to_str ( encode name  )
+                                    string encode_to_str ( encode name  )  // enum is light
                                     {
                                     switch ( name )
                                        {    case encode::mhmd :    return "mhmd";
@@ -64,14 +65,36 @@ stspeciality medicine , surgery  ;
                                             default :              return "not available";    }
                                     }
 
+
+void read ( stpatient& patient )   // & to modify parameters
+{
+for ( short i = 0 ; i < 3 ; i ++ )             patient.surgery.doctor[i].code  = str_to_encode ( input_word ( " enter surgery  doctor name \n")) ;
+for ( short i = 0 ; i < 3 ; i ++ )             patient.medicine.doctor[i].code = str_to_encode ( input_word ( " enter medicine doctor name \n")) ;
+}
+
+
+
+void print ( const stpatient& patient ) // & due to large struct , const to protect it
+{
+cout << " surgery  doctor codes \n";         for ( short i = 0 ; i < 3 ; i ++ )               cout << " dr : " <<  encode_to_str ( patient.surgery.doctor[i].code  )<< " \t ";
+cout << " \n medicine doctor codes \n";      for ( short i = 0 ; i < 3 ; i ++ )               cout << " dr : " <<  encode_to_str ( patient.medicine.doctor[i].code )<< " \t ";
+}
+
+
+
+
+
 int main ()
 {
 mlib::reset_screen();
 
 stpatient abdo , manal ;
 
-for ( short i = 0 ; i <3 ; i++)           abdo.medicine.doctor[i].code= str_to_encode ( input_word ( " plz enter doctor name \n")) ;
-for ( short i = 0 ; i <3 ; i++)           cout << encode_to_str ( abdo.medicine.doctor[i].code ) << "\t" << abdo.medicine.doctor[i].code << endl ;
 
+read  ( manal ) ;
+print ( manal ) ;
+
+return 0;    
+}
 return 0;    
 }
