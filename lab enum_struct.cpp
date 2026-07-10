@@ -46,6 +46,20 @@ stspeciality medicine , surgery  ;
 };
 
 
+// Enum 
+// 1) categorization : 
+//     -- if statement ( with strings ) 
+//     -- static casting ( with integers )
+// 2) storage :
+//     -- by value for Enum
+//     -- by const ref & ( if Enum is a part of struct )
+// 3) output : 
+//     -- Enum return its number
+//     -- switch return anything
+
+
+
+
 
                                     encode str_to_encode ( const string& name ) // & due to large struct , const to protect it
                                     {
@@ -57,9 +71,7 @@ stspeciality medicine , surgery  ;
                                     }
 
 
-     // ROLE OF THUMB ,, Built-in types (int, char, double, bool) and Enums: Pass by value. as 4 bytes ( light enum ) faster than pass a pointer/address ( 8 bytes )
-     //                 Large objects (std::string, std::vector, structs , modern arrays ): Pass by const reference 
-     //                 c style arrays automatically "decays" into a pointer to its first element. So, int arr[3] actually becomes int* arr.
+
 
                                     string encode_to_str ( encode name  )
                                     {
