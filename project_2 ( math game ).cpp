@@ -76,11 +76,7 @@ st_round stst_round[10] ;
                                                                                 return rand()%( to - from + 1 ) + from ;
                                                                                 }
 
-// Rule of thumb:
-// ➤ If it’s a single int, char, bool, etc. — pass by value (copy is cheap).
-// ➤ If it’s >1 primitive or a struct
-            // ➤ If you’re modifying it     — pass by &.
-            // ➤ If you’re not modifying it — pass by const&.
+
 
 void show_nums      ( st_round& stst_round , const st_game& stst_game)  
 {
