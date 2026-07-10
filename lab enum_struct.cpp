@@ -112,8 +112,7 @@ int main ()
 {
 mlib::reset_screen();
 
-stpatient abdo , manal , anonymous [3];
-
+stpatient abdo , manal ,   patient [3] ,    anonymous [] = {}  ;  // accepted 2D array :  flexible rows and fixed colums ( stspeciality , endiagnosis ) 
 
 read  ( anonymous[1] ) ;
 print ( anonymous[1] ) ;
