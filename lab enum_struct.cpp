@@ -57,7 +57,7 @@ stspeciality medicine , surgery  ;
                                     }
 
 
-                                    string encode_to_str ( encode name  )  // enum is light
+                                    string encode_to_str ( encode name  )  // Passing by value: You copy 4 bytes ( light enum ) . Passing by reference: You pass a pointer/address (which is 8 bytes on a 64-bit system).
                                     {
                                     switch ( name )
                                        {    case encode::mhmd :    return "mhmd";
