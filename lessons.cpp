@@ -163,21 +163,6 @@ c = ( a==b ) ? 6 : 66 ;
 
 
 
-
-////////////////////    timer
-#include<chrono>
-auto start = std::chrono::steady_clock::now();  // Start timer
-
-auto end = std::chrono::steady_clock::now();    // Stop timer
-auto ms = std::chrono::duration_cast<std::chrono::milliseconds>(end - start).count();     // Calculate and print time in microseconds
-cout << " \n \n Time: " << ms << " µs\n";
-
-
-
-
-
-
-
 ////////////////////    printf
 int u = 50 ;
 printf("   this is  %d \n  " ,  u ) ;              // 50
@@ -292,6 +277,13 @@ ppp =          &(*ppp).name    = &ppp->name      = &ststdata     = &ststdata.nam
 // wcout << nnn << endl << sss  ;
 
 
+
+////////////////////    timer
+// #include<chrono>
+// auto start = std::chrono::steady_clock::now();  // Start timer
+// auto end = std::chrono::steady_clock::now();    // Stop timer
+// auto ms = std::chrono::duration_cast<std::chrono::milliseconds>(end - start).count();     // Calculate and print time in microseconds
+// cout << " \n \n Time: " << ms << " µs\n";
 
 
 ////////////////////////////   time
