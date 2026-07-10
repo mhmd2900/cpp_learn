@@ -38,28 +38,6 @@
 
 
 
-//////////////////////////////  arabic
-// #include<fcntl.h>
-// _setmode(_fileno(stdout) , _O_U8TEXT) ;
-// wchar_t nnn = L'ل'  ;
-// wchar_t sss[6] = L"احمد" ;
-// wcout << nnn << endl << sss  ;
-
-
-
-
-////////////////////////////   time
-    // #include<chrono>
-    // auto start = chrono::high_resolution_clock::now();
-    // auto end   = chrono::high_resolution_clock::now();
-    // auto ms = chrono::duration_cast<chrono::milliseconds>(end - start).count();
-    // cout << "Time taken: " << ms << " ms\n";    
-
-
-
-
-
-
 
 ///////////////////////////////////   array  declaration 
 int arr [3] = {};          // all 3 elements are 0
@@ -297,3 +275,30 @@ ppp =          &(*ppp).name    = &ppp->name      = &ststdata     = &ststdata.nam
 // void pointer points to struct or element , to give value must be casted to struct or specific type
 // .... if casted to struct , just choose element as extension e.g (ppppp)->name and no * at beginning
 // struct pointer + 1 equals struct address + struct size ( not mandatory to be coming object in same struct )
+
+
+
+
+
+
+
+
+
+//////////////////////////////  arabic
+// #include<fcntl.h>
+// _setmode(_fileno(stdout) , _O_U8TEXT) ;
+// wchar_t nnn = L'ل'  ;
+// wchar_t sss[6] = L"احمد" ;
+// wcout << nnn << endl << sss  ;
+
+
+
+
+////////////////////////////   time
+    // #include<chrono>
+    // auto start = chrono::high_resolution_clock::now();
+    // auto end   = chrono::high_resolution_clock::now();
+    // auto ms = chrono::duration_cast<chrono::milliseconds>(end - start).count();
+    // cout << "Time taken: " << ms << " ms\n";    
+
+
