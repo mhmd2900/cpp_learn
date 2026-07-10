@@ -112,11 +112,12 @@ int main ()
 {
 mlib::reset_screen();
 
-stpatient abdo , manal ;
+stpatient abdo , manal , anonymous [3];
 
 
-read  ( manal ) ;
-print ( manal ) ;
+read  ( anonymous[1] ) ;
+print ( anonymous[1] ) ;
+
 
 return 0;    
 }
