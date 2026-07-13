@@ -44,7 +44,7 @@ string input_word ( const string& message )  // & due to string , const to prote
 }
 
 
-enname str_to_enname ( const string& name ) // & due to struct , const to protect it     //worker function
+enname str_to_enname ( const string& name ) // & due to string , const to protect it     //worker function
 {
     string temp = name ;       for ( char& ch : temp ) ch = tolower(ch) ;     // tolower <cctype>
     
