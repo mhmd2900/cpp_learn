@@ -59,7 +59,7 @@ enname str_to_enname ( const string& name ) // & due to struct , const to protec
 
 void read_hisdoctor_name ( stpatient& patient )   // & to modify parameters   // co-ordinator function
 {
-    for ( short i = 0 ; i < 3 ; i ++ )             patient.surgery.doctor[i].name = str_to_enname ( input_word ( " enter surgery doctor name \n")) ;
+    for ( short i = 0 ; i < 3 ; i ++ )             patient.surgery.doctor[i].name = str_to_enname ( input_word ( " enter surgery doctor name \n")) ; // struct ( str_to_enname المحطة الاقرب للشارع  ) 
     for ( short i = 0 ; i < 3 ; i ++ )             patient.medicine.doctor[i].name = str_to_enname ( input_word ( " enter medicine doctor name \n")) ;
 }
 
@@ -84,7 +84,7 @@ switch ( name )
 
 void print_hisdoctor_name ( const stpatient& patient ) // & due to large struct , const to protect it
 {
-cout << " surgery  doctor names \n";         for ( short i = 0 ; i < 3 ; i ++ )               cout << " dr : " <<  enname_to_str ( patient.surgery.doctor[i].name  )<< " \t ";
+cout << " surgery  doctor names \n";         for ( short i = 0 ; i < 3 ; i ++ )               cout << " dr : " <<  enname_to_str ( patient.surgery.doctor[i].name  )<< " \t "; // enname_to_str المحطة الاقرب للشارع ( struct )
 cout << " \n medicine doctor names \n";      for ( short i = 0 ; i < 3 ; i ++ )               cout << " dr : " <<  enname_to_str ( patient.medicine.doctor[i].name )<< " \t ";
 }
 
@@ -100,9 +100,7 @@ mlib::reset_screen();
 stpatient abdo , manal , anonymous[3]; 
 
 read_hisdoctor_name  ( anonymous[1] ) ;  // driver function
-print_hisdoctor_name ( anonymous[1] ) ;
+print_hisdoctor_name ( anonymous[2] ) ;
 
-return 0;    
-}
 return 0;    
 }
