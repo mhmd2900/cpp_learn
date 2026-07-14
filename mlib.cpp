@@ -9,10 +9,10 @@
 #include<iomanip>     // for setw
 using namespace std ;
 
-using std::cin;
-using std::cout;
-using std::numeric_limits;
-using std::streamsize;
+// using std::cin;
+// using std::cout;
+// using std::numeric_limits;
+// using std::streamsize;
 
 
 
