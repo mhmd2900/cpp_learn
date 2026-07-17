@@ -78,3 +78,34 @@ if (arr[i] != arr [size-1-i] )
 return false ;
 return true ;
 }
+
+
+
+//////// arry bool ←→ arry integer
+bool arr1 [5]= { true , false , true , true , false };
+int arr2 [3] = {0};
+bool arr3 [6] = {0} ;
+
+
+
+for ( int i = 0 , x = 0 ; i < 5 ; i ++ )
+{
+if ( arr1[i] == 0 )
+continue;
+
+else
+{arr2[x] = i ;
+ x++ ;
+}
+}
+
+for ( int y = 0 ; y < 3 ; y ++ )
+cout << arr2[y] << endl ;
+
+
+for ( int g = 0 ; g < 3 ; g++ )
+arr3[arr2[g]] = 1 ;
+
+
+for ( int k = 0 ; k < 6 ; k++ )
+cout << endl << arr3[k] ;
