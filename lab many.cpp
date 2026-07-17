@@ -64,6 +64,11 @@ return false ;
 return true ;
 }
 
+for ( int r_index = size -1 ; r_index >= 0 ; r_index --) // number to array
+{
+arr [r_index] = num%10 ;
+num /= 10 ;
+}
 
 //////////////////// check palindrome
 bool check_palindrome ( int arr[] , int size)
