@@ -41,8 +41,8 @@ int input_random ( int from , int to )
                                                                           int num ;
 
                                                                           if ( cin >> num ) {  cin.ignore( numeric_limits<streamsize>::max() , '\n');   return num ; } // target
-                                                                          if ( cin.eof() )  { cout << " EOF ... goodbye \n ";  exit(0); } // EOF                    ,, exit needs <cstdlib>
-                                                                          cin.clear();  cin.ignore( numeric_limits<streamsize>::max() , '\n'); // remnant ( fail )  ,, needs <limits>
+                                                                          else if ( cin.eof() )  { cout << " EOF ... goodbye \n ";  exit(0); } // EOF                    ,, exit needs <cstdlib>
+                                                                          cin.clear();  cin.ignore( numeric_limits<streamsize>::max() , '\n'); // remnant like type mismatch ( fail  )  ,, needs <limits>
                                                                           } 
                                                                       }
 
@@ -77,7 +77,7 @@ int input_random ( int from , int to )
                                                                                                 if (ch == 'n' || ch == 'N') return false;  // target
                                                                                                 cout << "Invalid choice, please enter y or n\n";  }  // different choice
                                                                         else if ( cin.eof())          {  cout << " EOF , goodbye \n" ;  exit(0) ; }  // EOF
-                                                                        else if ( cin.fail())         {  cin.clear();   cin.ignore( numeric_limits<streamsize>::max() , '\n'); cout << " failed input \n"; } // fail
+                                                                        else if ( cin.fail())         {  cin.clear();   cin.ignore( numeric_limits<streamsize>::max() , '\n'); cout << " failed input \n"; } // fail ( not char input )
                                                                         }
                                                                     } 
 
