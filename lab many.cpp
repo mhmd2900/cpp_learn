@@ -81,7 +81,7 @@ return true ;
 
 
 
-//////// arry bool ←→ arry integer
+//////// array bool ←→ array integer
 bool arr1 [5]= { true , false , true , true , false };
 int arr2 [3] = {0};
 bool arr3 [6] = {0} ;
