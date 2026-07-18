@@ -1,29 +1,24 @@
-# 🎮 Rock, Paper, Scissors Game
+📚 My C++ Learning Journey
+Welcome! This is where I store my C++ code, notes, and small projects as I learn programming from scratch. 🌱
 
-A simple Rock, Paper, Scissors game built in C++ as part of my 
-learning journey in programming fundamentals.
-
-## 📖 About
-This is a console-based game where the player competes against 
-the computer. The computer chooses randomly, and the winner is 
-decided by classic RPS rules.
-
-## 🕹️ How to Play
-1. Run the program
-2. Enter your choice: (R) Rock, (P) Paper, (S) Scissors
-3. See who wins!
-
-## 🛠️ Concepts I Learned
-- Using `if-else` statements
-- Random number generation with `rand()`
-- User input with `cin`
-- Loops for replaying the game
-- Functions to organize code
-
-## 🚀 How to Run
-1. Download `main.cpp`
-2. Compile with: `g++ main.cpp -o game`
-3. Run: `./game`
+📁 What's Inside
+📖 Lessons & Notes
+lessons.cpp — Core C++ concepts (I/O, arrays, loops, etc.)
+mlib.cpp — My custom helper functions
+🧪 Lab Exercises
+lab_enum_struct_array_loop.cpp — Practice with enums, structs, arrays, loops
+lab_many.cpp — Mixed exercises
+🎮 Mini Projects
+project_1 — Rock, Paper, Scissors game
+project_2 — Math game
+🎯 Topics Covered
+✅ Variables & Data Types
+✅ Input / Output (cin, cout)
+✅ Conditionals & Loops
+✅ Arrays & Structs
+✅ Functions
+⏳ Pointers (learning next)
+⏳ OOP (coming soon)
 
 ## 🔮 Future Improvements
 - Add a scoreboard
