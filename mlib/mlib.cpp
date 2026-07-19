@@ -17,19 +17,18 @@ using namespace std ;
 
 
 
-void reset_screen ()
+
+///////////////  reset screen
+// Cross-platform: Works on Windows, Mac, and Linux.
+// Instant: No background processes are launched.
+// Secure: No risk of command injection.
+void reset_screen()
 {
-system ("cls");
-system ( "color 0F") ;
+    std::cout << "\033[2J\033[H";   // Clear + move cursor
+    std::cout << "\033[0m";         // Ensure default colors
 }
 
 
-
-//////////////     input random
-int input_random ( int from , int to )
-{
-  return rand()%( to - from + 1)+from ;
-}
 
 
 
@@ -43,7 +42,7 @@ int num ;
 
 if ( cin >> num ) {  cin.ignore( numeric_limits<streamsize>::max() , '\n');   return num ; } // target
 else if ( cin.eof() )  { cout << " EOF ... goodbye \n ";  exit(0); } // EOF                    ,, exit needs <cstdlib>
-cin.clear();  cin.ignore( numeric_limits<streamsize>::max() , '\n'); // remnant like type mismatch ( fail  )  ,, needs <limits>
+else if ( cin.fail())         { cin.clear();   cin.ignore( numeric_limits<streamsize>::max() , '\n');  cout << " failed input \n "; } // fail 
 } 
 }
 
@@ -88,8 +87,8 @@ else if ( cin.fail())         {  cin.clear();   cin.ignore( numeric_limits<strea
 
 
 
-///////////////////////////    input string
-string input_word ( const string& message )
+///////////////////////////    input string  
+string input_word ( const string& message ) 
 {
 while ( true )
 {     
@@ -105,7 +104,11 @@ else if (cin.eof())          {cout << " EOF , goodbye \n";   exit(0) ;}         
 
 
 ///////////////////    input string ( charchters )
-string input_wordch ( const string& message )
+// You want to filter specific characters as they're typed (e.g., only allow digits)
+// You want to hide password input (mask with *)
+// You want to add character limits mid-typing
+// You need special Windows \r\n handling for files from other systems
+string input_word_ch ( const string& message )
 {  
 while (true)
 {
@@ -133,68 +136,56 @@ while (true)
 
 
 
+bool is_prime(int num) {
+    if (num <= 1) return false;      // 0 and 1 are not prime
+    if (num <= 3) return true;       // 2 and 3 are prime
+    if (num % 2 == 0 || num % 3 == 0) return false; // Eliminate evens and multiples of 3
 
+    // We start at 5 and skip even numbers (i += 2)
+    // We stop when i * i > num
+    for (int i = 5; i * i <= num; i += 6) {
+        if (num % i == 0 || num % (i + 2) == 0)
+            return false;
+    }
 
-
-
-
-//////////////////////////   make array one by one    ( random or user )
-void fill_array ( int numb , int arr2[] , int& index )
-{
-arr2[index] = numb  ;
-index ++ ;
-}// index = 0     in int main 
-
-void split_array (int arr1[] ,int arr2[] ,int size ,int& index )
-{
-for ( int i = 0 ; i < size ; i ++ )
-if (mlib::check_prime(arr1[i])) // if needed
-fill_array ( arr1[i] , arr2 , index );
-}
-
-
-///////////////////////       make array total         ( random or user )
-void make_array ( int arr[] , int size)
-{
-for ( int i = 0 ; i < size ; i ++ )
-arr[i] = mlib::input_number(" plz enter number \n" , 1 , 100 );
+    return true;
 }
 
 
 
 
-/////////////////////      make array from itself ( by swapping - irreversible )
-void swap ( int& a , int& b )
+//////////////// check prime in range        Sieve of Eratosthenes    ,,,   function overloading
+void check_prime  ( vector<int>&vnum , int min , int max )   
 {
-int temp ;
-temp = a ;
-a = b ;
-b = temp ;
+vector<int>vtemp ( max , 0) ;   
+
+     // corrupt values of certain indices ( give 1 )
+ for ( int i = 2    ; i < sqrt(max) ; i++  ) // avoid redundant max/2
+ if (vtemp[i] == 0)   // avoid redundant composite numbers  e.g   8 is multiple of 2 and 4 
+    {
+    for ( int x = i*i  ; x < max   ; x+=i ) 
+    vtemp[x] = 1 ;
+    }
+    // convert indices of uncorrupted values ( given 0 ) to values and push in a vector
+for ( int z = min ; z < max ; z++)
+if ( z >= 2 && vtemp[z] == 0 )      
+vnum.push_back(z);
 }
 
 
 
-void array_swab( int arr[] , int size )
-{
-for (int i = 0; i < size - 1 ; i++ )        
-    swap(arr[i], arr[mlib::input_random( i , size - 1 )]); 
-}
 
 
 
-////////////////////////    make string from itself  ( with known key - reversible )
+
+
+////////////////////////    make string from itself  ( with known key - reversible )   ,, Caesar cipher (toy example)
 string crypt ( string password , int key )
 {
 for ( int i = 0 ; i < password.length() ; i ++ )
 password[i] = static_cast<char> (static_cast<unsigned char>(password[i]) + key) ;
 return password ;
 }
-// Yes, the conversion from int (or unsigned char) to char happens implicitly — 
-// but you should still write the explicit static_cast<char> for 3 critical reasons:
-// 🧭 Clarity & Intent — telling “I know this is a narrowing conversion, and I want it.”
-// ⚠️ Without cast, some compilers will warn you about implicit narrowing.
-// 🔍 Makes code more robust against future changes or stricter compiler settings.
-
 
 
 
@@ -210,18 +201,7 @@ return pass ;
 
 
 
-
-
-///////////////////////             print array
-void print_array ( int arr[] , int size )
-{
-for ( int i= 0 ; i < size ; i ++ )
- cout << arr[i] << " \t" ;
- cout << endl ;
-}
-
-
-//////////////////////          layout alignment
+//////////////////////          layout alignment   ///////  need adjust
 string align ( char side , int space , const string& word , char fill = ' ' )
 {
 int blanks = space - static_cast<int>(word.size()) ;
@@ -245,4 +225,4 @@ return string( l_pad , fill ) + word + string( r_pad , fill ) ;
 
 
 
-                                                            
+
