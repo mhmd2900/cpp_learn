@@ -19,8 +19,6 @@ system ( "color 0F") ;
 
 
 
-
-
 /////////////////////////////////////         input random
 int input_random ( int from , int to )
 {
