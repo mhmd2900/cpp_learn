@@ -16,6 +16,8 @@ using namespace std ;
 // using std::streamsize;
 
 
+namespace mlib
+{
 
 
 ///////////////  reset screen
@@ -29,6 +31,13 @@ void reset_screen()
 }
 
 
+
+
+/////////////////////////////////////         input random  ,, for training
+int input_random ( int from , int to )
+{
+  return rand()%( to - from + 1)+from ;
+}
 
 
 
@@ -136,7 +145,8 @@ while (true)
 
 
 
-bool is_prime(int num) {
+bool is_prime(int num) 
+{
     if (num <= 1) return false;      // 0 and 1 are not prime
     if (num <= 3) return true;       // 2 and 3 are prime
     if (num % 2 == 0 || num % 3 == 0) return false; // Eliminate evens and multiples of 3
@@ -155,22 +165,22 @@ bool is_prime(int num) {
 
 
 //////////////// check prime in range        Sieve of Eratosthenes    ,,,   function overloading
-void check_prime  ( vector<int>&vnum , int min , int max )   
-{
-vector<int>vtemp ( max , 0) ;   
+// void check_prime  ( vector<int>&vnum , int min , int max )   
+// {
+// vector<int>vtemp ( max , 0) ;   
 
-     // corrupt values of certain indices ( give 1 )
- for ( int i = 2    ; i < sqrt(max) ; i++  ) // avoid redundant max/2
- if (vtemp[i] == 0)   // avoid redundant composite numbers  e.g   8 is multiple of 2 and 4 
-    {
-    for ( int x = i*i  ; x < max   ; x+=i ) 
-    vtemp[x] = 1 ;
-    }
-    // convert indices of uncorrupted values ( given 0 ) to values and push in a vector
-for ( int z = min ; z < max ; z++)
-if ( z >= 2 && vtemp[z] == 0 )      
-vnum.push_back(z);
-}
+//      // corrupt values of certain indices ( give 1 )
+//  for ( int i = 2    ; i < sqrt(max) ; i++  ) // avoid redundant max/2
+//  if (vtemp[i] == 0)   // avoid redundant composite numbers  e.g   8 is multiple of 2 and 4 
+//     {
+//     for ( int x = i*i  ; x < max   ; x+=i ) 
+//     vtemp[x] = 1 ;
+//     }
+//     // convert indices of uncorrupted values ( given 0 ) to values and push in a vector
+// for ( int z = min ; z < max ; z++)
+// if ( z >= 2 && vtemp[z] == 0 )      
+// vnum.push_back(z);
+// }
 
 
 
@@ -202,32 +212,24 @@ return pass ;
 
 
 //////////////////////          layout alignment   ///////  need adjust
-string align ( char side , int space , const string& word , char fill = ' ' )
-{
-int blanks = space - static_cast<int>(word.size()) ;
-if ( blanks < 0 )   blanks = 0 ;
-int l_pad = blanks/ 2 ;
-int r_pad = blanks - l_pad ;
+// string align ( char side , int space , const string& word , char fill = ' ' )
+// {
+// int blanks = space - static_cast<int>(word.size()) ;
+// if ( blanks < 0 )   blanks = 0 ;
+// int l_pad = blanks/ 2 ;
+// int r_pad = blanks - l_pad ;
 
-if ( side == 'l')
-return word + string(blanks , fill)  ;
+// if ( side == 'l')
+// return word + string(blanks , fill)  ;
 
-else if ( side == 'r')
-return string(blanks , fill ) + word ;
+// else if ( side == 'r')
+// return string(blanks , fill ) + word ;
 
-else
-return string( l_pad , fill ) + word + string( r_pad , fill ) ;
+// else
+// return string( l_pad , fill ) + word + string( r_pad , fill ) ;
+// }
+
+
+
+
 }
-
-
-
-
-
-
-
-
-
-
-
-
-

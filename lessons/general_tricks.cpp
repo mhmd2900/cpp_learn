@@ -1,4 +1,5 @@
 #include<iostream>
+#include<cmath>
 #include <cstdlib> // random
 #include <ctime>  // random
 #include"mlib.h"
@@ -19,11 +20,7 @@ system ( "color 0F") ;
 
 
 
-/////////////////////////////////////         input random
-int input_random ( int from , int to )
-{
-  return rand()%( to - from + 1)+from ;
-}
+
 
 
 /////////////////////////////////////  check square root  babylion      Newton method

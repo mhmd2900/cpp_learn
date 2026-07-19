@@ -8,6 +8,7 @@
                 "-fdiagnostics-color=always",
                 "-g",
                 "${file}",
+                "-I", "${workspaceFolder}\\lessons",
                 "-o",
                 "${fileDirname}\\${fileBasenameNoExtension}.exe"
             ],

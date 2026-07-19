@@ -6,6 +6,28 @@ using namespace std ;
 
 
 
+//////////////////////////                make array one by one    ( random or user )
+void fill_array ( int numb , int arr2[] , int& index )
+{
+arr2[index] = numb  ;
+index ++ ;
+}// index = 0     in int main 
+
+
+void split_array ( int size ,        int arr1[] ,int arr2[] ,int& index )
+{
+for ( int i = 0 ; i < size ; i ++ )
+if (mlib::is_prime(arr1[i])) // if needed
+fill_array ( arr1[i] , arr2 , index );
+}   
+
+
+///////////////////////                    make array total         ( random or user )
+void make_array ( int arr[] , int size)
+{
+for ( int i = 0 ; i < size ; i ++ )
+arr[i] = mlib::input_number(" plz enter number \n" , 1 , 100 );
+}
 
 
 
@@ -45,6 +67,7 @@ void mshuffle( int arr[] , int size )
 for (int i = 0; i < size - 1 ; i++ )        
     swap(arr[i], arr[mlib::input_random( i , size - 1 )]); 
 }
+
 // 1- arr ( i )  : fix one side to avoid unswapped elements 
 // 2- random(0, n-1) : wrong , as i need to avoid unlucky re-reversed same couple ( bias towards original order )  // nestd loop one direction
 // 3- random(i+1, n-1) : wrong , an element can never stay in its original spot
@@ -64,7 +87,6 @@ int main ()
 {
 mlib::reset_screen();
 
-
 ///////////////////////////////                     sort array using other array
 
 int arr[5] = { 5 , 2 , 1 , 0 , 6 } ;
@@ -75,7 +97,7 @@ for ( int i = 0 ; i < 5 ; i ++ )
 for ( int x = i ; x < 5 ; x ++ )  // 
 {
 if ( arr[i] > arr[x] )  // nested loop one condition
-mlib::mswap ( arr[i] , arr[x] ) ;
+swap ( arr[i] , arr[x] ) ;
 }
 }
 
@@ -142,34 +164,6 @@ arr3[arr2[g]] = 1 ;
 
 for ( int k = 0 ; k < 6 ; k++ )
 cout << endl << arr3[k] ;
-
-
-
-
-
-
-//////////////////////////                make array one by one    ( random or user )
-void fill_array ( int numb , int arr2[] , int& index )
-{
-arr2[index] = numb  ;
-index ++ ;
-}// index = 0     in int main 
-
-
-void split_array ( int size ,        int arr1[] ,int arr2[] ,int& index )
-{
-for ( int i = 0 ; i < size ; i ++ )
-if (is_prime(arr1[i])) // if needed
-fill_array ( arr1[i] , arr2 , index );
-}   
-
-
-///////////////////////                    make array total         ( random or user )
-void make_array ( int arr[] , int size)
-{
-for ( int i = 0 ; i < size ; i ++ )
-arr[i] = input_number(" plz enter number \n" , 1 , 100 );
-}
 
 
 
