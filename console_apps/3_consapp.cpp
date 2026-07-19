@@ -13,17 +13,20 @@ a = b ;
 b = temp ;
 }
 
-int main ()
-{
-mlib::reset_screen();
-
-
 
 void swaps ( int arr[] , int size )
 {
 for ( int i = 0 ; i < size ; i ++)
 swap (    arr [ mlib::input_random ( 0 , size -1 ) ]    ,   arr [ mlib::input_random( 0 , size -1 ) ]    ) ;
 }
+
+
+int main ()
+{
+mlib::reset_screen();
+
+
+
 
 // Optimized loop limit
 // for (int i = 0; i < size - 1; i++) 
