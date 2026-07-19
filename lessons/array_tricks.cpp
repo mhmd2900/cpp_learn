@@ -50,7 +50,7 @@ return true ;
 ///////////////////////////////////              distinct number ( copy repeated number only in 1st appearance )
 bool check_distinct ( int arr[] , int index , int num ) // index as a size ( half of a loop )
 {
-for ( int i = 0 ; i < index ; i ++) // nested loop 
+for ( int i = 0 ; i < index ; i ++) 
 if ( num == arr [i] )
 return false ;
 return true ;
@@ -94,9 +94,9 @@ int x = 0 ;
 
 for ( int i = 0 ; i < 5 ; i ++ )
 {
-for ( int x = i ; x < 5 ; x ++ )  // 
+for ( int x = i ; x < 5 ; x ++ )  //  nested loop one condition
 {
-if ( arr[i] > arr[x] )  // nested loop one condition
+if ( arr[i] > arr[x] )  
 swap ( arr[i] , arr[x] ) ;
 }
 }
@@ -146,10 +146,10 @@ bool arr3 [6] = {0} ;
 
 for ( int i = 0 , x = 0 ; i < 5 ; i ++ )     // bool to integer
 {
-if ( arr1[i] == 0 )
+if ( arr1[i] == 0 ) 
 continue;
 else
-{arr2[x] = i ;
+{arr2[x] = i ; // value = index ( int )
  x++ ;
 }
 }
@@ -159,7 +159,7 @@ cout << arr2[y] << endl ;
 
 
 for ( int g = 0 ; g < 3 ; g++ )     // integer to bool
-arr3[arr2[g]] = 1 ;
+arr3[arr2[g]] = 1 ; // value = bool 
 
 
 for ( int k = 0 ; k < 6 ; k++ )
