@@ -3,8 +3,7 @@
 #include <array>
 #include <vector>
 #include <limits>     // numeric_limits<streamsize>::max()
-#include <cstdlib>    // rand , srand , system , exit
-#include <ctime>      // time (input_random) , null
+#include <cstdlib>    // system , exit
 #include <random>   // random
 #include <iomanip>     // setw
 //using namespace std ;
