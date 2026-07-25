@@ -7,19 +7,19 @@
 #include <ctime>      // time (input_random) , null
 #include <random>   // random
 #include <iomanip>     // setw
-using namespace std ;
+//using namespace std ;
 
 
-// using std::string;
-// using std::endl;
-// using std::cin;
-// using std::cout;
-// using std::numeric_limits;
-// using std::streamsize;
+using std::string;
+using std::endl;
+using std::cin;
+using std::cout;
+using std::numeric_limits;
+using std::streamsize;
 
-// using std::random_device; //random
-// using std::mt19937;        // random
-// using std::uniform_int_distribution; // random
+using std::random_device; //random
+using std::mt19937;        // random
+using std::uniform_int_distribution; // random
 
 
 namespace mlib
