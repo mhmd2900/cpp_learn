@@ -1,19 +1,36 @@
+// Lab: Hospital Management Using Structs and Enums
+
+// Design a C++ program to manage hospital patients using nested struct and enum.
+// Create enums for doctor names, dish types, location, and diagnosis.
+// Each patient has two departments (surgery and medicine), and each department has 3 doctors.
+// Each doctor has a name, age, and two preferred dishes.
+// Create an array of 3 patients.
+// Write functions to read doctor names for both departments of a patient.
+// For each patient, read the default (MRP) surgery doctor and his preferred dish (1–3).
+// Convert string input to enum values and validate input.
+// Write separate functions to print all doctors and default doctor info.
+// Use pass‑by‑reference for structs and pass arrays with their size.
+
+
 #include<iostream>
 #include<string>
 #include<cctype>
+#include <limits>   //numeric_limits<streamsize>::max()
 #include "../general/mlib.h"
 using namespace std;
 
 
 
 enum enname { mhmd = 4719 , aly , meme = 3000 , soso , unknown };
+enum endish { meat = 1 , chicken , fish };
 enum enlocation { clinic , er , undefined };
 enum endiagnosis { app , crohns , other };
 
 
 struct stdoctor
      {  int age = 0 ;
-        enname name ; };
+        enname name ; 
+        endish dish[2]; };
 
 
 struct stspeciality
@@ -26,9 +43,10 @@ struct stpatient
        stspeciality medicine , surgery ; };
 
 
-// ═══════════════════════════════
-// PHASE 1: INPUT
-// ═══════════════════════════════
+
+// ════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════
+//                                                                 PHASE 1: INPUT
+// ════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════
 
 
 string input_word ( const string& message )  // & due to string , const to protect it      // function W ( worker )
@@ -55,6 +73,17 @@ enname str_to_enname ( const string& name ) // & due to string , const to protec
     else                         return enname::unknown ;
 }
 
+// ══════════════════════════════════════════════════════════════════════SPECIFIC══════════════════════════════════════════════════════════════════
+
+
+endish num_to_endish ( const string& message )   // function W ( worker )
+{ 
+    int num   =    mlib::input_number ( message  , 1 , 3) ;
+    endish dish = static_cast<endish>(num) ; // as index started with 1 not 0 in endish
+    return dish ;
+} 
+
+
 
 
 void read_surgerydoctor_name ( stpatient& patient )   // & to modify parameters  // function B ( co-ordinator )
@@ -62,14 +91,18 @@ void read_surgerydoctor_name ( stpatient& patient )   // & to modify parameters 
     for ( auto& doctor : patient.surgery.doctor )  doctor.name = str_to_enname ( input_word ( " enter surgery doctor name \n")) ; // struct ( str_to_enname المحطة الاقرب للشارع  ) 
 }
 
+
 void read_medicinedoctor_name ( stpatient& patient )   // & to modify parameters    // function B ( co-ordinator )
 {
 	for ( auto& doctor : patient.medicine.doctor )    doctor.name = str_to_enname ( input_word ( " enter medicine doctor name \n")) ;
 }
 
+
+
 void read_hisdoctor_name ( stpatient& patient )   // & to modify parameters   // function A ( driver )
 {
 read_surgerydoctor_name ( patient );
+cout << " ____________________________________ \n ";
 read_medicinedoctor_name ( patient );
 }
 
@@ -77,17 +110,28 @@ read_medicinedoctor_name ( patient );
 
 void read_defaultdoctor ( stpatient patient[] , int n )  // no & as it is array   // function A ( driver )
 {
-  for ( int i = 0 ; i < n ; i ++ )  // range lopp does not work with array parameter which works as a pointer ( size not known )
+  for ( int i = 0 ; i < n ; i ++ )  // range loop does not work with array parameter which works as a pointer ( size not known )
   {  
+  cout << " ____________________________________ \n ";
 	cout << " for patient " << i + 1 << " plz " ;
 	patient[i].surgery.doctor[0].name = str_to_enname ( input_word ( " enter default   MRP   doctor name  \n" )) ;
   }
 } 
 
-// ═══════════════════════════════
-// PHASE 2: OUTPUT
-// ═══════════════════════════════
 
+
+void read_defaultdoctordish ( stpatient patient[] , int n )  // function A ( driver )
+{
+  for ( int i = 0 ; i < n ; i ++ ) 
+  {  
+  cout << " ____________________________________ \n ";
+	cout << " for patient " << i + 1 << " plz " ;
+	patient[i].surgery.doctor[0].dish[0] = num_to_endish ( " \n plz choose preferred dish  \n  1) meat  \n   2) chicken  \n   3) fish \n " );
+  }
+} 
+// ════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════
+//                                                                 PHASE 1: OUTPUT
+// ════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════
 
 string enname_to_str ( enname name  )  // enum is light
 {
@@ -99,6 +143,18 @@ switch ( name )
          default :              return "not available";    }
 }
 
+
+string endish_to_str ( endish dish  )  // enum is light
+{
+switch ( dish )
+    {    case endish::meat :      return  "meat";
+         case endish::chicken :   return  "chicken" ;
+         case endish::fish :      return  "fish";
+         default :                return "not available";    }
+}
+
+
+// ══════════════════════════════════════════════════════════════════════SPECIFIC══════════════════════════════════════════════════════════════════
 
 void print_surgerydoctor_name ( const stpatient& patient ) // & due to large struct , const to protect it
 {
@@ -115,6 +171,8 @@ cout << " \n medicine doctor names \n";      for ( const auto& doctor : patient.
 
 void print_hisdoctor_name ( const stpatient& patient ) // & due to large struct , const to protect it
 {
+cout << "  \n ====================================== \n ";
+cout << "  ====================================== \n ";
 print_surgerydoctor_name ( patient ) ;
 print_medicinedoctor_name ( patient ) ;
 }
@@ -129,8 +187,18 @@ void print_defaultdoctor ( const stpatient patient[] , int n )  // no & as it is
 }
 
 
+void print_defaultdoctordish ( const stpatient patient[] , int n )  // no & as it is array
+{
+	cout << "  \n ====================================== \n  default ( MRP ) doctor of each patient is  :  \n  " ;
+  for ( int i = 0 ; i < n ; i ++ )  
+  cout << " for patient " << i + 1 << "     " << endish_to_str (patient[i].surgery.doctor[0].dish[0]) << endl ;
+}
+
+
 // *********************************************************************************************************************************************
 // *********************************************************************************************************************************************
+// *********************************************************************************************************************************************
+
 
 int main ()
 {
@@ -141,10 +209,12 @@ stpatient abdo , manal , anonymous[3] , patient[MAX_PATIENTS];
 
 read_hisdoctor_name  ( anonymous[1] ) ;  
 read_defaultdoctor(patient , MAX_PATIENTS);
+read_defaultdoctordish(patient , MAX_PATIENTS);
 
 
 print_hisdoctor_name ( anonymous[1] ) ;
 print_defaultdoctor(patient , MAX_PATIENTS);
+print_defaultdoctordish(patient , MAX_PATIENTS);
 
 return 0;    
 }
