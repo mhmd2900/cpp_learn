@@ -1,7 +1,7 @@
 #include<iostream>
 #include<string>
 #include<cctype>
-#include"mlib.h"
+#include "../general/mlib.h"
 using namespace std;
 
 

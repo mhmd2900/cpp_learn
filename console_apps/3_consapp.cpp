@@ -1,5 +1,5 @@
 #include<iostream>
-#include"mlib.h"
+#include "../general/mlib.h"
 using namespace std ;
 
 

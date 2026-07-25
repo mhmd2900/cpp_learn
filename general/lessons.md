@@ -173,62 +173,6 @@ c = ( a==b ) ? 6 : 66 ;
 
 
 
-
-////////////////////    printf
-int u = 50 ;
-printf("   this is  %d \n  " ,  u ) ;              // 50
-printf(" this is  %0d \n  " ,  u ) ;               // 50
-printf(" also  equals = %0*d \n  " , 1  , u ) ;    // 50
-printf(" also  equals = %0*d \n  " , 3  , u ) ;    // 050
-printf(" also  equals = %03d \n  " , u ) ;         // 050            
-
-float f = 2.7638 ;
-printf (" this is %f \n " , f);        // 2.763800
-printf (" this is %.f \n " , f);       // 3
-printf (" this is %.3f \n " , f);      // 2.764            
-printf (" this is %.*f \n " , 3 , f);  // 2.764       
-
-char name [] = " mhmd";
-char letter = 'm';
-printf("  my name is %s \n " , name );  // my name is mhmd
-printf(" my letter is %*c \n " , 6 , letter) ;  // my letter is      m
-printf(" my letter is %6c \n " , letter) ;  //     my letter is      m
-cout << endl << string ( 6 , 'e') + "mhmd";    //// eeeeeemhmd
-
-
-
-//////////////////   setw
-#include<iomanip>
-cout << "_______________________________________ \n";
-cout << "| name |           grade       | end  | \n";
-cout << "|______|_______________________|______| \n";
-cout << "|" << setw(6) << "mhmd" <<"|"<< setw(23) << " very good " << "|" << setw(6) << "pass " << "|\n" ;
-cout << "|______|_______________________|______| \n";
-
-
-
-
-/////////////////   alignment
-string align ( char side , int space , const string& word , char fill = ' ' )
-{
-int blanks = space - static_cast<int>(word.size()) ;
-if ( blanks < 0 )   blanks = 0 ;
-int l_pad = blanks/ 2 ;
-int r_pad = blanks - l_pad ;
-
-if ( side == 'l')
-return word + string(blanks , fill)  ;
-
-else if ( side == 'r')
-return string(blanks , fill ) + word ;
-
-else
-return string( l_pad , fill ) + word + string( r_pad , fill ) ;
-}
-
-
-
-
 cout << "_________________________________________ \n";
 cout << "|    name    |      grade        | end  | \n";
 cout << "|____________|___________________|______| \n";
@@ -236,12 +180,6 @@ cout << "|" << align( 'l' , 12 , "mhmd" )       << "|"  << align ( 'c' , 19 , " 
 cout << "|" << align( 'l' , 12 , "abdelsalam" ) << "|"  << align ( 'c' , 19 , " bad " , '*')      <<"|" << align('r' , 6 , "fail") <<"|"<< endl;
 cout << "|" << align( 'l' , 12 , "may")         << "|"  << align ( 'c' , 19 , " very high good ") <<"|" << align('r' , 6 , "pass") <<"|"<< endl;
 cout << "|____________|___________________|______| \n";
-
-
-
-
-
-
 
 
 
