@@ -5,7 +5,8 @@
 #include <limits>     // numeric_limits<streamsize>::max()
 #include <cstdlib>    // rand , srand , system , exit
 #include <ctime>      // time (input_random) , null
-#include<iomanip>     // setw
+#include <random>   // random
+#include <iomanip>     // setw
 using namespace std ;
 
 
