@@ -39,9 +39,7 @@ void reset_screen()
 
 
 
-/////////////////////////////////////         input random  ,, for training
-
-
+/////////////////////////////////////         input random 
 
 int get_random(int from, int to) 
 {
@@ -57,13 +55,6 @@ int get_random(int from, int to)
 }
 
 
-
-
-
-int input_random ( int from , int to )
-{
-  return rand()%( to - from + 1)+from ;
-}
 
 
 
