@@ -16,6 +16,10 @@ using namespace std ;
 // using std::numeric_limits;
 // using std::streamsize;
 
+// using std::random_device; //random
+// using std::mt19937;        // random
+// using std::uniform_int_distribution; // random
+
 
 namespace mlib
 {
