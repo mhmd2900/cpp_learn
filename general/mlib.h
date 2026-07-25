@@ -31,8 +31,8 @@ namespace mlib
 // Secure: No risk of command injection.
 void reset_screen()
 {
-    std::cout << "\033[2J\033[H";   // Clear + move cursor
-    std::cout << "\033[0m";         // Ensure default colors
+    cout << "\033[2J\033[H";   // Clear + move cursor
+    cout << "\033[0m";         // Ensure default colors
 }
 
 
