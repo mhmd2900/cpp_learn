@@ -39,6 +39,26 @@ void reset_screen()
 
 
 /////////////////////////////////////         input random  ,, for training
+
+
+
+int get_random(int from, int to) 
+{
+    // 'static' means these lines run ONLY ONCE during the whole program
+    static random_device rd; 
+    static mt19937 gen(rd()); 
+    
+    // This line updates to your custom range every time you call the function
+    uniform_int_distribution<int> distrib(from, to); 
+    
+    return distrib(gen);
+
+}
+
+
+
+
+
 int input_random ( int from , int to )
 {
   return rand()%( to - from + 1)+from ;
