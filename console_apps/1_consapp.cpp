@@ -3,10 +3,14 @@
 using namespace std ;
 
 
+
 int main ()
 {
 mlib::reset_screen();
-cout << 5 ;
-return 0;
-}
 
+
+
+
+
+return 0 ;
+}
