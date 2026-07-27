@@ -20,6 +20,13 @@ system ( "color 0F") ;
 
 
 
+////////////////////////////////// random
+int input_random ( int from , int to )
+{
+  return rand()%( to - from + 1)+from ;
+}
+// needs      <cstdlib>   and   <ctime>
+
 
 
 

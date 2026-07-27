@@ -3,17 +3,22 @@
 #include <array>
 #include <vector>
 #include <limits>     // numeric_limits<streamsize>::max()
-#include <cstdlib>    // rand , srand , system , exit
-#include <ctime>      // time (input_random) , null
-#include<iomanip>     // setw
-using namespace std ;
+#include <cstdlib>    // system , exit
+#include <random>   // random
+#include <iomanip>     // setw
+//using namespace std ;
 
 
-// using std::string;
-// using std::cin;
-// using std::cout;
-// using std::numeric_limits;
-// using std::streamsize;
+using std::string;
+using std::endl;
+using std::cin;
+using std::cout;
+using std::numeric_limits;
+using std::streamsize;
+
+using std::random_device; //random
+using std::mt19937;        // random
+using std::uniform_int_distribution; // random
 
 
 namespace mlib
@@ -26,18 +31,29 @@ namespace mlib
 // Secure: No risk of command injection.
 void reset_screen()
 {
-    std::cout << "\033[2J\033[H";   // Clear + move cursor
-    std::cout << "\033[0m";         // Ensure default colors
+    cout << "\033[2J\033[H";   // Clear + move cursor
+    cout << "\033[0m";         // Ensure default colors
 }
 
 
 
 
-/////////////////////////////////////         input random  ,, for training
-int input_random ( int from , int to )
+/////////////////////////////////////         input random 
+
+int get_random(int from, int to) 
 {
-  return rand()%( to - from + 1)+from ;
+    // 'static' means these lines run ONLY ONCE during the whole program
+    static random_device rd; 
+    static mt19937 gen(rd()); 
+    
+    // This line updates to your custom range every time you call the function
+    uniform_int_distribution<int> distrib(from, to); 
+    
+    return distrib(gen);
+
 }
+
+
 
 
 
