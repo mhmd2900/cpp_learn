@@ -2,23 +2,20 @@
 #include <string>
 #include <array>
 #include <vector>
-#include <limits>     // numeric_limits<streamsize>::max()
-#include <cstdlib>    // system , exit
+#include <limits>     // std::numeric_limits<std::streamsize>::max()
+#include <cstdlib>    // system , std::exit
 #include <random>   // random
 #include <iomanip>     // setw
+
+
+
 //using namespace std ;
-
-
-using std::string;
-using std::endl;
-using std::cin;
-using std::cout;
-using std::numeric_limits;
-using std::streamsize;
-
-using std::random_device; //random
-using std::mt19937;        // random
-using std::uniform_int_distribution; // random
+// using std::string;
+// using std::endl;
+// using std::cin;
+// using std::cout;
+// using std::numeric_limits;
+// using std::streamsize;
 
 
 namespace mlib
@@ -31,8 +28,8 @@ namespace mlib
 // Secure: No risk of command injection.
 void reset_screen()
 {
-    cout << "\033[2J\033[H";   // Clear + move cursor
-    cout << "\033[0m";         // Ensure default colors
+    std::cout << "\033[2J\033[H";   // Clear + move cursor
+    std::cout << "\033[0m";         // Ensure default colors
 }
 
 
@@ -42,15 +39,12 @@ void reset_screen()
 
 int get_random(int from, int to) 
 {
-    // 'static' means these lines run ONLY ONCE during the whole program
-    static random_device rd; 
-    static mt19937 gen(rd()); 
-    
-    // This line updates to your custom range every time you call the function
-    uniform_int_distribution<int> distrib(from, to); 
-    
+    // this std will be used once , do not pollute global namespace
+    // static run ONCE during the whole program  
+    static std::random_device rd;   // pick random number
+    static std::mt19937 gen(rd());  // generates numbers from it
+    std::uniform_int_distribution<int> distrib(from, to); // updates to your custom range every time you call 
     return distrib(gen);
-
 }
 
 
@@ -58,34 +52,34 @@ int get_random(int from, int to)
 
 
 //////////////    input number
-int input_number ( const string& message )
+int get_number ( const std::string& message )
 {
 while ( true )
 {
-cout << message ;
+std::cout << message ;
 int num ;
 
-if ( cin >> num ) {  cin.ignore( numeric_limits<streamsize>::max() , '\n');   return num ; } // target
-else if ( cin.eof() )  { cout << " EOF ... goodbye \n ";  exit(0); } // EOF                    ,, exit needs <cstdlib>
-else if ( cin.fail())         { cin.clear();   cin.ignore( numeric_limits<streamsize>::max() , '\n');  cout << " failed input \n "; } // fail 
+if ( std::cin >> num ) {  std::cin.ignore( std::numeric_limits<std::streamsize>::max() , '\n');   return num ; } // target
+else if ( std::cin.eof() )  { std::cout << " EOF ... goodbye \n ";  std::exit(0); } // EOF                    ,, std::exit needs <cstdlib>
+else if ( std::cin.fail())         { std::cin.clear();   std::cin.ignore( std::numeric_limits<std::streamsize>::max() , '\n');  std::cout << " failed input \n "; } // fail 
 } 
 }
 
 
 
 //////////////    input number  ,,, function overloading
-int input_number ( const string& message , int from , int to )
+int get_number ( const std::string& message , int from , int to )
 {
 while ( true )
 {
-cout << message ;
+std::cout << message ;
 int num ;
 
-if ( cin >> num )        {  cin.ignore( numeric_limits<streamsize>::max() , '\n');   
+if ( std::cin >> num )        {  std::cin.ignore( std::numeric_limits<std::streamsize>::max() , '\n');   
                         if ( num >= from && num <= to )         return num ;     // target 
-                        cout << " out of range \n" ; }                     // different choice
-else if ( cin.eof() )         { cout << " EOF ... goodbye \n ";  exit(0); }               // EOF
-else if ( cin.fail())         { cin.clear();   cin.ignore( numeric_limits<streamsize>::max() , '\n');  cout << " failed input \n "; } // fail 
+                        std::cout << " out of range \n" ; }                     // different choice
+else if ( std::cin.eof() )         { std::cout << " EOF ... goodbye \n ";  std::exit(0); }               // EOF
+else if ( std::cin.fail())         { std::cin.clear();   std::cin.ignore( std::numeric_limits<std::streamsize>::max() , '\n');  std::cout << " failed input \n "; } // fail 
 } 
 }
 
@@ -94,15 +88,15 @@ bool want_to_repeat ()
 {
 while ( true )
 {
-cout << " Do you want to repeat ?   [y/n] \n";
+std::cout << " Do you want to repeat ?   [y/n] \n";
 char ch ;
 
-if ( cin >> ch )  {     cin.ignore( numeric_limits<streamsize>::max() , '\n');  
+if ( std::cin >> ch )  {     std::cin.ignore( std::numeric_limits<std::streamsize>::max() , '\n');  
                     if (ch == 'y' || ch == 'Y') return true;   // target
                     if (ch == 'n' || ch == 'N') return false;  // target
-                    cout << "Invalid choice, please enter y or n\n";  }  // different choice
-else if ( cin.eof())          {  cout << " EOF , goodbye \n" ;  exit(0) ; }  // EOF
-else if ( cin.fail())         {  cin.clear();   cin.ignore( numeric_limits<streamsize>::max() , '\n'); cout << " failed input \n"; } // fail ( not char input )
+                    std::cout << "Invalid choice, please enter y or n\n";  }  // different choice
+else if ( std::cin.eof())          {  std::cout << " EOF , goodbye \n" ;  std::exit(0) ; }  // EOF
+else if ( std::cin.fail())         {  std::cin.clear();   std::cin.ignore( std::numeric_limits<std::streamsize>::max() , '\n'); std::cout << " failed input \n"; } // fail ( not char input )
 }
 } 
 
@@ -113,16 +107,16 @@ else if ( cin.fail())         {  cin.clear();   cin.ignore( numeric_limits<strea
 
 
 ///////////////////////////    input string  
-string input_word ( const string& message ) 
+std::string input_word ( const std::string& message ) 
 {
 while ( true )
 {     
-cout << message ;
-string pass ;   // tight scope
+std::cout << message ;
+std::string pass ;   // tight scope
 
-if (getline(cin, pass))    { if (!pass.empty())   return pass;                 // target
-                              else  cout << " input can not be empty ! \n"; }  // different choice
-else if (cin.eof())          {cout << " EOF , goodbye \n";   exit(0) ;}            // EOF  
+if (std::getline(std::cin, pass))    { if (!pass.empty())   return pass;                 // target
+                              else  std::cout << " input can not be empty ! \n"; }  // different choice
+else if (std::cin.eof())          {std::cout << " EOF , goodbye \n";   std::exit(0) ;}            // EOF  
 }
 }
 
@@ -133,22 +127,22 @@ else if (cin.eof())          {cout << " EOF , goodbye \n";   exit(0) ;}         
 // You want to hide password input (mask with *)
 // You want to add character limits mid-typing
 // You need special Windows \r\n handling for files from other systems
-string input_word_ch ( const string& message )
+std::string input_word_ch ( const std::string& message )
 {  
 while (true)
 {
-  cout << message ;
-  string password ; // fresh empty string each attempt
+  std::cout << message ;
+  std::string password ; // fresh empty std::string each attempt
   char ch ; // narrow scope 
 
-  while ( cin.get(ch) )  {
+  while ( std::cin.get(ch) )  {
       if ( ch == '\r')   continue ;
       if ( ch == '\n')   break ;
       password += ch ;     }
       
-  if (cin)  {  if (!password.empty())   return password ;   // target         ,, if (cin) means I/O succeeded (found \n)
-                    cout <<  " empty password , not acceted , repeat \n" ;  }  // other option
-  else if ( cin.eof())  { cout << " EOF , goodbye \n" ;  exit(0) ; } // EOF 
+  if (std::cin)  {  if (!password.empty())   return password ;   // target         ,, if (std::cin) means I/O succeeded (found \n)
+                    std::cout <<  " empty password , not acceted , repeat \n" ;  }  // other option
+  else if ( std::cin.eof())  { std::cout << " EOF , goodbye \n" ;  std::exit(0) ; } // EOF 
 }
 }
 
@@ -205,8 +199,8 @@ bool is_prime(int num)
 
 
 
-////////////////////////    make string from itself  ( with known key - reversible )   ,, Caesar cipher (toy example)
-string crypt ( string password , int key )
+////////////////////////    make std::string from itself  ( with known key - reversible )   ,, Caesar cipher (toy example)
+std::string crypt ( std::string password , int key )
 {
 for ( int i = 0 ; i < password.length() ; i ++ )
 password[i] = static_cast<char> (static_cast<unsigned char>(password[i]) + key) ;
@@ -215,10 +209,10 @@ return password ;
 
 
 
-/////////////////////////    make string from other string  ( with known key )
-string decrypt ( string password , int key )
+/////////////////////////    make std::string from other std::string  ( with known key )
+std::string decrypt ( std::string password , int key )
 {
-string pass ;
+std::string pass ;
 for ( int i = 0 ; i < password.length() ; i ++ )
 // for ( char& i : password )
 pass += static_cast<char>(static_cast<unsigned char>(password[i]) - key) ;
@@ -228,7 +222,7 @@ return pass ;
 
 
 //////////////////////          layout alignment   ///////  need adjust
-// string align ( char side , int space , const string& word , char fill = ' ' )
+// std::string align ( char side , int space , const std::string& word , char fill = ' ' )
 // {
 // int blanks = space - static_cast<int>(word.size()) ;
 // if ( blanks < 0 )   blanks = 0 ;
@@ -236,13 +230,13 @@ return pass ;
 // int r_pad = blanks - l_pad ;
 
 // if ( side == 'l')
-// return word + string(blanks , fill)  ;
+// return word + std::string(blanks , fill)  ;
 
 // else if ( side == 'r')
-// return string(blanks , fill ) + word ;
+// return std::string(blanks , fill ) + word ;
 
 // else
-// return string( l_pad , fill ) + word + string( r_pad , fill ) ;
+// return std::string( l_pad , fill ) + word + std::string( r_pad , fill ) ;
 // }
 
 

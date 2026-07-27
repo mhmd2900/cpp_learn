@@ -16,9 +16,20 @@
 #include <iostream>
 #include <string>
 #include <cstdlib>
-#include <ctime>
 #include "../general/mlib.h"
-using namespace std;
+
+//using namespace std;
+using std::string;
+using std::getline;
+using std::endl;
+using std::cin;
+using std::cout;
+using std::exit;
+using std::numeric_limits;
+using std::streamsize;
+
+
+
 
 
 enum enchoices { paper = 1 , stone = 2 , scissor = 3 , invalid };
@@ -60,7 +71,7 @@ int draw_win = 0 ;
 enplayers final_winner ;
 } ;
 
-                                                                               int input_number ( string message )
+                                                                               int get_number ( string message )
                                                                                 {
                                                                                 int num ;
                                                                                 cout << message ;
@@ -94,7 +105,7 @@ enplayers final_winner ;
                                                                                 }
                                                                                 }
 
-                                                                               int input_random ( int from , int to )
+                                                                               int get_random ( int from , int to )
                                                                             {
                                                                             return rand()%( to - from + 1)+ from ;
                                                                             }
@@ -169,7 +180,7 @@ void each_round ( st_gamestats& stst_gamestats )
 {
 stround ststround ;
 ststround.pl1_choose  = (enchoices)input_choice ( "\n \n write your choice \n");
-ststround.comp_choose = (enchoices)input_random ( 1 , 3 );
+ststround.comp_choose = (enchoices)get_random ( 1 , 3 );
 cout << " \n pl1 choose   " <<  choice_to_word( ststround.pl1_choose  ) ;
 cout << " \n comp  choose " <<  choice_to_word( ststround.comp_choose ) ;
 winning_rule(ststround) ;
@@ -182,7 +193,7 @@ void all_rounds ()
 
 st_gamestats stst_gamestats ;
 
-stst_gamestats.count = input_number(" how many rounds ? \n ") ;
+stst_gamestats.count = get_number(" how many rounds ? \n ") ;
 for ( int i = 0 ; i < stst_gamestats.count ; i ++ )
 each_round(stst_gamestats ) ;
 

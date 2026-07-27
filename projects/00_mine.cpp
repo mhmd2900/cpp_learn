@@ -17,7 +17,20 @@
 #include<cctype>
 #include <limits>   //numeric_limits<streamsize>::max()
 #include "../general/mlib.h"
-using namespace std;
+
+//using namespace std;
+using std::string;
+using std::getline;
+using std::endl;
+using std::cin;
+using std::cout;
+using std::exit;
+using std::numeric_limits;
+using std::streamsize;
+
+
+
+
 
 
 
@@ -78,7 +91,7 @@ enname str_to_enname ( const string& name ) // & due to string , const to protec
 
 endish num_to_endish ( const string& message )   // function W ( worker )
 { 
-    int num   =    mlib::input_number ( message  , 1 , 3) ;
+    int num   =    mlib::get_number ( message  , 1 , 3) ;
     endish dish = static_cast<endish>(num) ; // as index started with 1 not 0 in endish
     return dish ;
 } 

@@ -13,9 +13,21 @@
 #include<iostream>
 #include<string>
 #include<cstdlib>
-#include<ctime>
 #include "../general/mlib.h"
-using namespace std ;
+
+//using namespace std;
+using std::string;
+using std::getline;
+using std::endl;
+using std::cin;
+using std::cout;
+using std::exit;
+using std::numeric_limits;
+using std::streamsize;
+
+
+
+
 
 
 enum enpassfail { pass , fail , draw };

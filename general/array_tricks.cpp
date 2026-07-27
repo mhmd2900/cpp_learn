@@ -26,7 +26,7 @@ fill_array ( arr1[i] , arr2 , index );
 void make_array ( int arr[] , int size)
 {
 for ( int i = 0 ; i < size ; i ++ )
-arr[i] = mlib::input_number(" plz enter number \n" , 1 , 100 );
+arr[i] = mlib::get_number(" plz enter number \n" , 1 , 100 );
 }
 
 
@@ -65,7 +65,7 @@ return true ;
 void mshuffle( int arr[] , int size )
 {
 for (int i = 0; i < size - 1 ; i++ )        
-    swap(arr[i], arr[mlib::input_random( i , size - 1 )]); 
+    swap(arr[i], arr[mlib::get_random( i , size - 1 )]); 
 }
 
 // 1- arr ( i )  : fix one side to avoid unswapped elements 

@@ -14,3 +14,9 @@ mlib::reset_screen();
 
 return 0 ;
 }
+
+
+/////////////////////////////////////         input random 
+
+
+
