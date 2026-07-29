@@ -24,7 +24,8 @@ int get_random ( int from , int to )
 {
   return rand()%( to - from + 1)+from ;
 }
-// needs      <cstdlib>   and   <ctime>
+// needs                         <cstdlib>   and   <ctime>
+// inside main function       srand((unsigned )time (NULL));
 
 
 

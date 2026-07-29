@@ -84,11 +84,11 @@ else if ( std::cin.fail())         { std::cin.clear();   std::cin.ignore( std::n
 }
 
 ///////////////  want to repeat
-bool want_to_repeat ()
+bool want_to_repeat (const std::string& message)
 {
 while ( true )
 {
-std::cout << " Do you want to repeat ?   [y/n] \n";
+std::cout << message ;
 char ch ;
 
 if ( std::cin >> ch )  {     std::cin.ignore( std::numeric_limits<std::streamsize>::max() , '\n');  

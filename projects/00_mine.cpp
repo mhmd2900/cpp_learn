@@ -1,17 +1,3 @@
-// Lab: Hospital Management Using Structs and Enums
-
-// Design a C++ program to manage hospital patients using nested struct and enum.
-// Create enums for doctor names, dish types, location, and diagnosis.
-// Each patient has two departments (surgery and medicine), and each department has 3 doctors.
-// Each doctor has a name, age, and two preferred dishes.
-// Create an array of 3 patients.
-// Write functions to read doctor names for both departments of a patient.
-// For each patient, read the default (MRP) surgery doctor and his preferred dish (1–3).
-// Convert string input to enum values and validate input.
-// Write separate functions to print all doctors and default doctor info.
-// Use pass‑by‑reference for structs and pass arrays with their size.
-
-
 #include<iostream>
 #include<string>
 #include<cctype>

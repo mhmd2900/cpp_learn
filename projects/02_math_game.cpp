@@ -1,15 +1,3 @@
-// Lab: Math Quiz Game Using Structs and Enums
-// Design a C++ program to simulate a math quiz game.
-// Create enums for pass/fail result, question level (easy, med, hard, mix), and operator type (add, sub, mult, div, all).
-// Create a struct to store one question’s data (numbers, operator, user answer, correct answer, correctness).
-// Create another struct to store game data (number of questions, level, operator type, correct/wrong count, final result).
-// Ask the user for number of questions (max 10), difficulty level, and operator type.
-// Generate random numbers based on level and random operators if “all” is chosen.
-// For each question, display the problem, read user answer, calculate correct answer, and update statistics.
-// After all questions, determine pass, fail, or draw based on correct vs wrong answers.
-// Display full game statistics and allow the user to repeat the quiz.
-
-
 #include<iostream>
 #include<string>
 #include<cstdlib>

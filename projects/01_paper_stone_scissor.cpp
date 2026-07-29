@@ -1,32 +1,12 @@
-// Lab: Rock–Paper–Scissors Game Using Structs and Enums
-
-// Design a C++ program to simulate a Rock–Paper–Scissors game between a player and the computer.
-// Create enums for player choices (paper, stone, scissor) and round winner (player, computer, draw).
-// Create a struct to store one round’s data (player choice, computer choice, winner).
-// Create another struct to store game statistics (round count, wins, draws, final winner).
-// Ask the user for the number of rounds (1–10).
-// For each round, read the player’s choice (1–3) and generate a random computer choice.
-// Determine and display the winner of each round.
-// Update and display total statistics after all rounds.
-// Determine the final winner based on total wins.
-// Allow the user to repeat the game.
-
-
-
 #include <iostream>
 #include <string>
-#include <cstdlib>
 #include "../general/mlib.h"
 
 //using namespace std;
 using std::string;
-using std::getline;
-using std::endl;
 using std::cin;
 using std::cout;
-using std::exit;
-using std::numeric_limits;
-using std::streamsize;
+
 
 
 
