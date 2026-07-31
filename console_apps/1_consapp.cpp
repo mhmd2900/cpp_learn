@@ -1,171 +1,246 @@
 #include<iostream>
 #include<string>
+#include<random>
 #include "../general/mlib.h"
 
-// using namespace std ;
+
 using std::cout ;
 using std::cin ;
 using std::string ;
 
 
-
-
-enum enchoices { paper=1 , stone=2 , scissor=3 };
+enum enlevel  { easy = 1 , hard = 2 , mix = 3 } ;
+enum enoper   { add = 1 , substract = 2 , divide = 3 , all = 4 };
 enum enwinner { player , computer , draw };
 
+struct stround_stats 
+{
+int num1 = 0 ;
+int num2 = 0 ;
+int sum  = 0 ;
+int answer  = 0 ;
+};
 
 
-struct stround_stat {
-enchoices ply_choice ;
-enchoices comp_choice ;
+
+struct stgame_stats 
+{
+int count = 0 ;
+int right = 0 ;
+int wrong = 0 ;
+enlevel level ;
+enoper oper ;
 enwinner winner ;
+stround_stats round_stats[10] ;            //✅✅✅✅✅✅ 
 };
 
-
-struct stgame_stat {
-int player = 0 ;
-int computer = 0 ;
-int draw = 0 ;
-enwinner finalwinner ;
-};
-  
-
 // ════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════
-//                                                                          FUNCTIONS C
+//                                                                     D  CONVERSTORS
 // ════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════
 
-enchoices int_to_enchoices ( int num )
-{
-enchoices choice = static_cast<enchoices>(num) ;
-return choice ;
-}
 
 
-string enchoices_to_string ( enchoices choice )
+string enlevel_to_string( enlevel level )
 {
-switch (choice)
+switch ( level)
 {
-case paper :
-return "paper" ;
-case stone :
-return "stone" ;
-case scissor :
-return "scissor" ;
+case easy :
+return " easy ";
+case hard :
+return " hard ";
+case mix :
+return " mix  ";
 default :
-return " unvalid option";
+return " invalid level ";
 }
 }
 
 
-// string enchoices_to_string ( enchoices choice )
-// {
-// string choosen_option[3] = { "paper" , "stone" , "scissor"};
-// return choosen_option[choice-1];
-// }
 
-
-
-string enwinner_to_string ( enwinner winner )
+string enoper_to_string( enoper oper )
 {
-switch (winner)
+switch ( oper )
+{
+case add :
+return " add ";
+case substract :
+return " substract ";
+case divide :
+return " divide  ";
+case all :
+return " all  ";
+default :
+return " invalid operator ";
+}
+}
+
+
+string enwinner_to_string( enwinner winner )
+{
+switch ( winner)
 {
 case player :
-return " player\n" ;
+return " PLAYER ";
 case computer :
-return " computer\n" ;
+return " COMPUTER ";
 case draw :
-return " no winner       \n" ;
+return " NO WINNER ";
 default :
-return " unvalid option\n";
+return " invalid inpput ";
 }
 }
-
 
 
 // ════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════
-//                                                                          FUNCTIONS B
+//                                                                     C  ROUND LOGIC
 // ════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════
-
-int how_many_rounds( )
+void generate ( stround_stats& r , const enlevel level )   // & modify
 {
-    int count = mlib::get_number( " How many rounds do you want to play ? \n  plz between 1 and 5   \n " , 1 , 5);
-    return count ;
+
+
+if ( level  == easy)
+{
+r.num1 = mlib::get_random(0 , 9 );
+r.num2 = mlib::get_random(1 , 9 );
 }
 
-
-void round_input (stround_stat& round_stat)  // & modify
+else if ( level == hard )
 {
-round_stat.ply_choice  = int_to_enchoices  (mlib::get_number(  " plz enter your choice 1) paper    2) stone    3)scissor \n"  , 1 , 3 ));
-round_stat.comp_choice = int_to_enchoices  (mlib::get_random( 1 , 3 ));
-cout << " player   choice is   :   " << round_stat.ply_choice  << "    which is  " << enchoices_to_string( round_stat.ply_choice   )<<  "\n";
-cout << " computer choice is   :   " << round_stat.comp_choice << "    which is  " << enchoices_to_string( round_stat.comp_choice  )<<  "\n";
+r.num1 = mlib::get_random(10 , 20 );
+r.num2 = mlib::get_random(10 , 20 );
 }
 
-
-void who_won (stround_stat& round_stat  , stgame_stat& game_stat) // & size    ,  & modify
+else 
 {
-    if ( round_stat.ply_choice == round_stat.comp_choice ) { round_stat.winner = draw;     game_stat.draw ++ ; }
-    else {
-       round_stat.winner = ( ( round_stat.ply_choice == paper && round_stat.comp_choice == stone    ) ||
-                             ( round_stat.ply_choice == stone && round_stat.comp_choice == scissor  ) ||  
-                             ( round_stat.ply_choice == scissor && round_stat.comp_choice == paper  )    )
-                                  ? player  :computer  ;
-        if ( round_stat.winner == player)    game_stat.player   ++;
-        else                                 game_stat.computer ++; 
-         }
-          cout << " the round winner is    :  " << enwinner_to_string(round_stat.winner);
+r.num1 = mlib::get_random(0 , 20 );
+r.num2 = mlib::get_random(1 , 20 );
 }
-
-
-void who_final ( stgame_stat& game_stat ) // & size
-{
-cout << " ====================\n " ;
-cout << "     final result    \n " ;
-cout << " ====================\n " ;
-cout << " player won   " << game_stat.player   << " times \n";
-cout << " computer won " << game_stat.computer << " times \n";
-cout << " draw   won   " << game_stat.draw     << " times \n";
-
-
-if   ( game_stat.player  == game_stat.computer ) game_stat.finalwinner = draw ;
-else game_stat.finalwinner = ( game_stat.player > game_stat.computer   ) ? player  : computer   ;
-
-cout << " AT THE END :::::::: the final winner is   :::::::  "  << enwinner_to_string(game_stat.finalwinner);
-
-
-// if ( game_stat.player  == game_stat.computer ) cout << " no final winner \n";
-// else cout << ( ( game_stat.player > game_stat.computer  ) ? " player is the hero \n"    : " computer is the hero  \n" )   ;
-
-// game_stat.player   = 0 ;
-// game_stat.computer = 0 ;
-// game_stat.draw     = 0 ;
-
 }
 
 
 
-
-// ════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════
-//                                                                          FUNCTIONS A
-// ════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════
-
-
-
-void game( )  
+enoper generate_operator ( enoper& oper  ) 
 {
-stround_stat   round_stat  ;  // → Declare variables in the smallest scope that needs them.
-stgame_stat game_stat ;
+if ( oper == all )        oper = (static_cast<enoper>(mlib::get_random ( 1, 3 ))) ;
+    return oper ;
+}
 
-int count = how_many_rounds();
 
-for ( int i = 1 ; i <= count ; i ++ )
+
+void show_and_calculate ( stround_stats& r , enoper oper )  // & modify  , no & to allow change oper every iteration
+{
+
+cout << r.num1  << "\n" ;
+
+    switch ( generate_operator(oper) ) // call in FUNCTION C not B ,, to be changed every call
     {
-    cout << " ==================== \n  round " << i << " starts now \n";
-    round_input ( round_stat );
-    who_won (round_stat  , game_stat);
+    case add :
+    r.sum = r.num1 + r.num2 ;  cout << " + \n" ;
+    break ;
+    case substract :
+    r.sum = r.num1 - r.num2 ;  cout << " - \n" ;
+    break ;
+    case divide :
+        if ( r.num2 != 0 )  // just as a guarantee if later change input
+        r.sum = r.num1 / r.num2 ;  
+        else 
+        r.sum = 0 ;   
+        cout << " / \n" ;
+    break ;
+    default :
+    r.sum = 0 ;
     }
+     
+cout << r.num2 << "\n_________________________ \n" ;
+}
 
-who_final ( game_stat );
+
+
+
+
+
+void receive_and_update( stround_stats& r , int& right , int& wrong )   //  & nodify
+{
+
+r.answer = mlib::get_number(" your answer    :   ") ;
+
+if (r.answer == r.sum)                 { cout << " right  \n";     right++ ; }
+else                                   { cout << " wrong  \n";     wrong++ ; }
+}
+
+
+// ════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════
+//                                                                     B  GAME RESULTS
+// ════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════
+void round ( stgame_stats& game_stats , int i )    // & modify
+{
+stround_stats& r = game_stats.round_stats[i] ;           //✅✅✅✅✅✅ pass by alias to avoid long sentece
+                                                         //✅✅✅✅✅✅ every coming function takes only what it needs , not all game_stats
+generate ( r , game_stats.level);
+show_and_calculate ( r , game_stats.oper );
+receive_and_update ( r , game_stats.right , game_stats.wrong );
+}
+
+
+
+void final_winner ( stgame_stats& game_stats )  // & modify 
+{
+game_stats.winner = ( game_stats.right == game_stats.wrong) ? draw : ( ( game_stats.right > game_stats.wrong) ? player : computer);
+
+    cout << " ================== \n";
+    cout << " final winner  is              : " <<  enwinner_to_string(game_stats.winner)  << "\n";
+    cout << " ================== \n";
+    cout << " number of questions           : " << game_stats.count   << "\n";
+    cout << " number of right answers is    : " << game_stats.right   << " \n";
+    cout << " number of wrong answers is    : " << game_stats.wrong   << " \n";
+    cout << " choosen level is              : " << enlevel_to_string(game_stats.level)    << "\n";
+    cout << " choosen operator is           : " << enoper_to_string(game_stats.oper)      << "\n";
+
+}
+
+
+
+void print_all_detail( const stgame_stats& game_stats , int count ) //    & size , so use const
+{
+
+cout << " \n^^^^^^^^^^^^^^^^^ all details ^^^^^^^^^^^^^^^^ \n  ";
+for ( int i = 0 ; i < count ; i ++)
+{
+const stround_stats& r = game_stats.round_stats[i] ;     //✅✅✅✅✅✅const in parameter necessitate const here
+
+cout << " \n round " << i+1 << " : you choose " << r.answer << "   , real sum is : " << r.sum << " your answer is " ;
+cout << ((r.answer == r.sum) ? " right \n" : " wrong  \n"); 
+}
+cout << " \n  ************** \n " ;
+}
+
+
+// ════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════
+//                                                                    A  GAME FLOW
+// ════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════
+
+void game ( )
+{
+stgame_stats game_stats ;
+
+game_stats.count = mlib::get_number(" how many questions ( maximum 10 )   ? \n " , 1 , 10 ) ;
+game_stats.level = static_cast<enlevel>(mlib::get_number( " choose level  [1]easy     [2]hard      [3]mix   \n" , 1 , 3 ));
+game_stats.oper  = static_cast<enoper>(mlib::get_number( " choose operator  [1]+   [2]-    [3]/   [4]all   \n" , 1 , 4 ));
+
+int& count = game_stats.count ;
+
+
+for ( int i = 0 ; i < count ; i ++ )
+{
+cout << " _________________________________________  \n";
+cout << "           QUESTION  [" << i+1 <<  "/"  << count <<  "]  \n";
+round ( game_stats , i );
+}
+
+final_winner( game_stats );
+
+print_all_detail ( game_stats , count );
+
 }
 
 
@@ -178,18 +253,14 @@ int main ()
 {
 mlib::reset_screen();
 
-// only define stgame_stat  ,, if it will accumulate results ( here , you want to frsh it each game )
-// If main() also needed to read the stats after the game → then pass by reference from main()
-
 do 
 {
-game();
-} while ( mlib::want_to_repeat(" repeat ?      y or n \n"));
+game ( );
+} while ( mlib::want_to_repeat(" do you want to repeat ?  [y/n] \n"));
 
 
-return 0 ;
+return 0;
 }
-
 
 
 

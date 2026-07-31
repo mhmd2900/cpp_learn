@@ -1,310 +1,266 @@
 #include<iostream>
 #include<string>
-#include<cstdlib>
+#include<random>
 #include "../general/mlib.h"
 
-//using namespace std;
-using std::string;
-using std::getline;
-using std::endl;
-using std::cin;
-using std::cout;
-using std::exit;
-using std::numeric_limits;
-using std::streamsize;
+
+using std::cout ;
+using std::cin ;
+using std::string ;
 
 
+enum enlevel  { easy = 1 , hard = 2 , mix = 3 } ;
+enum enoper   { add = 1 , substract = 2 , divide = 3 , all = 4 };
+enum enwinner { player , computer , draw };
 
-
-
-
-enum enpassfail { pass , fail , draw };
-enum enquestion { easy = 1 , med = 2 , hard = 3 , mix = 4 };
-enum enoperator { add  = 1 , sub = 2 , mult = 3 , divi = 4 , all = 5 };
-
-string level_to_word (enquestion enenquestion )      // display enum
+struct stround_stats 
 {
-string word[4] = { "easy" , "med" , "hard" , "mix"};
-return word [ enenquestion - 1 ];
-}
+int num1 = 0 ;
+int num2 = 0 ;
+int sum  = 0 ;
+int answer  = 0 ;
+};
 
-string operator_to_word (enoperator enenoperator )   // display enum
+
+
+struct stgame_stats 
 {
-switch ( enenoperator )
+int count = 0 ;
+int right = 0 ;
+int wrong = 0 ;
+enlevel level ;
+enoper oper ;
+enwinner winner ;
+stround_stats round_stats[10] ;            //✅✅✅✅✅✅ 
+};
+
+// ════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════
+//                                                                     D  CONVERSTORS
+// ════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════
+
+
+
+string enlevel_to_string( enlevel level )
 {
-case enoperator::add :
-return "+" ;
-case enoperator::sub :
-return "-" ;
-case enoperator::mult:
-return "*" ;
-case enoperator::divi :
-return "/" ;
+switch ( level)
+{
+case easy :
+return " easy ";
+case hard :
+return " hard ";
+case mix :
+return " mix  ";
 default :
-return "all" ;
+return " invalid level ";
 }
 }
 
-struct st_round 
+
+
+string enoper_to_string( enoper oper )
 {
-short num1 = 0 ;    // short is better than int
-short num2  = 0 ;
-short comp_ans = 0 ;
-short user_ans = 0 ;
-string op ;  // for display    ,, used in 2-benefits function
-enoperator op_mark ;  // for dealing    ,, used in 2-benefits function
-bool is_correct = false ;  // need in stats    ,, used in 2-benefits function
-};
-
-struct st_game 
+switch ( oper )
 {
-enpassfail enpasser ;
-short questions_number = 0 ;
-enquestion enenquestion ;
-enoperator enenoperator ;
-short correct_number = 0 ;
-short wrong_number = 0  ;
-st_round stst_round[10] ;
-};
-
-                                                                                short number ( string message , short from , short to )
-                                                                                {
-                                                                                short num ;
-                                                                                cout << message ;
-                                                                                while ( true )
-                                                                                {
-                                                                                if ( cin >> num && num >= from && num <= to)
-                                                                                return num ;
-                                                                                else 
-                                                                                {
-                                                                                cout << " wrong input , repeat ";
-                                                                                cin.clear();
-                                                                                cin.ignore(100 , '\n');
-                                                                                }
-                                                                                }
-                                                                                }
-
-                                                                                short random ( short from , short to )
-                                                                                {
-                                                                                return rand()%( to - from + 1 ) + from ;
-                                                                                }
-
-
-
-void show_nums      ( st_round& stst_round , const st_game& stst_game)  
-{
-if (stst_game.enenquestion == enquestion::easy )
-{
-stst_round.num1 = random ( 1 , 9);
-stst_round.num2 = random ( 1 , 9);
-}
-else if (stst_game.enenquestion == enquestion::med)
-{
-stst_round.num1 = random ( 11 , 99);
-stst_round.num2 = random ( 11 , 99);
-}
-else if (stst_game.enenquestion == enquestion::hard )
-{
-stst_round.num1 = random ( 111 , 170 ); // 170 power2 is just below the short variable maximum number ( 32,768 )
-stst_round.num2 = random ( 111 , 170 );
-}
-else if (stst_game.enenquestion == enquestion::mix )
-{
-stst_round.num1 = random ( 1 , 170 );
-stst_round.num2 = random ( 1 , 170 );
-}
-}                                                                             
-
-void show_operator  ( st_round& stst_round , const st_game& stst_game)  
-{
-if (stst_game.enenoperator == enoperator::all)  // transfer enum from game struct to round struct for simplicity  // transfer to enum and string
-stst_round.op_mark = (enoperator)(random(1,4)) ; // int to enum ( store & better to check later )
-
-else 
-stst_round.op_mark = stst_game.enenoperator ; 
-
-stst_round.op = operator_to_word(stst_round.op_mark ); // enum to string ( display here ) 
-}
-
-void user_answer    ( st_round& stst_round)
-{
-
-cout << stst_round.num1 << endl ;
-cout << stst_round.op  << endl ; 
-cout << stst_round.num2 << endl  ;
-cout << "_______ \n " ;
-stst_round.user_ans = number ("" , -4000 , 4000 ) ;
-
-}
-
-void comp_answer    ( st_round& stst_round)
-{
-
-switch ( stst_round.op_mark)  // check enum ( better than string )
-{
-case enoperator::add :
-stst_round.comp_ans = stst_round.num1 + stst_round.num2 ;
-break ;
-case enoperator::sub :
-stst_round.comp_ans = stst_round.num1 - stst_round.num2 ;
-break ;
-case enoperator::mult :
-stst_round.comp_ans = stst_round.num1 * stst_round.num2 ;
-break ;
-case enoperator::divi :
-stst_round.comp_ans =  ( stst_round.num2 != 0 ) ? stst_round.num1 / stst_round.num2  : 0 ;
-break ;
-default  :
-stst_round.comp_ans = 0 ;
-break ;
+case add :
+return " add ";
+case substract :
+return " substract ";
+case divide :
+return " divide  ";
+case all :
+return " all  ";
+default :
+return " invalid operator ";
 }
 }
 
-void correct_wrong  ( st_round& stst_round , st_game& stst_game ) 
-{
-stst_round.is_correct = ( stst_round.user_ans == stst_round.comp_ans ) ;
-if ( stst_round.is_correct )
-{
-cout << " \n correct answer \n" ;
-system ( " color 2F");
-stst_game.correct_number ++ ;
-}
-else 
-{
-cout << " \n wrong answer \n the correct answer is " << stst_round.comp_ans << endl ; 
-system ( " color 4F");
-stst_game.wrong_number ++ ;
-}
-}
 
-void round          ( short count , st_game& stst_game) 
+string enwinner_to_string( enwinner winner )
 {
-
-cout << "  \n ============================== \n       Question [" << count << "/"<< stst_game.questions_number << "]" << endl ;
-
-show_nums       ( stst_game.stst_round[count-1] , stst_game) ; // need both variables as one is array and have different values each loop
-show_operator   ( stst_game.stst_round[count-1] , stst_game) ;
-user_answer     ( stst_game.stst_round[count-1]) ;
-comp_answer     ( stst_game.stst_round[count-1]) ;
-correct_wrong   ( stst_game.stst_round[count-1] , stst_game) ;
+switch ( winner)
+{
+case player :
+return " PLAYER ";
+case computer :
+return " COMPUTER ";
+case draw :
+return " NO WINNER ";
+default :
+return " invalid inpput ";
+}
 }
 
-void pass_or_fail           ( st_game& stst_game )
+
+// ════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════
+//                                                                     C  ROUND LOGIC
+// ════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════
+void generate ( stround_stats& r , const enlevel level )   // & modify
 {
-if      ( stst_game.correct_number > stst_game.wrong_number)
-stst_game.enpasser = enpassfail::pass ;
-else if ( stst_game.correct_number < stst_game.wrong_number)
-stst_game.enpasser = enpassfail::fail ;
-else
-stst_game.enpasser = enpassfail::draw ;
+
+
+if ( level  == easy)
+{
+r.num1 = mlib::get_random(0 , 9 );
+r.num2 = mlib::get_random(1 , 9 );
 }
 
-void print__pass_or_fail    ( const st_game& stst_game )
+else if ( level == hard )
 {
-cout << "_________________________________________________________________\n";
-cout << " final result is ";
-if      ( stst_game.enpasser == enpassfail::pass)
-{
-cout << " PASS  :-)   \n_________________________________________________________________\n ";
-system (" color 2F") ;
-}
-
-else if ( stst_game.enpasser == enpassfail::fail)
-{
-cout << " FAIL  :-(   \n_________________________________________________________________\n " ;
-system ( " color 4F");
+r.num1 = mlib::get_random(10 , 20 );
+r.num2 = mlib::get_random(10 , 20 );
 }
 
 else 
 {
-cout << " DRAW \n_________________________________________________________________\n " ;
-system ("color 6F");
-}
-"_________________________________________________________________\n" ;
-}
-
-void stats                  ( const st_game& stst_game )
-{
-cout << " \n number of questions   : " << stst_game.questions_number ;
-cout << " \n question level        : " << level_to_word   (stst_game.enenquestion) ;
-cout << " \n operative type        : " << operator_to_word(stst_game.enenoperator);
-cout << " \n correct answers       : " << stst_game.correct_number ;
-cout << " \n wrong answers         : " << stst_game.wrong_number ;
-
-
-cout << " \n \n --------- REVIEW TOUR ANSWERS --------- \n";
-for ( short i = 1 ; i <= stst_game.questions_number ; i ++ )
-{
-cout << " question " << i ;
-cout << " :     you answered  " << stst_game.stst_round[i-1].user_ans  ;
-cout << "   ,  correct answer is  " << stst_game.stst_round[i-1].comp_ans << " \t";
-cout << " ******  your answer is " ;
-if ( stst_game.stst_round[i-1].is_correct)
-cout << " correct \n";
-else 
-cout << " wrong \n";
+r.num1 = mlib::get_random(0 , 20 );
+r.num2 = mlib::get_random(1 , 20 );
 }
 }
 
-void game                   ()                                          
+
+
+enoper generate_operator ( enoper& oper  ) 
 {
-st_game  stst_game ;
-stst_game.questions_number   =                   number (" \n how many questions do you want to answer ? ( maximum 10 ) \n" , 1 , 10) ;
-stst_game.enenquestion       = enquestion       (number (" choose question level    [1]easy  [2]med  [3]hard   [4]mix  \n"  , 1 , 4 )) ;
-stst_game.enenoperator       = enoperator       (number (" choose operator  [1]add  [2]sub  [3]mult  [4]divi   [5]all  \n"  , 1 , 5 )) ;
-
-for ( short i = 1 ; i <= stst_game.questions_number ; i ++ )
-round (i , stst_game);
-
-pass_or_fail(stst_game) ;
-print__pass_or_fail (stst_game) ;
-stats ( stst_game) ;
+if ( oper == all )        oper = (static_cast<enoper>(mlib::get_random ( 1, 3 ))) ;
+    return oper ;
 }
 
-void reset_screen                            ()
+
+
+void show_and_calculate ( stround_stats& r , enoper oper )  // & modify  , no & to allow change oper every iteration
 {
-system ("cls");
-system ( "color 0F") ;
+
+cout << r.num1  << "\n" ;
+
+    switch ( generate_operator(oper) ) // call in FUNCTION C not B ,, to be changed every call
+    {
+    case add :
+    r.sum = r.num1 + r.num2 ;  cout << " + \n" ;
+    break ;
+    case substract :
+    r.sum = r.num1 - r.num2 ;  cout << " - \n" ;
+    break ;
+    case divide :
+        if ( r.num2 != 0 )  // just as a guarantee if later change input
+        r.sum = r.num1 / r.num2 ;  
+        else 
+        r.sum = 0 ;   
+        cout << " / \n" ;
+    break ;
+    default :
+    r.sum = 0 ;
+    }
+     
+cout << r.num2 << "\n_________________________ \n" ;
 }
 
-bool want_to_repeat                          ()
+
+
+
+
+
+void receive_and_update( stround_stats& r , int& right , int& wrong )   //  & nodify
 {
-cout << endl ;
-char ch ;
-cout << " Do you want to repeat , if yes press [y] , if no press [n] \n";
-while ( true )
-{
-if ( cin >> ch && (ch == 'y' || ch == 'Y' ))
-return true ;
-else if ( ch == 'n' || ch == 'N')
-{
-reset_screen();
-return false ;
+
+r.answer = mlib::get_number(" your answer    :   ") ;
+
+if (r.answer == r.sum)                 { cout << " right  \n";     right++ ; }
+else                                   { cout << " wrong  \n";     wrong++ ; }
 }
 
-else
+
+// ════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════
+//                                                                     B  GAME RESULTS
+// ════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════
+void round ( stgame_stats& game_stats , int i )    // & modify
 {
-cout << " wrong choice , plz choose y or n \n " ;
-cin.clear();
-cin.ignore(100,'\n');
-}
-}
+stround_stats& r = game_stats.round_stats[i] ;           //✅✅✅✅✅✅ pass by alias to avoid long sentece
+                                                         //✅✅✅✅✅✅ every coming function takes only what it needs , not all game_stats
+generate ( r , game_stats.level);
+show_and_calculate ( r , game_stats.oper );
+receive_and_update ( r , game_stats.right , game_stats.wrong );
 }
 
-void restart                                 ()
+
+
+void final_winner ( stgame_stats& game_stats )  // & modify 
 {
-do
-{
-reset_screen();
-game();
-} while ( want_to_repeat());
+game_stats.winner = ( game_stats.right == game_stats.wrong) ? draw : ( ( game_stats.right > game_stats.wrong) ? player : computer);
+
+    cout << " ================== \n";
+    cout << " final winner  is              : " <<  enwinner_to_string(game_stats.winner)  << "\n";
+    cout << " ================== \n";
+    cout << " number of questions           : " << game_stats.count   << "\n";
+    cout << " number of right answers is    : " << game_stats.right   << " \n";
+    cout << " number of wrong answers is    : " << game_stats.wrong   << " \n";
+    cout << " choosen level is              : " << enlevel_to_string(game_stats.level)    << "\n";
+    cout << " choosen operator is           : " << enoper_to_string(game_stats.oper)      << "\n";
+
 }
+
+
+
+void print_all_detail( const stgame_stats& game_stats , int count ) //    & size , so use const
+{
+
+cout << " \n^^^^^^^^^^^^^^^^^ all details ^^^^^^^^^^^^^^^^ \n  ";
+for ( int i = 0 ; i < count ; i ++)
+{
+const stround_stats& r = game_stats.round_stats[i] ;     //✅✅✅✅✅✅const in parameter necessitate const here
+
+cout << " \n round " << i+1 << " : you choose " << r.answer << "   , real sum is : " << r.sum << " your answer is " ;
+cout << ((r.answer == r.sum) ? " right \n" : " wrong  \n"); 
+}
+cout << " \n  ************** \n " ;
+}
+
+
+// ════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════
+//                                                                    A  GAME FLOW
+// ════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════
+
+void game ( )
+{
+stgame_stats game_stats ;
+
+game_stats.count = mlib::get_number(" how many questions ( maximum 10 )   ? \n " , 1 , 10 ) ;
+game_stats.level = static_cast<enlevel>(mlib::get_number( " choose level  [1]easy     [2]hard      [3]mix   \n" , 1 , 3 ));
+game_stats.oper  = static_cast<enoper>(mlib::get_number( " choose operator  [1]+   [2]-    [3]/   [4]all   \n" , 1 , 4 ));
+
+int& count = game_stats.count ;
+
+
+for ( int i = 0 ; i < count ; i ++ )
+{
+cout << " _________________________________________  \n";
+cout << "           QUESTION  [" << i+1 <<  "/"  << count <<  "]  \n";
+round ( game_stats , i );
+}
+
+final_winner( game_stats );
+
+print_all_detail ( game_stats , count );
+
+}
+
+
+// *********************************************************************************************************************************************
+// *********************************************************************************************************************************************
+// *********************************************************************************************************************************************
 
 
 int main ()
 {
-srand((unsigned)time(NULL));
-restart() ;
+mlib::reset_screen();
 
-return 0 ;
+do 
+{
+game ( );
+} while ( mlib::want_to_repeat(" do you want to repeat ?  [y/n] \n"));
+
+
+return 0;
 }
+
+
+

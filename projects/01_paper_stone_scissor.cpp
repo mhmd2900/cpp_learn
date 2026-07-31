@@ -1,218 +1,194 @@
-#include <iostream>
-#include <string>
+#include<iostream>
+#include<string>
 #include "../general/mlib.h"
 
-//using namespace std;
-using std::string;
-using std::cin;
-using std::cout;
+// using namespace std ;
+using std::cout ;
+using std::cin ;
+using std::string ;
 
 
 
 
+enum enchoices { paper=1 , stone=2 , scissor=3 };
+enum enwinner { player , computer , draw };
 
 
-enum enchoices { paper = 1 , stone = 2 , scissor = 3 , invalid };
-enum enplayers { pl1 , comp , draw } ;
-string choice_to_word (enchoices enenchoices )
+
+struct stround_stat {
+enchoices ply_choice ;
+enchoices comp_choice ;
+enwinner winner ;
+};
+
+
+struct stgame_stat {
+int player = 0 ;
+int computer = 0 ;
+int draw = 0 ;
+enwinner finalwinner ;
+};
+  
+
+// ════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════
+//                                                                          FUNCTIONS C
+// ════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════
+
+enchoices int_to_enchoices ( int num )
 {
-    string word [3] = { "paper" , "stone" , "scissor"};
-    return word[enenchoices-1];
-} 
-string choice_to_player (enplayers enenplayers )
+enchoices choice = static_cast<enchoices>(num) ;
+return choice ;
+}
+
+
+string enchoices_to_string ( enchoices choice )
 {
-    switch ( enenplayers )
+switch (choice)
+{
+case paper :
+return "paper" ;
+case stone :
+return "stone" ;
+case scissor :
+return "scissor" ;
+default :
+return " unvalid option";
+}
+}
+
+
+// string enchoices_to_string ( enchoices choice )
+// {
+// string choosen_option[3] = { "paper" , "stone" , "scissor"};
+// return choosen_option[choice-1];
+// }
+
+
+
+string enwinner_to_string ( enwinner winner )
+{
+switch (winner)
+{
+case player :
+return " player\n" ;
+case computer :
+return " computer\n" ;
+case draw :
+return " no winner       \n" ;
+default :
+return " unvalid option\n";
+}
+}
+
+
+
+// ════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════
+//                                                                          FUNCTIONS B
+// ════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════
+
+int how_many_rounds( )
+{
+    int count = mlib::get_number( " How many rounds do you want to play ? \n  plz between 1 and 5   \n " , 1 , 5);
+    return count ;
+}
+
+
+void round_input (stround_stat& round_stat)  // & modify
+{
+round_stat.ply_choice  = int_to_enchoices  (mlib::get_number(  " plz enter your choice 1) paper    2) stone    3)scissor \n"  , 1 , 3 ));
+round_stat.comp_choice = int_to_enchoices  (mlib::get_random( 1 , 3 ));
+cout << " player   choice is   :   " << round_stat.ply_choice  << "    which is  " << enchoices_to_string( round_stat.ply_choice   )<<  "\n";
+cout << " computer choice is   :   " << round_stat.comp_choice << "    which is  " << enchoices_to_string( round_stat.comp_choice  )<<  "\n";
+}
+
+
+void who_won (stround_stat& round_stat  , stgame_stat& game_stat) // & size    ,  & modify
+{
+    if ( round_stat.ply_choice == round_stat.comp_choice ) { round_stat.winner = draw;     game_stat.draw ++ ; }
+    else {
+       round_stat.winner = ( ( round_stat.ply_choice == paper && round_stat.comp_choice == stone    ) ||
+                             ( round_stat.ply_choice == stone && round_stat.comp_choice == scissor  ) ||  
+                             ( round_stat.ply_choice == scissor && round_stat.comp_choice == paper  )    )
+                                  ? player  :computer  ;
+        if ( round_stat.winner == player)    game_stat.player   ++;
+        else                                 game_stat.computer ++; 
+         }
+          cout << " the round winner is    :  " << enwinner_to_string(round_stat.winner);
+}
+
+
+void who_final ( stgame_stat& game_stat ) // & size
+{
+cout << " ====================\n " ;
+cout << "     final result    \n " ;
+cout << " ====================\n " ;
+cout << " player won   " << game_stat.player   << " times \n";
+cout << " computer won " << game_stat.computer << " times \n";
+cout << " draw   won   " << game_stat.draw     << " times \n";
+
+
+if   ( game_stat.player  == game_stat.computer ) game_stat.finalwinner = draw ;
+else game_stat.finalwinner = ( game_stat.player > game_stat.computer   ) ? player  : computer   ;
+
+cout << " AT THE END :::::::: the final winner is   :::::::  "  << enwinner_to_string(game_stat.finalwinner);
+
+
+// if ( game_stat.player  == game_stat.computer ) cout << " no final winner \n";
+// else cout << ( ( game_stat.player > game_stat.computer  ) ? " player is the hero \n"    : " computer is the hero  \n" )   ;
+
+// game_stat.player   = 0 ;
+// game_stat.computer = 0 ;
+// game_stat.draw     = 0 ;
+
+}
+
+
+
+
+// ════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════
+//                                                                          FUNCTIONS A
+// ════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════
+
+
+
+void game( )  
+{
+stround_stat   round_stat  ;  // → Declare variables in the smallest scope that needs them.
+stgame_stat game_stat ;
+
+int count = how_many_rounds();
+
+for ( int i = 1 ; i <= count ; i ++ )
     {
-    case enplayers::pl1 :
-    return "pl1 is the one " ;
-    case enplayers::comp :
-    return "comp is the one " ;
-    case enplayers::draw :
-    return "no one wins " ;
-   
-    default :
-    return "invalid" ;
+    cout << " ==================== \n  round " << i << " starts now \n";
+    round_input ( round_stat );
+    who_won (round_stat  , game_stat);
     }
-} 
 
-struct stround 
-{
-enchoices pl1_choose ;
-enchoices comp_choose ;
-enplayers winner ;
-} ;
-
-struct st_gamestats 
-{
-int count = 0 ;
-int pl1_win = 0 ;
-int comp_win = 0 ;
-int draw_win = 0 ;
-enplayers final_winner ;
-} ;
-
-                                                                               int get_number ( string message )
-                                                                                {
-                                                                                int num ;
-                                                                                cout << message ;
-                                                                                while (true)
-                                                                                {
-                                                                                if (cin >> num && num >=1 && num <=10  )
-                                                                                return num;
-                                                                                else
-                                                                                {
-                                                                                cout << " wrong input , retry from 1 to 10 \n" ;
-                                                                                cin.clear();
-                                                                                cin.ignore(100 , '\n');
-                                                                                }
-                                                                                }
-                                                                                }
-
-                                                                               int input_choice ( string message )
-                                                                                {
-                                                                                int num ;
-                                                                                cout << message ;
-                                                                                while (true)
-                                                                                {
-                                                                                if (cin >> num && num >=1 && num <=3  )
-                                                                                return num;
-                                                                                else
-                                                                                {
-                                                                                cout << " wrong input , retry from 1 to 3  \n" ;
-                                                                                cin.clear();
-                                                                                cin.ignore(100 , '\n');
-                                                                                }
-                                                                                }
-                                                                                }
-
-                                                                               int get_random ( int from , int to )
-                                                                            {
-                                                                            return rand()%( to - from + 1)+ from ;
-                                                                            }
-
-void game_over ()
-{
-cout << "\n                                  ____________________________________________________________ \n " ;
-cout << "                                                   +++ GAME OVER +++                          \n " ;
-cout << "                                 _____________________________________________________________ \n " ;
-cout << "                                 __________________ [ GAME RESULTS ]__________________________ \n " ;
-cout << "                                 _____________________________________________________________ \n " ;
-}
-
-bool want_to_repeat ()
-{
- char ch ;
- cout << " \n do you want to repeat the game [ y / n ] ? \n";
- while ( true )
- {
-
-    if ( cin >> ch && ( ch == 'y' || ch == 'Y' ))
-    return true ;
-
-    else if ( ch == 'n' || ch == 'N' )
-    return false ;
-
-    else
-    {
-    cout << " only choose  [ y / n ] ? \n";
-    cin.clear();
-    cin.ignore ( 100 , '\n');
-    }
- }
-}
-
-void color_rule ( stround ststround , st_gamestats& stst_gamestats)
-{
-if ( ststround.winner == pl1 )
-{
-system ("color 2F");
-stst_gamestats.pl1_win ++ ;
-}
-else if ( ststround.winner == comp )
-{
-system ("color 4F");
-stst_gamestats.comp_win ++ ;
-}
-else if ( ststround.winner == draw )
-{
-system ("color 6F");
-stst_gamestats.draw_win ++ ;
-}
+who_final ( game_stat );
 }
 
 
-void winning_rule ( stround& ststround )
+// *********************************************************************************************************************************************
+// *********************************************************************************************************************************************
+// *********************************************************************************************************************************************
+
+
+int main ()
 {
-if ( ststround.pl1_choose == ststround.comp_choose )
-ststround.winner = enplayers::draw ;
-else 
-{
-ststround.winner =  ( ststround.pl1_choose == enchoices::paper   && ststround.comp_choose == enchoices::stone   ) ||
-                    ( ststround.pl1_choose == enchoices::stone   && ststround.comp_choose == enchoices::scissor ) ||
-                    ( ststround.pl1_choose == enchoices::scissor && ststround.comp_choose == enchoices::paper   )
- ?enplayers::pl1 : enplayers::comp  ;
-}
-cout << " \n round winner is " << choice_to_player(ststround.winner) ;
-}
+mlib::reset_screen();
 
+// only define stgame_stat  ,, if it will accumulate results ( here , you want to frsh it each game )
+// If main() also needed to read the stats after the game → then pass by reference from main()
 
-void each_round ( st_gamestats& stst_gamestats )
-{
-stround ststround ;
-ststround.pl1_choose  = (enchoices)input_choice ( "\n \n write your choice \n");
-ststround.comp_choose = (enchoices)get_random ( 1 , 3 );
-cout << " \n pl1 choose   " <<  choice_to_word( ststround.pl1_choose  ) ;
-cout << " \n comp  choose " <<  choice_to_word( ststround.comp_choose ) ;
-winning_rule(ststround) ;
-color_rule(ststround , stst_gamestats) ;
-}
-
-
-void all_rounds ()
-{
-
-st_gamestats stst_gamestats ;
-
-stst_gamestats.count = get_number(" how many rounds ? \n ") ;
-for ( int i = 0 ; i < stst_gamestats.count ; i ++ )
-each_round(stst_gamestats ) ;
-
-game_over();
-
-cout <<" \n number of rounds "   <<stst_gamestats.count;
-cout <<" \n player 1 wins    "   <<stst_gamestats.pl1_win;
-cout <<" \n computer wins    "   <<stst_gamestats.comp_win;
-cout <<" \n no winner times  "   <<stst_gamestats.draw_win;
-if ( stst_gamestats.pl1_win > stst_gamestats.comp_win)
-stst_gamestats.final_winner   = enplayers::pl1 ;
-else if ( stst_gamestats.pl1_win < stst_gamestats.comp_win)
-stst_gamestats.final_winner   = enplayers::comp ;
-else
-stst_gamestats.final_winner   = enplayers::draw ;
-cout << " \n final winner is " << choice_to_player(stst_gamestats.final_winner ) ;
-
-}
-
-
-void game_start ()
-{
 do 
 {
-system("cls") ;
-system ( "color 0F") ;
-all_rounds () ;
-} while (want_to_repeat()) ;
+game();
+} while ( mlib::want_to_repeat(" repeat ?      y or n \n"));
+
+
+return 0 ;
 }
-
-
-int main()
-{
-srand((unsigned)time(NULL));
-game_start();
-return 0;
-}
-
-
 
 
 

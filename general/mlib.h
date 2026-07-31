@@ -84,7 +84,7 @@ else if ( std::cin.fail())         { std::cin.clear();   std::cin.ignore( std::n
 }
 
 ///////////////  want to repeat
-bool want_to_repeat (const std::string& message)
+bool want_to_repeat (const std::string& message) // boolean names should be questionable
 {
 while ( true )
 {
