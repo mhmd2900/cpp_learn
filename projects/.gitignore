@@ -1,0 +1,30 @@
+# ==================================
+# C++ Ignore Rules
+# ==================================
+
+# Compiled executables (Windows)
+*.exe
+
+# Compiled executables (Linux/Mac)
+*.out
+
+# Object files
+*.o
+*.obj
+
+# Debug files
+*.pdb
+*.ilk
+
+# VS Code auto-generated temp files
+tempCodeRunnerFile.cpp
+tempCodeRunnerFile.*
+
+# Build folders
+build/
+bin/
+obj/
+
+# System files
+Thumbs.db
+.DS_Store
