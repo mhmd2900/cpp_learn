@@ -105,6 +105,7 @@ cout << " computer choice is   :   " << round_stat.comp_choice << "    which is 
 void who_won (stround_stat& round_stat  , stgame_stat& game_stat) // & size    ,  & modify
 {
     if ( round_stat.ply_choice == round_stat.comp_choice ) { round_stat.winner = draw;     game_stat.draw ++ ; }
+               //✅✅✅✅✅✅ 
     else {
        round_stat.winner = ( ( round_stat.ply_choice == paper && round_stat.comp_choice == stone    ) ||
                              ( round_stat.ply_choice == stone && round_stat.comp_choice == scissor  ) ||  
@@ -178,7 +179,8 @@ int main ()
 {
 mlib::reset_screen();
 
-// only define stgame_stat  ,, if it will accumulate results ( here , you want to frsh it each game )
+//✅✅✅✅✅✅ 
+// only define stgame_stat  ,, if it will accumulate results ( here , you want to fresh it each game )
 // If main() also needed to read the stats after the game → then pass by reference from main()
 
 do 

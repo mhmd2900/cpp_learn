@@ -223,6 +223,7 @@ void game ( )
 {
 stgame_stats game_stats ;
 
+//✅✅✅✅✅✅ 
 game_stats.count = mlib::get_number(" how many questions ( maximum 10 )   ? \n " , 1 , 10 ) ;
 game_stats.level = static_cast<enlevel>(mlib::get_number( " choose level  [1]easy     [2]hard      [3]mix   \n" , 1 , 3 ));
 game_stats.oper  = static_cast<enoper>(mlib::get_number( " choose operator  [1]+   [2]-    [3]/   [4]all   \n" , 1 , 4 ));

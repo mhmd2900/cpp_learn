@@ -84,7 +84,7 @@ endish num_to_endish ( const string& message )   // function W ( worker )
 
 
 
-
+    //✅✅✅✅✅✅ 
 void read_surgerydoctor_name ( stpatient& patient )   // & to modify parameters  // function B ( co-ordinator )
 {
     for ( auto& doctor : patient.surgery.doctor )  doctor.name = str_to_enname ( input_word ( " enter surgery doctor name \n")) ; // struct ( str_to_enname المحطة الاقرب للشارع  ) 
@@ -106,7 +106,7 @@ read_medicinedoctor_name ( patient );
 }
 
 
-
+    //✅✅✅✅✅✅ 
 void read_defaultdoctor ( stpatient patient[] , int n )  // no & as it is array   // function A ( driver )
 {
   for ( int i = 0 ; i < n ; i ++ )  // range loop does not work with array parameter which works as a pointer ( size not known )
@@ -118,7 +118,7 @@ void read_defaultdoctor ( stpatient patient[] , int n )  // no & as it is array 
 } 
 
 
-
+    //✅✅✅✅✅✅ 
 void read_defaultdoctordish ( stpatient patient[] , int n )  // function A ( driver )
 {
   for ( int i = 0 ; i < n ; i ++ ) 
@@ -208,7 +208,7 @@ const int MAX_PATIENTS = 3 ;
 stpatient abdo , manal , anonymous[3] , patient[MAX_PATIENTS]; 
 
 read_hisdoctor_name  ( anonymous[1] ) ;  
-read_defaultdoctor(patient , MAX_PATIENTS);
+read_defaultdoctor(patient , MAX_PATIENTS);   //✅✅✅✅✅✅ 
 read_defaultdoctordish(patient , MAX_PATIENTS);
 
 
