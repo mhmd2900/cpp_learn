@@ -5,3 +5,10 @@ Could you provide a concise yet challenging lab exercise to exercise focused on 
 **  book after vector ,,  --ioo
 
 =============================================================
+git add      mtext.txt
+git commit -m "update"
+
+
+
+git status
+git log -v
