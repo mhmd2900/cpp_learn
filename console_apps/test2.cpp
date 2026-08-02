@@ -1,6 +1,9 @@
 #include<iostream>
 #include "../general/mlib.h"
-using namespace std ;
+
+using std::cout ;
+using std::cin ;
+using std::string ;
 
 
 

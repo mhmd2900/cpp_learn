@@ -202,7 +202,7 @@ bool is_prime(int num)
 ////////////////////////    make std::string from itself  ( with known key - reversible )   ,, Caesar cipher (toy example)
 std::string crypt ( std::string password , int key )
 {
-for ( int i = 0 ; i < password.length() ; i ++ )
+for ( size_t i = 0 ; i < password.length() ; i ++ )
 password[i] = static_cast<char> (static_cast<unsigned char>(password[i]) + key) ;
 return password ;
 }
@@ -213,7 +213,7 @@ return password ;
 std::string decrypt ( std::string password , int key )
 {
 std::string pass ;
-for ( int i = 0 ; i < password.length() ; i ++ )
+for ( size_t i = 0 ; i < password.length() ; i ++ )
 // for ( char& i : password )
 pass += static_cast<char>(static_cast<unsigned char>(password[i]) - key) ;
 return pass ;

@@ -4,7 +4,52 @@
 // RAM output buffer :  every 50 \n   , use   endl (which is '\n' + flush)
 
 
-/////////////////////////
+
+
+
+=============================================================
+
+g++  -c  test1.cpp            -o test1.o     -g  -Wall                  \\\\\\      compile
+g++  -c  test2.cpp            -o test2.o     -g  -Wall                  \\\\\\      compile
+g++      test1.o   test2.o    -o app.exe     -g  -Wall                  \\\\\\      link
+.\app.exe                                                               \\\\\\      run
+
+
+g++      test1.cpp            -o test1.exe   -g  -Wall                  \\\\\\      build ( compile + link )
+.\test1.exe                                                             \\\\\\      run
+
+
+g++  test1.cpp     -o test1.exe   -g  -Wall ;    if ($?) { .\test1.exe } \\\\\\     build + run  
+
+
+
+
+/////////////////////////////////////////////////////////////   debug
+gdb   .\test1.exe  
+b 15	            break at line 15
+r	                run the program
+n	                next line (step over functions)
+s	                Step into a function
+
+p a	                print value of variable a once
+display a	        display a after every step
+info locals	        Show all local variables at once
+
+c	                continue until next breakpoint
+j 19                jump to line 19
+q	                quit gdb
+
+
+
+
+///////////////////////////////////////////////////////////// commit , pull , push , pull request
+
+
+
+
+
+
+**************************************************************
 // cout << INT_MIN << endl  ;   -2147483648
 // cout << INT_MAX << endl  ;   2147483647
 // cout << 5e3 << endl  ;       5000

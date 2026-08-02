@@ -6,7 +6,7 @@
                 "${workspaceFolder}/**",
                 "${workspaceFolder}/general"
             ],
-            "compilerPath": "C:/AAA/project folder/cpp_learn/console_apps>",
+            "compilerPath": "C:/AAA/msys/mingw64/bin/g++.exe",
             "cStandard": "c17",
             "cppStandard": "c++17",
             "intelliSenseMode": "windows-gcc-x64"
