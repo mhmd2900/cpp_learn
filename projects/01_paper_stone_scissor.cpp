@@ -41,7 +41,7 @@ return choice ;
 }
 
 
-string enchoices_to_string ( enchoices choice )
+string enum_to_string ( enchoices choice )
 {
 switch (choice)
 {
@@ -57,7 +57,7 @@ return " unvalid option";
 }
 
 
-// string enchoices_to_string ( enchoices choice )
+// string enum_to_string ( enchoices choice )
 // {
 // string choosen_option[3] = { "paper" , "stone" , "scissor"};
 // return choosen_option[choice-1];
@@ -65,7 +65,7 @@ return " unvalid option";
 
 
 
-string enwinner_to_string ( enwinner winner )
+string enum_to_string ( enwinner winner )   //✅✅✅✅✅✅ function overloading
 {
 switch (winner)
 {
@@ -97,8 +97,8 @@ void round_input (stround_stat& round_stat)  // & modify
 {
 round_stat.ply_choice  = int_to_enchoices  (mlib::get_number(  " plz enter your choice 1) paper    2) stone    3)scissor \n"  , 1 , 3 ));
 round_stat.comp_choice = int_to_enchoices  (mlib::get_random( 1 , 3 ));
-cout << " player   choice is   :   " << round_stat.ply_choice  << "    which is  " << enchoices_to_string( round_stat.ply_choice   )<<  "\n";
-cout << " computer choice is   :   " << round_stat.comp_choice << "    which is  " << enchoices_to_string( round_stat.comp_choice  )<<  "\n";
+cout << " player   choice is   :   " << round_stat.ply_choice  << "    which is  " << enum_to_string( round_stat.ply_choice   )<<  "\n";
+cout << " computer choice is   :   " << round_stat.comp_choice << "    which is  " << enum_to_string( round_stat.comp_choice  )<<  "\n";
 }
 
 
@@ -114,7 +114,7 @@ void who_won (stround_stat& round_stat  , stgame_stat& game_stat) // & size    ,
         if ( round_stat.winner == player)    game_stat.player   ++;
         else                                 game_stat.computer ++; 
          }
-          cout << " the round winner is    :  " << enwinner_to_string(round_stat.winner);
+          cout << " the round winner is    :  " << enum_to_string(round_stat.winner);
 }
 
 
@@ -131,7 +131,7 @@ cout << " draw   won   " << game_stat.draw     << " times \n";
 if   ( game_stat.player  == game_stat.computer ) game_stat.finalwinner = draw ;
 else game_stat.finalwinner = ( game_stat.player > game_stat.computer   ) ? player  : computer   ;
 
-cout << " AT THE END :::::::: the final winner is   :::::::  "  << enwinner_to_string(game_stat.finalwinner);
+cout << " AT THE END :::::::: the final winner is   :::::::  "  << enum_to_string(game_stat.finalwinner);
 
 
 // if ( game_stat.player  == game_stat.computer ) cout << " no final winner \n";

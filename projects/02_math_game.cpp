@@ -40,7 +40,7 @@ stround_stats round_stats[10] ;            //✅✅✅✅✅✅
 
 
 
-string enlevel_to_string( enlevel level )
+string enum_to_string( enlevel level )   //✅✅✅✅✅✅  function overloading
 {
 switch ( level)
 {
@@ -57,7 +57,7 @@ return " invalid level ";
 
 
 
-string enoper_to_string( enoper oper )
+string enum_to_string( enoper oper )
 {
 switch ( oper )
 {
@@ -75,7 +75,7 @@ return " invalid operator ";
 }
 
 
-string enwinner_to_string( enwinner winner )
+string enum_to_string( enwinner winner )
 {
 switch ( winner)
 {
@@ -188,13 +188,13 @@ void final_winner ( stgame_stats& game_stats )  // & modify
 game_stats.winner = ( game_stats.right == game_stats.wrong) ? draw : ( ( game_stats.right > game_stats.wrong) ? player : computer);
 
     cout << " ================== \n";
-    cout << " final winner  is              : " <<  enwinner_to_string(game_stats.winner)  << "\n";
+    cout << " final winner  is              : " <<  enum_to_string(game_stats.winner)  << "\n";
     cout << " ================== \n";
     cout << " number of questions           : " << game_stats.count   << "\n";
     cout << " number of right answers is    : " << game_stats.right   << " \n";
     cout << " number of wrong answers is    : " << game_stats.wrong   << " \n";
-    cout << " choosen level is              : " << enlevel_to_string(game_stats.level)    << "\n";
-    cout << " choosen operator is           : " << enoper_to_string(game_stats.oper)      << "\n";
+    cout << " choosen level is              : " << enum_to_string(game_stats.level)    << "\n";
+    cout << " choosen operator is           : " << enum_to_string(game_stats.oper)      << "\n";
 
 }
 

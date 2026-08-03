@@ -19,7 +19,7 @@ system ( "color 0F") ;
 }
 
 
-////////////////////////////////// random
+//////////////////////////////////////      random
 int get_random ( int from , int to )
 {
   return rand()%( to - from + 1)+from ;
@@ -30,7 +30,7 @@ int get_random ( int from , int to )
 
 
 
-/////////////////////////////////////  check square root  babylion      Newton method
+/////////////////////////////////////      check square root  babylion      Newton method
 double my_sqrt(double num)
 {
     if (num < 0) return -1;    // or NaN
@@ -52,11 +52,30 @@ double my_sqrt(double num)
 
 
 
+/////// function default parameters ,, the highest prpability to change go to rightmost position
+// in this example , discount is from meal not total , then tax is applied , then tips
+float receipt ( float meal , float tips = 0.05 , float tax = 0.15 , float discount = 0 ) 
+{
+    float total ;
+
+    total  = (1-discount) * meal ;
+    total *= (1+tax) ;
+    total *= (1+tips) ;
+    return total ;
+}
+
+
+
 int main ()
 {
 mlib::reset_screen();
 
+cout << my_sqrt (16) << " \n" ;
 
+cout << receipt (100) << " \n";
+cout << receipt (100 , 0 ) << " \n";
+cout << receipt (100 , 0 , 0.2 ) << " \n" ;
+cout << receipt (100 , 0 , 0.2 , 0.5 ) << " \n" ;
 
 return 0;
 }
