@@ -7,7 +7,7 @@
 
 
 
-=============================================================
+=============================================================         
 
 g++  -c  test1.cpp            -o test1.o     -g  -Wall                  \\\\\\      compile
 g++  -c  test2.cpp            -o test2.o     -g  -Wall                  \\\\\\      compile
@@ -42,9 +42,25 @@ q	                quit gdb
 
 
 
-///////////////////////////////////////////////////////////// commit , pull , push , pull request
+/////////////////////////////////////////////////////////////           git
+/////// moves the file from the working directory to the staging area
+git add mtext.txt          # stage one specific file
+git add .                  # stage all changed files
 
 
+/////// Saves the staged changes permanently to the local repository with a message
+git commit -m "update"
+
+
+/////// current state of working directory and staging area ( untracked , modified , staged )
+git status
+
+
+////// history of commits with verbose details
+git log -v
+
+
+git checkout  commit number
 
 
 
@@ -288,3 +304,20 @@ ppp =          &(*ppp).name    = &ppp->name      = &ststdata     = &ststdata.nam
     // cout << "Time taken: " << ms << " ms\n";    
 
 
+
+
+
+
+///////////////////////////////////          reset screen
+void reset_screen ()
+{                                             // Windows only (not portable)
+system ("cls");                               // Slow (launches a new process)
+system ( "color 0F") ;                        // Security risk in some environments
+}
+
+
+//////////////////////////////////////      random
+int get_random ( int from , int to )
+{                                                  // needs  <cstdlib>   and   <ctime>
+  return rand()%( to - from + 1)+from ;           // inside main function    srand((unsigned )time (NULL));
+}

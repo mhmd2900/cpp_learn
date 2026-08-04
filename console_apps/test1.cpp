@@ -1,31 +1,33 @@
 #include<iostream>
 #include<string>
-// #include "../general/mlib.h"
+#include "../general/mlib.h"
 
 using std::cout ;
 using std::cin ;
 using std::string ;
 
-void mult ( int a , int b )
+
+
+void fun3()
 {
-    cout << a*b << "\n" ;
+cout << " hello \n";
 }
 
 
+void fun2()
+{
+fun3();
+}
+
+
+void fun1()
+{
+fun2();
+}
+
 int main ()
 {
-// mlib::reset_screen();
-int a , b , c ;
-a = 5 ;
-b = 6 ;
-a++ ;
-b-- ;
-c = a-b ;
-cout << c ;
 
-
-mult ( a , b );
-mult ( b , c );
-
+fun1();
 return 0 ;
 }

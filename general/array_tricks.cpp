@@ -1,6 +1,7 @@
 #include<iostream>
 #include<string>
 #include<vector>
+#include<cmath>
 #include"mlib.h"
 using namespace std ;
 
@@ -77,15 +78,37 @@ for (int i = 0; i < size - 1 ; i++ )
 
 
 
+/////////////////////////////////////      check square root  ( babylion - Newton method )
+double my_sqrt(double num)
+{
+    if (num < 0) return -1;    // or NaN
+    if (num == 0) return 0;    // avoid division by zero
+    
+    double g = num / 2;          // simple picking near number
+    double prev_g;
+    const double err = 0.0001;
+
+    do {
+        prev_g = g;
+        g = (g + num / g) / 2;
+    } while (fabs(g - prev_g) > err);  // fabs needs <cmath>
+
+    return g;   
+}
 
 
 
 
+////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////
 
 
 int main ()
 {
 mlib::reset_screen();
+
+cout << my_sqrt (16) << " \n" ;
 
 ///////////////////////////////                     sort array using other array
 
