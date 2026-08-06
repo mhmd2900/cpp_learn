@@ -1,33 +1,34 @@
-#include<iostream>
-#include<string>
-#include "../general/mlib.h"
+#include <iostream>
+#include <string>
+using namespace std;
 
-using std::cout ;
-using std::cin ;
-using std::string ;
+void exploreFolder(string folderName, int depth) {
+    
+    // print indentation based on depth
+    for (int i = 0; i < depth; i++)       cout << "  "; 
 
+    cout << "-- "  << folderName << endl;
 
-
-void fun3()
-{
-cout << " hello \n";
+    // simulate sub-folders (hardcoded for the lab)
+    if (folderName == "Documents") {
+        exploreFolder("Work", depth + 1);
+        exploreFolder("Personal", depth + 1);
+    }
+    else if (folderName == "Work") {
+        exploreFolder("Projects", depth + 1);
+        exploreFolder("Reports", depth + 1);
+    }
+    else if (folderName == "Personal") {
+        exploreFolder("Photos", depth + 1);
+    }
+    else {
+        // no sub-folders
+        for (int i = 0; i < depth + 1; i++) cout << "  ";
+        cout << "- (empty folder)" << endl;
+    }
 }
 
-
-void fun2()
-{
-fun3();
-}
-
-
-void fun1()
-{
-fun2();
-}
-
-int main ()
-{
-
-fun1();
-return 0 ;
+int main() {
+    exploreFolder("Documents", 0);
+    return 0;
 }
