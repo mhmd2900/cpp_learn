@@ -1,18 +1,10 @@
-#include<iostream>
-#include<string>
-#include<vector>
-#include "../general/mlib.h"
-using namespace std ;
+#include <iostream>
+using namespace std;
 
 
-
-int main ()
+int main() 
 {
-mlib::reset_screen();
 
-
-return 0 ;
+return 0;
 }
-
-
     
