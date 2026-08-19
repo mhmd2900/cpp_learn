@@ -1,16 +1,56 @@
+
 #include <iostream>
 using namespace std;
 
-int climbStairs(int n) {
-    if (n == 0) return 1;   // reached the top exactly
-    if (n < 0)  return 0;   // went too far
+void climb1(int n) {
+    
+    if ( n == 0 )  { cout << "--\n";  return ;}
 
-    return climbStairs(n - 1) + climbStairs(n - 2)     ;
+    cout << " begin \n";
+
+    climb1(n-1);
+
+    cout << " mid \n";
+
+    cout << " end \n";
 }
 
-int main() 
-{
 
-    cout << climbStairs(4) << endl;
-return 0;
+
+void climb2(int n) {
+    
+    if ( n == 0 )  { cout << "--\n";  return ;}
+
+    cout << " begin \n";
+
+    climb2(n-1);
+
+    cout << " mid \n";
+
+    climb2(n-1);
+
+    cout << " end \n";
+}
+
+
+
+int climb3(int n) {
+    
+    if ( n == 0 )  { cout << "--\n";  return 0 ;}
+
+    cout << " begin \n";
+
+    // int sum = 0  ;
+    //int sum = 
+    climb3(n-1) + climb3(n-1);
+
+    cout << " mid \n";
+
+    cout << " end \n";
+    return 0 ;
+}
+
+int main() {
+    climb3(2) ;
+    return 0;
 }
