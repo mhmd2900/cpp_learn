@@ -221,23 +221,39 @@ return pass ;
 
 
 
-//////////////////////          layout alignment   ///////  need adjust
-// std::string align ( char side , int space , const std::string& word , char fill = ' ' )
-// {
-// int blanks = space - static_cast<int>(word.size()) ;
-// if ( blanks < 0 )   blanks = 0 ;
-// int l_pad = blanks/ 2 ;
-// int r_pad = blanks - l_pad ;
+////////////////////          layout alignment   ///////  need adjust
+std::string align ( char side , int space ,  std::string_view word , char fill = ' ' )
+{
+int blanks = space - static_cast<int>(word.size()) ;
+if ( blanks <= 0 )   return std::string(word); 
 
-// if ( side == 'l')
-// return word + std::string(blanks , fill)  ;
+std::string result ;
+result.reserve(space);
 
-// else if ( side == 'r')
-// return std::string(blanks , fill ) + word ;
+char s = std::tolower(static_cast<unsigned char>(side));
 
-// else
-// return std::string( l_pad , fill ) + word + std::string( r_pad , fill ) ;
-// }
+if ( s == 'l')
+{ result.append(word) ;
+  result.append ( blanks , fill ); }
+
+
+else if ( s == 'r')
+{ result.append ( blanks , fill ); 
+  result.append(word) ;}
+
+else
+{ 
+int l_pad = blanks/ 2 ;
+int r_pad = blanks - l_pad ;
+
+result.append(l_pad , fill);
+result.append(word);
+result.append(r_pad , fill);
+}
+
+
+return result ;
+}
 
 
 

@@ -291,20 +291,10 @@ ppp =          &(*ppp).name    = &ppp->name      = &ststdata     = &ststdata.nam
 ////////////////////    timer
 // #include<chrono>
 // auto start = std::chrono::steady_clock::now();  // Start timer
-// auto end = std::chrono::steady_clock::now();    // Stop timer
-// auto ms = std::chrono::duration_cast<std::chrono::milliseconds>(end - start).count();     // Calculate and print time in microseconds
+// auto end   = std::chrono::steady_clock::now();    // Stop timer
+// auto ms    = std::chrono::duration_cast<std::chrono::milliseconds>(end - start).count();     
+// Calculate and print time in microseconds
 // cout << " \n \n Time: " << ms << " µs\n";
-
-
-////////////////////////////   time
-    // #include<chrono>
-    // auto start = chrono::high_resolution_clock::now();
-    // auto end   = chrono::high_resolution_clock::now();
-    // auto ms = chrono::duration_cast<chrono::milliseconds>(end - start).count();
-    // cout << "Time taken: " << ms << " ms\n";    
-
-
-
 
 
 
@@ -321,3 +311,57 @@ int get_random ( int from , int to )
 {                                                  // needs  <cstdlib>   and   <ctime>
   return rand()%( to - from + 1)+from ;           // inside main function    srand((unsigned )time (NULL));
 }
+
+
+
+
+////////////////////////////////////////    printf
+#include <iostream>
+#include <cstdio>
+using namespace std;
+
+int main() 
+{
+int a = 5 ;
+printf("  num is %d\n", a ) ;
+printf("  num is %3d\n", a ) ;
+printf("  num is %*d\n", 3 , a ) ;
+printf("  num is %03d\n", a ) ;
+printf("  num is %0*d\n\n", 3 , a ) ;
+
+float b = 5.123456 ;
+printf(" num is %f   \n", b ) ;
+printf(" num is %10f   \n", b ) ;
+printf(" num is %.2f   \n", b ) ;
+printf(" num is %.*f   \n\n", 3 , b ) ;
+
+char name[] = "mhmd";
+printf(" my name is %s \n" , name ) ;
+printf(" my name is %6s \n" , name ) ;
+printf(" my name is %*s \n\n" , 6 , name ) ;
+
+char ch = 'c';
+printf("first letter is %c \n" , 'm');
+printf("first letter is %3c \n" , 'm');
+printf("first letter is %*c \n" , 3 , 'm');
+
+return 0;
+}
+  num is 5
+  num is   5
+  num is   5
+  num is 005
+  num is 005
+
+ num is 5.123456   
+ num is   5.123456   
+ num is 5.12   
+ num is 5.123   
+
+ my name is mhmd 
+ my name is   mhmd 
+ my name is   mhmd 
+
+first letter is m 
+first letter is   m 
+first letter is   m 
