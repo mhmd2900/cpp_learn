@@ -1,36 +1,57 @@
 #include <iostream>
-#include <cstdio>
+#include <vector>
 #include"../general/mlib.h"
-using namespace std;
 
+using std::string ;
+using std::vector ;
+using std::cin ;
+using std::cout ;
+using std::endl ;
+
+
+void guess ( )
+{
+
+int num = 50 ;
+int prev = 0 ;
+int prev1 = 0 ;
+int prev2 = 100 ;
+char ch ;
+
+do 
+{
+cout << num << " is this bigger or smaller ?  , b or s or correcr c " << endl ;
+cin >> ch ;
+prev = num ;
+
+if ( ch == 'b')
+{
+prev1 = num ;
+num =  ( num + prev1 ) /2 ;
+}
+
+else if ( ch == 's')
+{
+prev2 = num ;
+num =  ( num + prev2 ) /2 ;
+}
+
+// prev1 = num ;
+// prev2 = num ;
+
+} while ( ch == 'b' || 's');
+
+
+
+cout << " your number is " << num ;
+
+}
 
 
 int main() 
 {
+guess();
 
-
-int a = 5 ;
-printf("  num is %d\n", a ) ;
-printf("  num is %3d\n", a ) ;
-printf("  num is %*d\n", 3 , a ) ;
-printf("  num is %03d\n", a ) ;
-printf("  num is %0*d\n\n", 3 , a ) ;
-
-float b = 5.123456 ;
-printf(" num is %f   \n", b ) ;
-printf(" num is %10f   \n", b ) ;
-printf(" num is %.2f   \n", b ) ;
-printf(" num is %.*f   \n\n", 3 , b ) ;
-
-char name[] = "mhmd";
-printf(" my name is %s \n" , name ) ;
-printf(" my name is %6s \n" , name ) ;
-printf(" my name is %*s \n\n" , 6 , name ) ;
-
-char ch = 'c';
-printf("first letter is %c \n" , 'm');
-printf("first letter is %3c \n" , 'm');
-printf("first letter is %*c \n" , 3 , 'm');
-return 0;
+return 0 ;
 }
     
