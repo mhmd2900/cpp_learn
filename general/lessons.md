@@ -234,16 +234,6 @@ c = ( a==b ) ? 6 : 66 ;
 
 
 
-cout << "_________________________________________ \n";
-cout << "|    name    |      grade        | end  | \n";
-cout << "|____________|___________________|______| \n";
-cout << "|" << align( 'l' , 12 , "mhmd" )       << "|"  << align ( 'c' , 19 , " very good ")      <<"|" << align('r' , 6 , "pass") <<"|"<< endl;
-cout << "|" << align( 'l' , 12 , "abdelsalam" ) << "|"  << align ( 'c' , 19 , " bad " , '*')      <<"|" << align('r' , 6 , "fail") <<"|"<< endl;
-cout << "|" << align( 'l' , 12 , "may")         << "|"  << align ( 'c' , 19 , " very high good ") <<"|" << align('r' , 6 , "pass") <<"|"<< endl;
-cout << "|____________|___________________|______| \n";
-
-
-
 
 /////////////////////////  pointers
 int a = 10 , *p , arr[]= { 10,20,30,40} , *pp ;
@@ -365,3 +355,5 @@ return 0;
 first letter is m 
 first letter is   m 
 first letter is   m 
+
+
