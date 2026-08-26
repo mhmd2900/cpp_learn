@@ -81,6 +81,13 @@ git checkout  commit number
 // b = --a ;     a = 9      b = 9
 
 
+
+//////////////////// ternary operator
+a == b ? c = 6 : c= 66 ;
+c = ( a==b ) ? 6 : 66 ;
+
+
+
 ////////////////////////////    input 
 // -- ignore eats from oldest to newest in buffer
 // -- if ignore is bigger than buffer , it will eat from the coming input
@@ -203,12 +210,6 @@ auto vecOfArrays = vector{ array{1, 2, 3} , array{4, 5, 6} };
 
 
 
-
-
-
-
-
-
 ////////////////////////////////////////////////  array vs vector function
 bool fun ( int arr []  ,  int num    , const vector<int>& vv   )  // array is & by default
 {
@@ -222,59 +223,6 @@ vector <int>vv = { 3 , 4 , 5 , 6 };
 
 cout << fun ( arr , arr[3] , vv ) ;
 
-
-
-
-
-
-//////////////////// ternary operator
-a == b ? c = 6 : c= 66 ;
-c = ( a==b ) ? 6 : 66 ;
-
-
-
-
-
-/////////////////////////  pointers
-int a = 10 , *p , arr[]= { 10,20,30,40} , *pp ;
-stdata ststdata , *ppp ;  
-stdata stststdata ;
-void *pppp , *ppppp ;
-p = &a ;
-pp = arr ;
-ppp = &ststdata ;
-pppp = &a ;
-ppppp = &ststdata.age;
-
-
-p = &a = pppp ;                                                          address
-*p = a = *static_cast<int*>(pppp)  ;                                     value
-
-pp = arr = &arr[0]            pp +1 = arr +1 = &arr[1]                                        address   any element                  
-*pp = *arr = arr[0]           *(pp+1) = *(arr+1) = arr[1]                                      value     any
-
-ppp =          &(*ppp).name    = &ppp->name      = &ststdata     = &ststdata.name                            address  1st element
-(*ppp).name   = ppp->name      = ststdata.name   = static_cast<stdata*>(ppppp)->name                         value    1st      
-// struct pointer point to structure and 1st element
-// specific type pointer e.g int , sting , ...  points to specific element
-// void pointer points to struct or element , to give value must be casted to struct or specific type
-// .... if casted to struct , just choose element as extension e.g (ppppp)->name and no * at beginning
-// struct pointer + 1 equals struct address + struct size ( not mandatory to be coming object in same struct )
-
-
-
-
-
-
-
-
-
-//////////////////////////////  arabic
-// #include<fcntl.h>
-// _setmode(_fileno(stdout) , _O_U8TEXT) ;
-// wchar_t nnn = L'ل'  ;
-// wchar_t sss[6] = L"احمد" ;
-// wcout << nnn << endl << sss  ;
 
 
 
@@ -313,30 +261,31 @@ using namespace std;
 int main() 
 {
 int a = 5 ;
-printf("  num is %d\n", a ) ;
-printf("  num is %3d\n", a ) ;
-printf("  num is %*d\n", 3 , a ) ;
-printf("  num is %03d\n", a ) ;
-printf("  num is %0*d\n\n", 3 , a ) ;
+printf("  num is %d\n", a ) ;                     
+printf("  num is %3d\n", a ) ;                
+printf("  num is %*d\n", 3 , a ) ;                
+printf("  num is %03d\n", a ) ;                    
+printf("  num is %0*d\n\n", 3 , a ) ;             
 
 float b = 5.123456 ;
-printf(" num is %f   \n", b ) ;
-printf(" num is %10f   \n", b ) ;
-printf(" num is %.2f   \n", b ) ;
-printf(" num is %.*f   \n\n", 3 , b ) ;
+printf(" num is %f   \n", b ) ;                  
+printf(" num is %10f   \n", b ) ;                
+printf(" num is %.2f   \n", b ) ;                
+printf(" num is %.*f   \n\n", 3 , b ) ;          
 
 char name[] = "mhmd";
-printf(" my name is %s \n" , name ) ;
-printf(" my name is %6s \n" , name ) ;
-printf(" my name is %*s \n\n" , 6 , name ) ;
+printf(" my name is %s \n" , name ) ;            
+printf(" my name is %6s \n" , name ) ;           
+printf(" my name is %*s \n\n" , 6 , name ) ;     
 
 char ch = 'c';
-printf("first letter is %c \n" , 'm');
-printf("first letter is %3c \n" , 'm');
-printf("first letter is %*c \n" , 3 , 'm');
+printf("first letter is %c \n" , 'm');         
+printf("first letter is %3c \n" , 'm');          
+printf("first letter is %*c \n" , 3 , 'm');      
 
 return 0;
 }
+
   num is 5
   num is   5
   num is   5
@@ -355,5 +304,197 @@ return 0;
 first letter is m 
 first letter is   m 
 first letter is   m 
+
+
+
+
+////////////////////////////////////////////////////////////////////////////////////  pointers
+int a = 10 ;
+int b = a ;
+int &c = a ;                 // alias ( neck name ) اسم دلع لنفس المتغير
+a ++ ;
+
+cout << a << "\n" ;   // 11
+cout << b << "\n" ;    // 10
+cout << c << "\n\n" ;     // 11
+
+///////////////////////////////////////
+
+int *p ;
+p = &a ;                  // p takes only addresses , p takes only one address يصنع متغير جديد
+
+cout << p << "\n" ;      // a   address         🧠🧠🧠
+cout << *(&a) << "\n" ;  // value of a    11
+cout << *p << "\n" ;     // value of a    11    
+cout << &p << "\n\n" ;     // p  address         
+
+
+*p = 20 ;                                  // 🧠🧠🧠
+cout << a << "\n" ;  // 20         
+
+a = 30 ;
+cout << *p << "\n\n" ;  // 30
+
+
+///////////////////////////////////////
+
+int arr[4] = { 10 , 20 , 30 , 40 }; // each item has specific address
+int *pp ;
+pp = arr;   // use arrays name not address to point to address of 1st array item    arr[0]
+// pp     = &arr[0]
+// pp + 1 =  &arr[0]
+// pp + 2 =  &arr[0]
+
+
+cout << &arr[0] << "\n" ;  // address
+cout << pp << "\n" ;       // same address   🧠🧠🧠
+
+cout << *(&arr[0]) << "\n" ;     // 10
+cout << *pp << "\n\n" ;          // 10        🧠🧠🧠
+
+
+
+cout << &arr[1] << "\n" ;   // address
+cout << pp +1  << "\n" ;    // same address    🧠🧠🧠
+
+cout << *(&arr[1]) << "\n" ;   // 20
+cout << *(pp +1) << "\n\n" ;   // 20            🧠🧠🧠
+
+///////////////////////////////////////
+// struct employ {string name ;int grade ;};  global scope
+
+employ emp , *ppp;
+
+emp.name = "mhmd";
+emp.grade = 99 ;
+
+ppp = &emp ; // ppp points to address of 1st struct item    emp.name 
+//ppp + 1 = memory after emp ( garbage )
+// *ppp returns the entire struct object ,, (*ppp).item  returns specific item
+
+*ppp = {"Ali", 85};                 // 🧠🧠🧠
+
+cout << ppp   << "\n" ;          // address   🧠🧠🧠
+cout << &emp.name << "\n" ;      // same address
+
+cout << *(&emp.name) << "\n" ;    // ali
+cout << (*ppp).name << "\n" ;     // ali
+cout << ppp->name << "\n\n" ;     // ali   🧠🧠🧠
+
+
+
+cout << &emp.grade << "\n" ;      // address
+
+cout << *(&emp.grade) << "\n" ;    // 85
+cout << (*ppp).grade << "\n" ;     // 85
+cout << ppp->grade << "\n\n" ;     // 85
+
+///////////////////////////////////////  void pointer and casting
+
+void *pop ; 
+pop = &a ;
+cout << pop << "\n" ;                    // void can hold address
+int *pint = static_cast<int*>(pop) ;     // void can not hold value , needs casting and needs assign to a variable ( so do casting once )
+cout << *pint << "\n\n" ;    
+
+
+///////////////////////////////////////   new and delete
+
+int* ptr ;
+float* ptrf ;
+
+ptr = new int ;
+ptrf = new float ;
+
+*ptr = 55 ;
+*ptrf = 44.4f ;   // added f , as because numbers with decimals are considered double
+
+cout << *ptr << "\n";
+cout << *ptrf << "\n";
+
+delete ptr ;
+delete ptrf ;
+
+
+///////////////////////////////////////   mixed example
+////////// practically , void is not used , vector is used instead of dynamic array
+
+string st ;
+cout << " choose students  : one  or  all  \n";
+cin >> st ;
+void* pep ;                               // pep assigns to address  🧠🧠🧠
+if ( st == "one")
+{
+pep =  new float ;                           // pep assigns to address of float  🧠🧠🧠
+cout << " enter student grade \n";
+cin >> *(static_cast<float*>(pep)) ;         //  needs casting to assign to the value   🧠🧠🧠 as it is void
+cout << " you choose one student number , grade is : " << *(static_cast<float*>(pep)) ;
+//delete pep ;                               // not accepted as void can not be deleted 🧠🧠🧠
+delete static_cast<float*>(pep);          
+}
+
+else if ( st == "all")
+{
+int num ;
+cout << " enter number of students \n";
+cin >> num ;
+pep = new float[num];                     // p assigns to address of float array 1st item  🧠🧠🧠
+
+    for ( int i = 0 ; i < num ; i ++ )
+    {
+    cout << " student number " << i+1 << " is : " ;
+    cin >> static_cast<float*>(pep)[i];   //  needs casting to assign to the value   🧠🧠🧠
+                  // Using [i] already accesses (dereferences) the value. no need for * before it 🧠🧠🧠
+    cout << "\n";
+    }
+
+    cout << " \n\n ======= displaying grades \n " ;
+
+    for ( int i = 0 ; i < num ; i ++ )
+    {
+    cout << " student number " << i+1 << " grade is : \t" ;
+    cout << static_cast<float*>(pep)[i] << "\n";
+    }
+
+//delete []pep ;                  // not accepted as void can not be deleted 🧠🧠🧠
+delete []static_cast<float*>(pep) ;             // 🧠🧠🧠
+}
+
+
+///////////////////////////////////////   iterators
+// <algorithm>
+vector<int>vnum { 11,22,33,44,55,66};
+vector<int>::iterator it ;
+vector<int>::iterator iter ;
+it = vnum.begin() ; 
+iter = vnum.begin() ; 
+
+for ( ; it != vnum.end() ; it ++ )
+ cout << *it << "\n";
+
+cout << endl ;
+
+advance ( iter , 3 );     
+cout << *iter << "\n";     // 44
+
+advance ( iter , -2 );
+cout << *iter << "\n";    // 22
+
+cout << endl ;
+
+vnum.erase ( iter , iter+ 2) ;  
+cout << *iter << endl;      // 44
+
+cout << endl ;
+
+vnum.erase ( iter , vnum.end()- 2) ;   //vnum.begin() points to 33 (index 0).    //vnum.end() is the position after the last element (66).
+cout << *iter << endl;               // 55
+cout << *vnum.begin() << endl;      // 11
+
+int count_times = count(vnum.begin() , vnum.end() , 55 ); // specific number repitition
+reverse(vnum.begin() , vnum.end()  );   // reverse order
+
+
+
 
 

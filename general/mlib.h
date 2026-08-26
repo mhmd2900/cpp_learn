@@ -58,11 +58,27 @@ while ( true )
 {
 std::cout << message ;
 int num ;
+//Input can fail in three ways: wrong type, end of file, or corrupted stream.
+if (std::cin >> num)
+        {
+            // Check what's immediately after the number
+            char next = std::cin.peek();
+            
+            // If the next character is not a newline, space, or EOF, it's garbage 
+            if (next != '\n' && next != EOF && !std::isspace(static_cast<unsigned char>(next))) // refuse (123abc) , (15.2) , (15  )
+            {
+                std::cout << " Error: Trailing characters detected.\n";
+                std::cin.clear();
+                std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+                continue;
+            }
 
-if ( std::cin >> num ) {  std::cin.ignore( std::numeric_limits<std::streamsize>::max() , '\n');   return num ; } // target
-else if ( std::cin.eof() )  { std::cout << " EOF ... goodbye \n ";  std::exit(0); } // EOF                    ,, std::exit needs <cstdlib>
-else if ( std::cin.fail())         { std::cin.clear();   std::cin.ignore( std::numeric_limits<std::streamsize>::max() , '\n');  std::cout << " failed input \n "; } // fail 
-} 
+            // Clean up the rest of the line (e.g. the newline '\n') to deal if coming getline
+            std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');      return num; // accept 123
+        }
+else if ( std::cin.eof() )  { std::cout << " EOF ... goodbye \n ";  std::exit(0); } // EOF  ,, std::exit needs <cstdlib> // refuse ctrl z
+else if ( std::cin.fail())  { std::cout << " failed input    \n ";  std::cin.clear();   std::cin.ignore( std::numeric_limits<std::streamsize>::max() , '\n');   } // fail  // refuse abc 
+}  
 }
 
 
