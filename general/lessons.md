@@ -224,6 +224,38 @@ vector <int>vv = { 3 , 4 , 5 , 6 };
 cout << fun ( arr , arr[3] , vv ) ;
 
 
+///////////////////////////////////////////  time
+
+#pragma warning(disable : 4996) //  Silences a compiler warning about older C functions being "unsafe"
+#include <ctime>
+#include <iostream>
+using namespace std;
+
+
+int main()
+{
+time_t CurrentTime = time(0);              // get time now ( in seconds from 1970 )                  
+
+char*  LocalTime = ctime(&CurrentTime);          // ctime() converts seconds into a human-readable string
+cout << "Local date and time is: " << LocalTime << "\n";
+
+tm* UniversalTimeStruct = gmtime(&CurrentTime);   // gmtime() converts the seconds to tm struct for UTC date/time 
+LocalTime = asctime(UniversalTimeStruct);         // tm struct and converts it into a readable string     
+cout << "UTC date and time is: " << LocalTime;
+}
+
+//   time(0)
+//      |
+//      v
+//   Raw seconds (e.g. 1746700000)
+//      |
+//      |---> ctime()  ---------------> Local time string  --> cout 
+//      |
+//      '---> gmtime() --> tm struct
+//                             |
+//                             '---> asctime() --> UTC string --> cout
+
+
 
 
 ////////////////////    timer
@@ -233,7 +265,6 @@ cout << fun ( arr , arr[3] , vv ) ;
 // auto ms    = std::chrono::duration_cast<std::chrono::milliseconds>(end - start).count();     
 // Calculate and print time in microseconds
 // cout << " \n \n Time: " << ms << " µs\n";
-
 
 
 ///////////////////////////////////          reset screen
@@ -497,4 +528,37 @@ reverse(vnum.begin() , vnum.end()  );   // reverse order
 
 
 
+/////////////////////////////////////////////////////  files
+#include <fstream>
+using std::fstream;
+using std::ios;
 
+
+
+void read_from( string file_name , vector<string>&vnum )
+{
+fstream mfile ;
+mfile.open ( file_name , ios::in);
+  if ( mfile.is_open())
+  {
+  string line ;
+  while ( getline ( mfile ,line ))    vnum.push_back(line);
+  mfile.close();
+  }
+}
+
+
+
+void write_to( string file_name , vector<string>&vnum )
+{
+fstream mfile ;
+mfile.open( file_name , ios::out );
+  if (mfile.is_open())
+  {
+  for ( string& line : vnum )
+    if ( line != "")    mfile << line << endl;
+  mfile.close();   
+  }
+}
+
+/////////////////////////////////////
