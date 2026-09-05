@@ -1,4 +1,4 @@
-///////////////////////////////
+
 //                                    decimal            0 octal      0X hexadecimal
 // programming calculator         [ decimal  اقسم  ]          [ others   اضرب ]
 // RAM output buffer :  every 50 \n   , use   endl (which is '\n' + flush)
@@ -23,8 +23,8 @@ g++  test1.cpp     -o test1.exe   -g  -Wall ;    if ($?) { .\test1.exe } \\\\\\ 
 
 
 
-
-/////////////////////////////////////////////////////////////   debug
+=============================================================
+/////////////////////////////////////////////////////////////  ⚠️⚠️⚠️ debug
 gdb   .\test1.exe  
 b 15	            break at line 15
 r	                run the program
@@ -41,8 +41,8 @@ q	                quit gdb
 
 
 
-
-/////////////////////////////////////////////////////////////           git
+============================================================= 
+/////////////////////////////////////////////////////////////          ⚠️⚠️⚠️ git
 /////// moves the file from the working directory to the staging area
 git add mtext.txt          # stage one specific file
 git add .                  # stage all changed files
@@ -73,7 +73,8 @@ git checkout  commit number
 // b = stoi (str) ;
 
 
-/////////////////////////////    arthmetic operators
+============================================================= 
+/////////////////////////////   ⚠️⚠️⚠️ arthmetic operators
 // a = 10 ;
 // b = a++ ;     a = 11     b = 10
 // b = a-- ;     a = 9      b = 10
@@ -81,14 +82,14 @@ git checkout  commit number
 // b = --a ;     a = 9      b = 9
 
 
-
-//////////////////// ternary operator
+============================================================= 
+//////////////////// ⚠️⚠️⚠️ternary operator
 a == b ? c = 6 : c= 66 ;
 c = ( a==b ) ? 6 : 66 ;
 
 
-
-////////////////////////////    input 
+============================================================= 
+////////////////////////////    ⚠️⚠️⚠️input 
 // -- ignore eats from oldest to newest in buffer
 // -- if ignore is bigger than buffer , it will eat from the coming input
 // -- if ignore is smaller than buffer , it will show the recent charachters in buffer
@@ -106,8 +107,8 @@ c = ( a==b ) ? 6 : 66 ;
 
 
 
-
-///////////////////////////////////   array  declaration 
+============================================================= 
+///////////////////////////////////   ⚠️⚠️⚠️array  declaration 
 int arr [3] = {};          // all 3 elements are 0                 ✅
 int arr [3] = {11};        // 1st elemnts is 11 , others are 0     ✅
 int arr [3]  = {00,11,22};   // 3 initialized elements
@@ -132,8 +133,8 @@ array <int, 3> arr = {};       // ✅  Zero-initialized ,, can not be done in ve
 
 
 
-
-//////////////////////////////////////  array of structures
+============================================================= 
+//////////////////////////////////////  ⚠️⚠️⚠️array of structures
 struct point { int x   ;  int y;  };
 point arrOfStructs[3]; // Uninitialized 
 array <point, 3> arrOfStructs; // uninitialized 
@@ -144,8 +145,8 @@ array <point, 3> arrOfStructs = {  Point{1, 2} ,  Point{} , Point{5, 6} };  // b
 
 
 
-
-////////////////////////////////// array of vectors   ,,, fixed groups with variable content.
+============================================================= 
+////////////////////////////////// ⚠️⚠️⚠️array of vectors   ,,, fixed groups with variable content.
 array <vector<int>, 3> arrOfVecs;  // 3 empty vectors
 array <vector<int>, 4> arrOfVecs = {{
     {10, 20},             // Simple list → concise
@@ -161,18 +162,8 @@ auto arrOfVecs = array { vector{10, 20}, vector{30}, vector<int>{} };  // type h
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-///////////////////////////////////////////  vector declaration
+============================================================= 
+///////////////////////////////////////////  ⚠️⚠️⚠️vector declaration
 vector <int> vnum ;
 vector <int> vnum ( 3 ) ;       // 3 elements , zero-initialized
 vector <int> vnum ( 3 , 55 ) ; // 3 elements , all values 55
@@ -181,8 +172,8 @@ vector <int> vnum = { 11,22,33 } ;  // 3 elements with these values
 
 
 
-
-/////////////////////////////////////////////  vector of structures
+============================================================= 
+///////////////////////////////////////////// ⚠️⚠️⚠️ vector of structures
 struct point { int x   ;  int y = 22 ;  };
 point vecOfStructs[3]; // Uninitialized
 vector<point> vecOfStructs; // empty vector
@@ -198,8 +189,8 @@ vector<point> vecOfStructs = { Point{1, 2} , Point{} , Point{5, 6} };
 
 
 
-
-///////////////////////////////////////////  vector of arrays  ,,   variable number of fixed-size records.
+============================================================= 
+///////////////////////////////////////////  ⚠️⚠️⚠️vector of arrays  ,,   variable number of fixed-size records.
 vector <array<int, 3>> vecOfArrays;
 vector <array<int, 3>> vecOfArrays(5);  //5 arrays, each {0,0,0}
 vector <array<int, 3>> vecOfArrays(4, {99, 99, 99}); //4 arrays of {99,99,99}  /// () used for vector for size and default value , in array : sizee is in <> , default values are 0
@@ -209,8 +200,8 @@ auto vecOfArrays = vector{ array{1, 2, 3} , array{4, 5, 6} };
 
 
 
-
-////////////////////////////////////////////////  array vs vector function
+============================================================= 
+////////////////////////////////////////////////  ⚠️⚠️⚠️array vs vector function
 bool fun ( int arr []  ,  int num    , const vector<int>& vv   )  // array is & by default
 {
 return arr[num] = vv[0];
@@ -224,11 +215,12 @@ vector <int>vv = { 3 , 4 , 5 , 6 };
 cout << fun ( arr , arr[3] , vv ) ;
 
 
-///////////////////////////////////////////  time
+
+============================================================= 
+/////////////////////////////////////////// ⚠️⚠️⚠️ time
 
 #pragma warning(disable : 4996) //  Silences a compiler warning about older C functions being "unsafe"
 #include <ctime>
-#include <iostream>
 using namespace std;
 
 
@@ -258,7 +250,7 @@ cout << "UTC date and time is: " << LocalTime;
 
 
 
-////////////////////    timer
+////////////////////    ⚠️⚠️⚠️timer
 // #include<chrono>
 // auto start = std::chrono::steady_clock::now();  // Start timer
 // auto end   = std::chrono::steady_clock::now();    // Stop timer
@@ -267,7 +259,7 @@ cout << "UTC date and time is: " << LocalTime;
 // cout << " \n \n Time: " << ms << " µs\n";
 
 
-///////////////////////////////////          reset screen
+///////////////////////////////////         ⚠️⚠️⚠️ reset screen
 void reset_screen ()
 {                                             // Windows only (not portable)
 system ("cls");                               // Slow (launches a new process)
@@ -275,71 +267,52 @@ system ( "color 0F") ;                        // Security risk in some environme
 }
 
 
-//////////////////////////////////////      random
+//////////////////////////////////////     ⚠️⚠️⚠️ random
+#include<cstdlib>   
+#include<ctime>
 int get_random ( int from , int to )
-{                                                  // needs  <cstdlib>   and   <ctime>
+{                                                 
   return rand()%( to - from + 1)+from ;           // inside main function    srand((unsigned )time (NULL));
 }
 
 
+============================================================= 
+//////////////////////////////////////     ⚠️⚠️⚠️ setw
+#include<iomanip>
+using std::setw; 
+cout << setw(5)<< "ali";
 
 
-////////////////////////////////////////    printf
-#include <iostream>
+////////////////////////////////////////   ⚠️⚠️⚠️ printf
 #include <cstdio>
-using namespace std;
 
-int main() 
-{
 int a = 5 ;
-printf("  num is %d\n", a ) ;                     
-printf("  num is %3d\n", a ) ;                
-printf("  num is %*d\n", 3 , a ) ;                
-printf("  num is %03d\n", a ) ;                    
-printf("  num is %0*d\n\n", 3 , a ) ;             
+printf("  num is %d\n", a ) ;                //5        
+printf("  num is %3d\n", a ) ;               //  5
+printf("  num is %*d\n", 3 , a ) ;           //  5      
+printf("  num is %03d\n", a ) ;              //005      
+printf("  num is %0*d\n\n", 3 , a ) ;        //005       🧠🧠 
 
 float b = 5.123456 ;
-printf(" num is %f   \n", b ) ;                  
-printf(" num is %10f   \n", b ) ;                
-printf(" num is %.2f   \n", b ) ;                
-printf(" num is %.*f   \n\n", 3 , b ) ;          
+printf(" num is %f   \n", b ) ;              //5.123456             
+printf(" num is %10f   \n", b ) ;            //  5.123456            
+printf(" num is %.2f   \n", b ) ;            //5.12          
+printf(" num is %.*f   \n\n", 3 , b ) ;      //5.123       🧠🧠
 
 char name[] = "mhmd";
-printf(" my name is %s \n" , name ) ;            
-printf(" my name is %6s \n" , name ) ;           
-printf(" my name is %*s \n\n" , 6 , name ) ;     
+printf(" my name is %s \n" , name ) ;        //mhmd     
+printf(" my name is %6s \n" , name ) ;       //  mhmd      
+printf(" my name is %*s \n\n" , 6 , name ) ; //  mhmd      🧠🧠
 
 char ch = 'c';
-printf("first letter is %c \n" , 'm');         
-printf("first letter is %3c \n" , 'm');          
-printf("first letter is %*c \n" , 3 , 'm');      
-
-return 0;
-}
-
-  num is 5
-  num is   5
-  num is   5
-  num is 005
-  num is 005
-
- num is 5.123456   
- num is   5.123456   
- num is 5.12   
- num is 5.123   
-
- my name is mhmd 
- my name is   mhmd 
- my name is   mhmd 
-
-first letter is m 
-first letter is   m 
-first letter is   m 
+printf("first letter is %c \n" , 'm');        //first letter is m      
+printf("first letter is %3c \n" , 'm');       //first letter is   m     
+printf("first letter is %*c \n" , 3 , 'm');   //first letter is   m   🧠🧠
 
 
 
-
-////////////////////////////////////////////////////////////////////////////////////  pointers
+============================================================= 
+////////////////////////////////////////////////⚠️⚠️⚠️////////////////////////////////////  pointers
 int a = 10 ;
 int b = a ;
 int &c = a ;                 // alias ( neck name ) اسم دلع لنفس المتغير
@@ -491,8 +464,8 @@ pep = new float[num];                     // p assigns to address of float array
 delete []static_cast<float*>(pep) ;             // 🧠🧠🧠
 }
 
-
-///////////////////////////////////////   iterators
+============================================================= 
+///////////////////////////////////////⚠️⚠️⚠️   iterators
 // <algorithm>
 vector<int>vnum { 11,22,33,44,55,66};
 vector<int>::iterator it ;
@@ -527,8 +500,8 @@ reverse(vnum.begin() , vnum.end()  );   // reverse order
 
 
 
-
-/////////////////////////////////////////////////////  files
+============================================================= 
+/////////////////////////////////////////////////////⚠️⚠️⚠️  files
 #include <fstream>
 using std::fstream;
 using std::ios;
@@ -561,4 +534,43 @@ mfile.open( file_name , ios::out );
   }
 }
 
-/////////////////////////////////////
+============================================================= 
+/////////////////////////////////////////////////////⚠️⚠️⚠️  split string
+vector<string> SplitString(string S1, string Delim)
+{
+vector<string> vString;
+short pos = 0;
+string sWord; // define a string variable
+// use find() function to get the position of the delimiters
+while ((pos = S1.find(Delim)) != std::string::npos)
+{
+sWord = S1.substr(0, pos); // store the word
+if (sWord != "")
+{
+vString.push_back(sWord);
+}
+S1.erase(0, pos + Delim.length()); /* erase() until
+positon and move to next word. */
+}
+if (S1 != "")
+{
+vString.push_back(S1); // it adds last word of the string.
+}
+return vString;
+}
+ProgrammingAdvices.com
+© Copyright 2022
+Problem
+
+
+
+
+
+
+
+
+
+to deal with string class
+avoid range based loop
+as you will almost need index : at , find , substr 
+with erase ,, better use while as length changes 

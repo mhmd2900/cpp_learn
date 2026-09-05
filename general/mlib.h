@@ -5,7 +5,7 @@
 #include <limits>     // std::numeric_limits<std::streamsize>::max()
 #include <cstdlib>    // system , std::exit
 #include <random>      // random
-
+#include <chrono>
 
 
 //using namespace std ;
@@ -34,7 +34,6 @@ void reset_screen()
 
 
 
-
 /////////////////////////////////////         input random 
 
 int get_random(int from, int to) 
@@ -43,8 +42,8 @@ int get_random(int from, int to)
     // static run ONCE during the whole program  
     static std::random_device rd;   // pick random number
     static std::mt19937 gen(rd());  // generates numbers from it
-    std::uniform_int_distribution<int> distrib(from, to); // updates to your custom range every time you call 
-    return distrib(gen);
+    std::uniform_int_distribution<int> distrib(from, to) ; // updates to your custom range every time you call 
+    return distrib(gen) ;
 }
 
 

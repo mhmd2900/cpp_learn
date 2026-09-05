@@ -1,4 +1,6 @@
-// vector of structures and enums and arrays
+// vector of structures , enums and arrays
 // dynamic array of vectors
 // static local variable vs reference vs pointer
-// function recursion , default parameters , function overload
+// ternary operator
+// default parameters ( even only bool true )
+// function overload , enum parameter targeted action
