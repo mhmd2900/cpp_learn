@@ -574,3 +574,6 @@ to deal with string class
 avoid range based loop
 as you will almost need index : at , find , substr 
 with erase ,, better use while as length changes 
+
+
+
