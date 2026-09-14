@@ -2,58 +2,62 @@
 #include<string>
 #include<array>
 #include<vector>
-#include<cctype>
-
-using std::cout;
-using std::cin;
-using std::endl;
-using std::string;
-using std::array;
-using std::vector;
-
-enum encount  { small , capital , m , mM };
+using namespace std ;
 
 
 
-string read ()
+vector<string> reverse ( string word , const string& delim = " " )
 {
-string word ;
-cout << "plz enter word \n";
-getline (cin , word );
-return word ;
+size_t pos = word.length() ;
+vector<string>vwords ;
+
+while ( (pos = word.rfind(delim) )  != word.npos  )
+{
+//string temp =  word.substr(pos, word.length()) ;
+if (!word.empty() )
+vwords.push_back(word.substr(pos + delim.length() )) ;
+
+word.erase(pos ,word.length() );
 }
 
-
-void trim_left (string& word , string delim)
-{
-int pos = 0 ;
-
-while ( !word.empty() && word.at(0) == ' ')
-word.erase(0,1);
+if(!word.empty())
+vwords.push_back(word);
+return vwords ;
 }
 
 
 
 
-void trim_right(string& word , string delim)
+string show ( const string& word)
 {
+vector<string>vwords = reverse (word);
+//vector<string>::iterator iter = vwords.end() - 1;
+auto iter = vwords.end() - 1;
 
-int pos = word.length()-1 ;
-while ( !word.empty() && word.at(pos) == ' ')
+// for ( iter ; iter >= vwords.begin() ; iter-- )
+// cout << *iter << " " ;
+
+// for ( size_t i = vwords.size() ; i > 0 ; i-- )
+// cout << vwords.at(i-1) << " " ;
+
+string S2;
+while (iter > vwords.begin())
 {
-pos = word.length()-1 ;
-word.erase(pos,1);
+S2 += *iter + " ";
+--iter;
 }
+S2 = S2.substr(0, S2.length() - 1); //remove last space.
+cout << S2 ;
+return S2 ;
 }
+
+
+
+
 
 
 int main ()
 {
-string word ;
-word = read();
-trim_left(word , " ");
-trim_right(word , " ");
-cout << word ;
-
-// return 0 ;
+string word = "many abdel maged";
+show (word);
 }

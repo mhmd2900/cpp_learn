@@ -1,13 +1,12 @@
 
-//                                    decimal            0 octal      0X hexadecimal
-// programming calculator         [ decimal  اقسم  ]          [ others   اضرب ]
-// RAM output buffer :  every 50 \n   , use   endl (which is '\n' + flush)
+                                                                 ⚠️⚠️⚠️ calculator
+                                    decimal            0 octal      0X hexadecimal
+programming calculator         [ decimal  اقسم  ]          [ others   اضرب ]
+RAM output buffer :  every 50 \n   , use   endl (which is '\n' + flush)
 
 
-
-
-
-=============================================================         
+=====================================================================================================================
+                                                                 ⚠️⚠️⚠️ compile & link & run
 
 g++  -c  test1.cpp            -o test1.o     -g  -Wall                  \\\\\\      compile
 g++  -c  test2.cpp            -o test2.o     -g  -Wall                  \\\\\\      compile
@@ -23,8 +22,8 @@ g++  test1.cpp     -o test1.exe   -g  -Wall ;    if ($?) { .\test1.exe } \\\\\\ 
 
 
 
-=============================================================
-/////////////////////////////////////////////////////////////  ⚠️⚠️⚠️ debug
+=====================================================================================================================
+                                                                 ⚠️⚠️⚠️ debug
 gdb   .\test1.exe  
 b 15	            break at line 15
 r	                run the program
@@ -41,7 +40,7 @@ q	                quit gdb
 
 
 
-============================================================= 
+=====================================================================================================================
 /////////////////////////////////////////////////////////////          ⚠️⚠️⚠️ git
 /////// moves the file from the working directory to the staging area
 git add mtext.txt          # stage one specific file
@@ -65,7 +64,7 @@ git checkout  commit number
 
 
 
-**************************************************************
+=====================================================================================================================
 // cout << INT_MIN << endl  ;   -2147483648
 // cout << INT_MAX << endl  ;   2147483647
 // cout << 5e3 << endl  ;       5000
@@ -103,117 +102,6 @@ c = ( a==b ) ? 6 : 66 ;
 //          ├── empty ═══► loop
 //          └── no need for clear ( as all input is valid ) & no need for ignore ( getline ignore \n at end )
        
-
-
-
-
-============================================================= 
-///////////////////////////////////   ⚠️⚠️⚠️array  declaration 
-int arr [3] = {};          // all 3 elements are 0                 ✅
-int arr [3] = {11};        // 1st elemnts is 11 , others are 0     ✅
-int arr [3]  = {00,11,22};   // 3 initialized elements
-int arr []   = {00,11,22};   // 3 initialized elements
-int arr [] ;               // compile error
-int arr [3];               // garbage 
-int arr [] = {} ;          // garbage
-
-int arr [][3] ;                                       //  cout << arr[0][0] ;       compile error
-int arr [][3] = {} ;                                     // out << arr[0][0] ;      garbage       
-int arr [][3]  = { {} , {} };                            // cout << arr[1][0] ;          0                               ✅
-int arr [][3]  = { {1,2}, {4} };                   // → {{1,2,0},{4,0,0}}          cout << arr[1][0] ;           4       ✅
-int arr [][3]  = { {} };                                 // cout << arr[0][1] ;          0
-int arr [][3]  = { {} };                                 // cout << arr[1][0] ;         garbage
-int arr [2][]  = { {11,22} , {33,44} };             // must write columns numbers         cout << arr[0][1] ;     compile error
-
-char str[10] = "hello";     // Initializes first 6 chars: 'h','e','l','l','o','\0', rest \0  , equivalent to 0 in ASCII
-char str[]   = "world";     // Size = 6 (including '\0')     ✅
-
-array <int, 3> arr = {1, 2, 3};    // best  ✅✅✅   
-array <int, 3> arr = {};       // ✅  Zero-initialized ,, can not be done in vectors as vector starts with size 0, so index 0 doesn’t exist!
-
-
-
-============================================================= 
-//////////////////////////////////////  ⚠️⚠️⚠️array of structures
-struct point { int x   ;  int y;  };
-point arrOfStructs[3]; // Uninitialized 
-array <point, 3> arrOfStructs; // uninitialized 
-array <point, 3> arrOfStructs = {};   // All members zero-initialized → {0, 0}, {0, 0}, {0, 0}        only if no previous initialization in structure
-array <point, 3> arrOfStructs = {{ {1, 2}, {}, {5, 6} }};  // index 0 , index 1 , index 2
-array <point, 3> arrOfStructs = {  Point{1, 2} ,  Point{} , Point{5, 6} };  // best  ✅✅✅                          arrOfStructs[1].y  =  4    
-
-
-
-
-============================================================= 
-////////////////////////////////// ⚠️⚠️⚠️array of vectors   ,,, fixed groups with variable content.
-array <vector<int>, 3> arrOfVecs;  // 3 empty vectors
-array <vector<int>, 4> arrOfVecs = {{
-    {10, 20},             // Simple list → concise
-    {},                   // Empty → concise  , vector size is 0
-    vector<int>(5, 100),  // Need 5x100 → explicit constructor
-    vector<int>(3)        // 3 zeros → explicit for clarity
-    }};      //  best✅✅✅  // class (string , vector , structure ) use double braces unlike primitive types e,g int , float , ...
-vector <int> arrOfVecs [3]  = { {1}, {2,3}, {} } ;  // C-style array 
-auto arrOfVecs = array { vector{10, 20}, vector{30}, vector<int>{} };  // type hint needed if empty
-    
-
-
-
-
-
-============================================================= 
-///////////////////////////////////////////  ⚠️⚠️⚠️vector declaration
-vector <int> vnum ;
-vector <int> vnum ( 3 ) ;       // 3 elements , zero-initialized
-vector <int> vnum ( 3 , 55 ) ; // 3 elements , all values 55
-vector <int> vnum ( 3 ) = { 11,22,33 } ; 
-vector <int> vnum = { 11,22,33 } ;  // 3 elements with these values
-
-
-
-============================================================= 
-///////////////////////////////////////////// ⚠️⚠️⚠️ vector of structures
-struct point { int x   ;  int y = 22 ;  };
-point vecOfStructs[3]; // Uninitialized
-vector<point> vecOfStructs; // empty vector
-vector<point> vecOfStructs(3);  // Creates 3 default-constructed Points → {0,0}, {0,0}, {0,0}  ,, if not initialized in struct
-vector<point> vec(5, { 88, 99});  //  5 vectore  each 88,99
-vector<point> vecOfStructs = {{ {1, 2} , {} , {5, 6} }};   // {} make  default which is  0 if not initialized 
-vector<point> vecOfStructs = { Point{1, 2} , Point{} , Point{5, 6} };
-///// adding elements
-// vecOfStructs[1] = { 44,55} ;
-// vecOfStructs[1].x = 66;
-// vecOfStructs.push_back({77,88});
-// vecOfStructs.push_back({77});      , print vecOfStructs[3].y = 22
-
-
-
-============================================================= 
-///////////////////////////////////////////  ⚠️⚠️⚠️vector of arrays  ,,   variable number of fixed-size records.
-vector <array<int, 3>> vecOfArrays;
-vector <array<int, 3>> vecOfArrays(5);  //5 arrays, each {0,0,0}
-vector <array<int, 3>> vecOfArrays(4, {99, 99, 99}); //4 arrays of {99,99,99}  /// () used for vector for size and default value , in array : sizee is in <> , default values are 0
-vector <array<int, 3>> vecOfArrays = { {1, 2, 3} , {44} , {} }; // complete the 3 values with zeros
-auto vecOfArrays = vector{ array{1, 2, 3} , array{4, 5, 6} };
-
-
-
-
-============================================================= 
-////////////////////////////////////////////////  ⚠️⚠️⚠️array vs vector function
-bool fun ( int arr []  ,  int num    , const vector<int>& vv   )  // array is & by default
-{
-return arr[num] = vv[0];
-}
-
-
-int arr[4] = { 0,1,2 ,3};
-arr [3] = 3 ;
-vector <int>vv = { 3 , 4 , 5 , 6 };
-
-cout << fun ( arr , arr[3] , vv ) ;
-
 
 
 ============================================================= 
@@ -311,20 +199,130 @@ printf("first letter is %*c \n" , 3 , 'm');   //first letter is   m   🧠🧠
 
 
 
+
+=====================================================================================================================
+///////////////////////////////////   ⚠️⚠️⚠️array  declaration 
+int arr [3] = {};          // all 3 elements are 0                 ✅
+int arr [3] = {11};        // 1st elemnts is 11 , others are 0     ✅
+int arr [3]  = {00,11,22};   // 3 initialized elements
+int arr []   = {00,11,22};   // 3 initialized elements
+int arr [] ;               // compile error
+int arr [3];               // garbage 
+int arr [] = {} ;          // garbage
+
+int arr [][3] ;                                       //  cout << arr[0][0] ;       compile error
+int arr [][3] = {} ;                                     // out << arr[0][0] ;      garbage       
+int arr [][3]  = { {} , {} };                            // cout << arr[1][0] ;          0                               ✅
+int arr [][3]  = { {1,2}, {4} };                   // → {{1,2,0},{4,0,0}}          cout << arr[1][0] ;           4       ✅
+int arr [][3]  = { {} };                                 // cout << arr[0][1] ;          0
+int arr [][3]  = { {} };                                 // cout << arr[1][0] ;         garbage
+int arr [2][]  = { {11,22} , {33,44} };             // must write columns numbers         cout << arr[0][1] ;     compile error
+
+char str[10] = "hello";     // Initializes first 6 chars: 'h','e','l','l','o','\0', rest \0  , equivalent to 0 in ASCII
+char str[]   = "world";     // Size = 6 (including '\0')     ✅
+
+array <int, 3> arr = {1, 2, 3};    // best  ✅✅✅   
+array <int, 3> arr = {};       // ✅  Zero-initialized ,, can not be done in vectors as vector starts with size 0, so index 0 doesn’t exist!
+
+
+
 ============================================================= 
+//////////////////////////////////////  ⚠️⚠️⚠️array of structures
+struct point { int x   ;  int y;  };
+point arrOfStructs[3]; // Uninitialized 
+array <point, 3> arrOfStructs; // uninitialized 
+array <point, 3> arrOfStructs = {};   // All members zero-initialized → {0, 0}, {0, 0}, {0, 0}        only if no previous initialization in structure
+array <point, 3> arrOfStructs = {{ {1, 2}, {}, {5, 6} }};  // index 0 , index 1 , index 2
+array <point, 3> arrOfStructs = {  Point{1, 2} ,  Point{} , Point{5, 6} };  // best  ✅✅✅                          arrOfStructs[1].y  =  4    
+
+
+
+
+============================================================= 
+////////////////////////////////// ⚠️⚠️⚠️array of vectors   ,,, fixed groups with variable content.
+array <vector<int>, 3> arrOfVecs;  // 3 empty vectors
+array <vector<int>, 4> arrOfVecs = {{
+    {10, 20},             // Simple list → concise
+    {},                   // Empty → concise  , vector size is 0
+    vector<int>(5, 100),  // Need 5x100 → explicit constructor
+    vector<int>(3)        // 3 zeros → explicit for clarity
+    }};      //  best✅✅✅  // class (string , vector , structure ) use double braces unlike primitive types e,g int , float , ...
+vector <int> arrOfVecs [3]  = { {1}, {2,3}, {} } ;  // C-style array 
+auto arrOfVecs = array { vector{10, 20}, vector{30}, vector<int>{} };  // type hint needed if empty
+    
+
+
+
+
+=====================================================================================================================
+///////////////////////////////////////////  ⚠️⚠️⚠️vector declaration
+vector <int> vnum ;
+vector <int> vnum ( 3 ) ;       // 3 elements , zero-initialized
+vector <int> vnum ( 3 , 55 ) ; // 3 elements , all values 55
+vector <int> vnum ( 3 ) = { 11,22,33 } ; 
+vector <int> vnum = { 11,22,33 } ;  // 3 elements with these values
+
+
+
+============================================================= 
+///////////////////////////////////////////// ⚠️⚠️⚠️ vector of structures
+struct point { int x   ;  int y = 22 ;  };
+point vecOfStructs[3]; // Uninitialized
+vector<point> vecOfStructs; // empty vector
+vector<point> vecOfStructs(3);  // Creates 3 default-constructed Points → {0,0}, {0,0}, {0,0}  ,, if not initialized in struct
+vector<point> vec(5, { 88, 99});  //  5 vectore  each 88,99
+vector<point> vecOfStructs = {{ {1, 2} , {} , {5, 6} }};   // {} make  default which is  0 if not initialized 
+vector<point> vecOfStructs = { Point{1, 2} , Point{} , Point{5, 6} };
+///// adding elements
+// vecOfStructs[1] = { 44,55} ;
+// vecOfStructs[1].x = 66;
+// vecOfStructs.push_back({77,88});
+// vecOfStructs.push_back({77});      , print vecOfStructs[3].y = 22
+
+
+
+============================================================= 
+///////////////////////////////////////////  ⚠️⚠️⚠️vector of arrays  ,,   variable number of fixed-size records.
+vector <array<int, 3>> vecOfArrays;
+vector <array<int, 3>> vecOfArrays(5);  //5 arrays, each {0,0,0}
+vector <array<int, 3>> vecOfArrays(4, {99, 99, 99}); //4 arrays of {99,99,99}  /// () used for vector for size and default value , in array : sizee is in <> , default values are 0
+vector <array<int, 3>> vecOfArrays = { {1, 2, 3} , {44} , {} }; // complete the 3 values with zeros
+auto vecOfArrays = vector{ array{1, 2, 3} , array{4, 5, 6} };
+
+
+
+
+============================================================= 
+////////////////////////////////////////////////  ⚠️⚠️⚠️array vs vector function
+bool fun ( int arr []  ,  int num    , const vector<int>& vv   )  // array is & by default
+{
+return arr[num] = vv[0];
+}
+
+
+int arr[4] = { 0,1,2 ,3};
+arr [3] = 3 ;
+vector <int>vv = { 3 , 4 , 5 , 6 };
+
+cout << fun ( arr , arr[3] , vv ) ;
+
+
+
+=====================================================================================================================
+=====================================================================================================================
 ////////////////////////////////////////////////⚠️⚠️⚠️////////////////////////////////////  pointers
 int a = 10 ;
 int b = a ;
-int &c = a ;                 // alias ( neck name ) اسم دلع لنفس المتغير
+int& c = a ;                 // alias ( neck name ) اسم دلع لنفس المتغير
 a ++ ;
-
+              // functions and range loop by default use copies ,, so i use alias to save memory and enable modifying
 cout << a << "\n" ;   // 11
 cout << b << "\n" ;    // 10
 cout << c << "\n\n" ;     // 11
 
 ///////////////////////////////////////
 
-int *p ;
+int* p ;
 p = &a ;                  // p takes only addresses , p takes only one address يصنع متغير جديد
 
 cout << p << "\n" ;      // a   address         🧠🧠🧠
@@ -343,11 +341,11 @@ cout << *p << "\n\n" ;  // 30
 ///////////////////////////////////////
 
 int arr[4] = { 10 , 20 , 30 , 40 }; // each item has specific address
-int *pp ;
+int* pp ;
 pp = arr;   // use arrays name not address to point to address of 1st array item    arr[0]
-// pp     = &arr[0]
-// pp + 1 =  &arr[0]
-// pp + 2 =  &arr[0]
+// pp     =  &arr[0]
+// pp + 1 =  &arr[1]
+// pp + 2 =  &arr[2]
 
 
 cout << &arr[0] << "\n" ;  // address
@@ -367,7 +365,8 @@ cout << *(pp +1) << "\n\n" ;   // 20            🧠🧠🧠
 ///////////////////////////////////////
 // struct employ {string name ;int grade ;};  global scope
 
-employ emp , *ppp;
+employ emp ;
+employ* ppp;
 
 emp.name = "mhmd";
 emp.grade = 99 ;
@@ -395,7 +394,7 @@ cout << ppp->grade << "\n\n" ;     // 85
 
 ///////////////////////////////////////  void pointer and casting
 
-void *pop ; 
+void* pop ; 
 pop = &a ;
 cout << pop << "\n" ;                    // void can hold address
 int *pint = static_cast<int*>(pop) ;     // void can not hold value , needs casting and needs assign to a variable ( so do casting once )
@@ -421,48 +420,48 @@ delete ptrf ;
 
 
 ///////////////////////////////////////   mixed example
-////////// practically , void is not used , vector is used instead of dynamic array
+////////// practically , void is not used , vector is used instead for dynamic array
 
 string st ;
 cout << " choose students  : one  or  all  \n";
 cin >> st ;
 void* pep ;                               // pep assigns to address  🧠🧠🧠
 if ( st == "one")
-{
-pep =  new float ;                           // pep assigns to address of float  🧠🧠🧠
-cout << " enter student grade \n";
-cin >> *(static_cast<float*>(pep)) ;         //  needs casting to assign to the value   🧠🧠🧠 as it is void
-cout << " you choose one student number , grade is : " << *(static_cast<float*>(pep)) ;
-//delete pep ;                               // not accepted as void can not be deleted 🧠🧠🧠
-delete static_cast<float*>(pep);          
-}
+  {
+  pep =  new float ;                           // pep assigns to address of float  🧠🧠🧠
+  cout << " enter student grade \n";
+  cin >> *(static_cast<float*>(pep)) ;         //  needs casting to assign to the value   🧠🧠🧠 as it is void
+  cout << " you choose one student number , grade is : " << *(static_cast<float*>(pep)) ;
+  //delete pep ;                               // not accepted as void can not be deleted 🧠🧠🧠
+  delete static_cast<float*>(pep);          
+  }
 
 else if ( st == "all")
-{
-int num ;
-cout << " enter number of students \n";
-cin >> num ;
-pep = new float[num];                     // p assigns to address of float array 1st item  🧠🧠🧠
+  {
+  int num ;
+  cout << " enter number of students \n";
+  cin >> num ;
+  pep = new float[num];                     // p assigns to address of float array 1st item  🧠🧠🧠
 
-    for ( int i = 0 ; i < num ; i ++ )
-    {
-    cout << " student number " << i+1 << " is : " ;
-    cin >> static_cast<float*>(pep)[i];   //  needs casting to assign to the value   🧠🧠🧠
-                  // Using [i] already accesses (dereferences) the value. no need for * before it 🧠🧠🧠
-    cout << "\n";
-    }
+      for ( int i = 0 ; i < num ; i ++ )
+      {
+      cout << " student number " << i+1 << " is : " ;
+      cin >> static_cast<float*>(pep)[i];   //  needs casting to assign to the value   🧠🧠🧠
+                    // Using [i] already accesses (dereferences) the value. no need for * before it 🧠🧠🧠
+      cout << "\n";
+      }
 
-    cout << " \n\n ======= displaying grades \n " ;
+      cout << " \n\n ======= displaying grades \n " ;
 
-    for ( int i = 0 ; i < num ; i ++ )
-    {
-    cout << " student number " << i+1 << " grade is : \t" ;
-    cout << static_cast<float*>(pep)[i] << "\n";
-    }
+      for ( int i = 0 ; i < num ; i ++ )
+      {
+      cout << " student number " << i+1 << " grade is : \t" ;
+      cout << static_cast<float*>(pep)[i] << "\n";
+      }
 
-//delete []pep ;                  // not accepted as void can not be deleted 🧠🧠🧠
-delete []static_cast<float*>(pep) ;             // 🧠🧠🧠
-}
+  //delete []pep ;                  // not accepted as void can not be deleted 🧠🧠🧠
+  delete []static_cast<float*>(pep) ;             // 🧠🧠🧠
+  }
 
 ============================================================= 
 ///////////////////////////////////////⚠️⚠️⚠️   iterators
@@ -486,6 +485,8 @@ cout << *iter << "\n";    // 22
 
 cout << endl ;
 
+// .erase(start, end) removes elements starting at start up to, but not including, end // also Re-assign the Iterator
+
 vnum.erase ( iter , iter+ 2) ;  
 cout << *iter << endl;      // 44
 
@@ -499,8 +500,12 @@ int count_times = count(vnum.begin() , vnum.end() , 55 ); // specific number rep
 reverse(vnum.begin() , vnum.end()  );   // reverse order
 
 
+vector<int>vnum { 11,22,33,44,55,66};
+vector<int>& vnums = vnum ;                    // function parameter , ranged loop                    ✅✅✅
+vector<int>* pop = &vnum ;                     // dynamic switching between vectors                   ✅✅✅
+vector<int>::iterator it = vnum.begin();       // searching , modifying elements                      ✅✅✅
 
-============================================================= 
+==================================================================================================================== 
 /////////////////////////////////////////////////////⚠️⚠️⚠️  files
 #include <fstream>
 using std::fstream;
@@ -534,46 +539,72 @@ mfile.open( file_name , ios::out );
   }
 }
 
-============================================================= 
+=====================================================================================================================
 /////////////////////////////////////////////////////⚠️⚠️⚠️  split string
 vector<string> SplitString(string S1, string Delim)
 {
-vector<string> vString;
+vector<string> vString;#include<iostream>
+#include<string>
+#include<array>
+#include<vector>
+using namespace std ;
+
+
+
+void reverse ( string word , const string& delim = " " )
+{
+size_t pos = word.length() ;
+
+
+while ( (pos = word.rfind(delim) )  != word.npos  )
+{
+//string temp =  word.substr(pos, word.length()) ;
+if (!word.empty() )
+cout << word.substr(pos + delim.length() ) << " ";
+
+word.erase(pos ,word.length() );
+}
+
+if(!word.empty())
+cout << word ;
+
+}
+
+
+
+
+
+
+
+int main ()
+{
+string word = "many abdel maged";
+reverse (word);
+
+
+}
 short pos = 0;
-string sWord; // define a string variable
-// use find() function to get the position of the delimiters
-while ((pos = S1.find(Delim)) != std::string::npos)
-{
-sWord = S1.substr(0, pos); // store the word
-if (sWord != "")
-{
-vString.push_back(sWord);
-}
-S1.erase(0, pos + Delim.length()); /* erase() until
-positon and move to next word. */
-}
-if (S1 != "")
-{
-vString.push_back(S1); // it adds last word of the string.
-}
+string sWord; +
+while ((pos = S1.find(Delim)) != S1.npos)
+  {
+  sWord = S1.substr(0, pos); 
+  if ( !sWord.empty())     vString.push_back(sWord);
+
+  S1.erase(0, pos + Delim.length()); 
+  }
+
+if (S1 != "")     vString.push_back(S1); 
+
 return vString;
 }
-ProgrammingAdvices.com
-© Copyright 2022
-Problem
 
 
 
-
-
-
-
-
-
+=============================================================  
 to deal with string class
-avoid range based loop
-as you will almost need index : at , find , substr 
-with erase ,, better use while as length changes 
+index loop : at , substr 
+while      : find , erase ( as length changes ) 
+
 
 
 
