@@ -10,14 +10,14 @@ using std::vector;
 
 
 
-int main() 
+int main()                 
 {
 int a = 10 ;
 
-asm("incl %0" : "+r"(a));
-cout << a ;
+// asm("incl %0" : "+r"(a));
+// cout << a ;
 
-
+cout << sizeof(void*)*8;
 return 0;
 }
     

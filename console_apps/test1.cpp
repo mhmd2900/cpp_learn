@@ -28,36 +28,62 @@ return vwords ;
 
 
 
-string show ( const string& word)
-{
-vector<string>vwords = reverse (word);
-//vector<string>::iterator iter = vwords.end() - 1;
-auto iter = vwords.end() - 1;
+// string show ( const string& word)
+// {
+// vector<string>vwords = reverse (word);
+// //vector<string>::iterator iter = vwords.end() - 1;
+// auto iter = vwords.end() ;
+// string S2;
 
-// for ( iter ; iter >= vwords.begin() ; iter-- )
-// cout << *iter << " " ;
 
 // for ( size_t i = vwords.size() ; i > 0 ; i-- )
 // cout << vwords.at(i-1) << " " ;
+// return S2 ;
 
-string S2;
-while (iter > vwords.begin())
+
+// while (iter > vwords.begin())
+// {
+// --iter;
+// S2 += *iter + " ";
+// }
+// S2 = S2.substr(0, S2.length() - 1); //remove last space.
+// cout << S2 ;
+// return S2 ;
+// }
+
+
+
+
+void replace ( const string& word)
 {
-S2 += *iter + " ";
---iter;
-}
-S2 = S2.substr(0, S2.length() - 1); //remove last space.
-cout << S2 ;
-return S2 ;
-}
+vector<string>vwords ;
+vwords = reverse(word);
+string temp ;
+
+vector<string>::iterator iter = vwords.end();
+
+// while ( iter > vwords.begin() )
+// {
+// iter -- ;
+// if (*iter == "saad")  *iter = "another";
+// temp += *iter + " ";
+// }
 
 
+while ( iter != vwords.begin() )
+{
+    iter -- ;
+    if (*iter == "saad")  *iter = "another";
+    temp += *iter + " ";
+}
+cout << temp ;
+}
 
 
 
 
 int main ()
 {
-string word = "many abdel maged";
-show (word);
+string word = "mhmd saad hamed";
+replace (word);
 }

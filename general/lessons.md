@@ -1,4 +1,4 @@
-
+=====================================================================================================================
                                                                  ⚠️⚠️⚠️ calculator
                                     decimal            0 octal      0X hexadecimal
 programming calculator         [ decimal  اقسم  ]          [ others   اضرب ]
@@ -308,6 +308,11 @@ cout << fun ( arr , arr[3] , vv ) ;
 
 
 
+
+iddependent function             pass parameter
+dependent function               function incall
+
+
 =====================================================================================================================
 =====================================================================================================================
 ////////////////////////////////////////////////⚠️⚠️⚠️////////////////////////////////////  pointers
@@ -500,10 +505,17 @@ int count_times = count(vnum.begin() , vnum.end() , 55 ); // specific number rep
 reverse(vnum.begin() , vnum.end()  );   // reverse order
 
 
+
+
 vector<int>vnum { 11,22,33,44,55,66};
 vector<int>& vnums = vnum ;                    // function parameter , ranged loop                    ✅✅✅
 vector<int>* pop = &vnum ;                     // dynamic switching between vectors                   ✅✅✅
 vector<int>::iterator it = vnum.begin();       // searching , modifying elements                      ✅✅✅
+
+In C++, iterators are an abstraction of pointers used to step through containers (like vector, list, set, etc.).
+range based loop                               by default                                             ✅✅✅
+iterator loop                                  erasing   ,   skipping   ,   backward traversal        ✅✅✅
+
 
 ==================================================================================================================== 
 /////////////////////////////////////////////////////⚠️⚠️⚠️  files
