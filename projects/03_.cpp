@@ -2,11 +2,13 @@
 // dynamic array of vectors
 
 // static local variable vs reference vs pointer
-// range loop vs iterator
+// index vs range vs iterator_based loops
 // size_t  for counters
 
 // ternary operator
 
 // default parameters ( even only bool true )
 // function overload ( enum parameter )
-// incall function vs pass by parameter
+// function internal call vs pass by parameter
+
+

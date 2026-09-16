@@ -309,8 +309,8 @@ cout << fun ( arr , arr[3] , vv ) ;
 
 
 
-iddependent function             pass parameter
-dependent function               function incall
+independent function             pass parameter
+dependent function               function internal call
 
 
 =====================================================================================================================

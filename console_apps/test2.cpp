@@ -10,14 +10,30 @@ using std::vector;
 
 
 
+void replace ( string &word  )
+{
+
+auto iter = word.begin() ;
+while (iter != word.end())
+{
+if ( ispunct(*iter))
+*iter = 'Q' ;
+
+cout << *iter ;
+iter ++ ;
+}
+}
+
+
+
+
 int main()                 
 {
 int a = 10 ;
 
-// asm("incl %0" : "+r"(a));
-// cout << a ;
+string word = "hany0, mohamed ali. mokhtar mary";
 
-cout << sizeof(void*)*8;
-return 0;
+replace (word);
+
 }
     
