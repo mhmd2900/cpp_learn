@@ -525,30 +525,37 @@ using std::ios;
 
 
 
-void read_from( string file_name , vector<string>&vnum )
+vector<string> read ( string file_name )
 {
+string line ;
+vector<string>vlines ;
+
 fstream mfile ;
-mfile.open ( file_name , ios::in);
-  if ( mfile.is_open())
-  {
-  string line ;
-  while ( getline ( mfile ,line ))    vnum.push_back(line);
-  mfile.close();
-  }
+mfile.open(file_name , ios::in);
+
+if (mfile.is_open())
+{
+while ( getline ( mfile , line ) )   vlines.push_back(line);
+
+mfile.close();
+}
+return vlines ;
 }
 
 
 
-void write_to( string file_name , vector<string>&vnum )
+
+void write ( string file_name , vector<string>vlines)
 {
 fstream mfile ;
-mfile.open( file_name , ios::out );
-  if (mfile.is_open())
-  {
-  for ( string& line : vnum )
-    if ( line != "")    mfile << line << endl;
-  mfile.close();   
-  }
+mfile.open( file_name , ios::out | ios::app);
+
+if ( mfile.is_open())
+{
+for ( string& line : vlines)  if (line!= "")  mfile<< line << endl ;
+
+mfile.close();
+}
 }
 
 =====================================================================================================================
