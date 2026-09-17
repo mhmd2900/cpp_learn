@@ -3,6 +3,7 @@
 #include<array>
 #include<vector>
 #include<fstream>
+#include<iomanip>
 #include"../general/mlib.h"
 using namespace std ;
 
@@ -33,20 +34,6 @@ return client_data ;
 
 
 
-// string login_to_struct_to_record ( string sep )
-// {
-
-// stclient_data client_data = login_to_struct ( );
-// string record ;
-
-// stclient_data* point = &client_data;
-
-// record += point->name + sep ;
-// record += to_string(point->pin) + sep ;
-// record += to_string(point->balance) ;
-
-// return record ;
-// }
 vector<string> _struct_to_record (  )
 {
 string sep = "#//#";
@@ -61,39 +48,29 @@ vlines.push_back(sep) ;
 vlines.push_back(to_string(point->pin) ) ;
 vlines.push_back(sep) ;
 vlines.push_back(to_string(point->balance)) ;
+//vlines.push_back("____") ;
 
 return vlines ;
 }
 
 
+void record_to_file_ ( string file_name , vector<string>vlines )
+{
+fstream mfile ;
+mfile.open( file_name , ios::out | ios::app );
+
+if ( mfile.is_open())
+{
+for ( string& line : vlines)  if (line!= "")  mfile << line ;
+mfile << endl ;
+mfile.close();
+}
+}
 
 
 
-// stclient_data word_to_vec ( string delim = "#//#")
-// {
-// string word = login_to_struct_to_record (delim);
-// size_t pos = 0 ;
-// vector<string>words ;
-// stclient_data data ;
-// while ( ( pos = word.find(delim) ) != word.npos)
-// {
-// if (!word.empty())
-// words.push_back(word.substr(0,pos));
 
-// word.erase( 0 , pos + delim.length());
-// }
-// if (!word.empty())
-// words.push_back(word);
-
-// data.name = words.at(0); 
-// data.pin = stoi(words.at(1)); 
-// data.balance = stoi(words.at(2)); 
-
-// return data ;
-// }
-
-
-vector<string> file_to_vector(string file_name)
+vector<string> file_to_vector( string file_name)
 {
 vector<string>words ;
 string word ;
@@ -109,19 +86,51 @@ return words ;
 
 
 
-void record_to_file_ ( string file_name , vector<string>vlines )
-{
-fstream mfile ;
-mfile.open( file_name , ios::out | ios::app);
 
-if ( mfile.is_open())
+
+void line_to_words_ ( string line )
 {
-for ( string& line : vlines)  if (line!= "")  mfile << line ;
-mfile << endl ;
-mfile.close();
-}
+vector<string> words ;
+string sep = "#//#";
+size_t pos = 0 ;
+
+
+cout << "____________________" << endl ;
+cout << "|"  << left << setw(5) << "name"   << "|"  << left << setw(5) << "pin"  << "|"  << left << setw(7) << "balance"  << "|" << endl;
+cout << "____________________" << endl ;
+
+
+while ((pos = line.find(sep)) != line.npos )
+{
+string copy = line.substr(0,pos) ;
+
+if ( !line.empty())
+cout << "|" << left << setw(5) << copy   ;
+
+line.erase( 0 , copy.length()+4 );
 }
 
+if (!line.empty())
+cout << "|" << left << setw(7) << line   ;
+
+cout << "|" << endl ;
+cout << "____________________" << endl ;
+
+}
+
+
+
+
+
+// void show_file_records_( vector<string>lines )
+// {
+// auto iter = lines.begin();
+// while ( iter != lines.end() )
+// {
+// line_to_words_(*iter);
+// iter ++ ;
+// }
+// }
 
 
 
@@ -136,6 +145,8 @@ cout << endl ;
 } while (mlib::want_to_repeat(" y or n "));
 
 
+
+show_file_records_(file_to_vector(file_name));
 
 
 }

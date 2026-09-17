@@ -2,6 +2,7 @@
 #include <vector>
 #include <string>
 #include <fstream> 
+#include <iomanip> 
 
 using std::cin;
 using std::cout;
@@ -10,81 +11,48 @@ using std::string;
 using std::vector;
 using std::fstream;
 using std::ios ;
+using std::setw ;
+using std::left ;
 
 
 
 const string file_name = "E:/m5.txt";
 
 
-vector<string> read ( string file_name )
+void line_to_words_ ( string line )
 {
-string line ;
-vector<string>vlines ;
+vector<string> words ;
+string sep = "#//#";
+size_t pos = 0 ;
 
-fstream mfile ;
-mfile.open(file_name , ios::in);
 
-if (mfile.is_open())
+cout << "____________________" << endl ;
+cout << "|"  << left << setw(5) << "name"   << "|"  << left << setw(5) << "pin"  << "|"  << left << setw(7) << "balance"  << "|" << endl;
+cout << "____________________" << endl ;
+
+
+while ((pos = line.find(sep)) != line.npos )
 {
-while ( getline ( mfile , line ) )   vlines.push_back(line);
+string copy = line.substr(0,pos) ;
 
-mfile.close();
-}
-return vlines ;
-}
+if ( !line.empty())
+cout << "|" << left << setw(5) << copy   ;
 
-
-
-
-
-void file_to_vector_(string file_name)
-{
-vector<string>words ;
-string word ;
-fstream mfile ;
-mfile.open(file_name , ios::in) ;
-if ( mfile.is_open())
-{
-while (getline ( mfile , word )) words.push_back(word);
-mfile.close();
-}
-for ( const string& wo : words )
-cout << wo ;
+line.erase( 0 , copy.length()+4 );
 }
 
+if (!line.empty())
+cout << "|" << left << setw(7) << line   ;
 
-
-
-
-void write ( string file_name , vector<string>vlines)
-{
-fstream mfile ;
-mfile.open( file_name , ios::out | ios::app);
-
-if ( mfile.is_open())
-{
-for ( string& line : vlines)  if (line!= "")  mfile << line << endl ;
-
-mfile.close();
-}
+cout << "|" << endl ;
+cout << "____________________" << endl ;
 
 }
 
 
 int main()                 
 {
-
-// vector<string>vlines = read("E:/m1.txt");
-
-
-// for ( const string& word : vlines )
-// cout << word ;
-
-// vector<string>rep = {"aly " , " wala "};
-// write ("E:/m2.txt" , rep);
-
-file_to_vector_(file_name);
-
+line_to_words_("xx#//#55#//#66");
 }
     
 
