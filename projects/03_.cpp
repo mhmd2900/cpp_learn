@@ -1,4 +1,5 @@
-// vector of structures , enums and arrays
+// vector of structures ( Structured Bindings ), enums and arrays
+// structure of vectors , enums , arrays
 // dynamic array of vectors
 
 

@@ -525,6 +525,23 @@ using std::ios;
 
 
 
+
+void write ( string file_name , vector<string>vlines)
+{
+fstream mfile ;
+mfile.open( file_name , ios::out | ios::app);
+
+if ( mfile.is_open())
+{
+for ( string& line : vlines)  if (line!= "")  mfile << line << endl ;
+
+mfile.close();
+}
+}
+
+
+
+
 vector<string> read ( string file_name )
 {
 string line ;
@@ -543,20 +560,6 @@ return vlines ;
 }
 
 
-
-
-void write ( string file_name , vector<string>vlines)
-{
-fstream mfile ;
-mfile.open( file_name , ios::out | ios::app);
-
-if ( mfile.is_open())
-{
-for ( string& line : vlines)  if (line!= "")  mfile<< line << endl ;
-
-mfile.close();
-}
-}
 
 =====================================================================================================================
 /////////////////////////////////////////////////////⚠️⚠️⚠️  split string
