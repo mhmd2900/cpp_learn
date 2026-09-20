@@ -526,10 +526,10 @@ using std::ios;
 
 
 
-void write ( string file_name , vector<string>vlines)
+void write ( string path , vector<string>vlines , bool check = false )
 {
 fstream mfile ;
-mfile.open( file_name , ios::out | ios::app);
+mfile.open ( path , ios::out | ( check ? ios::trunc   : ios::app) );
 
 if ( mfile.is_open())
 {
@@ -542,13 +542,13 @@ mfile.close();
 
 
 
-vector<string> read ( string file_name )
+vector<string> read ( string path )
 {
 string line ;
 vector<string>vlines ;
 
 fstream mfile ;
-mfile.open(file_name , ios::in);
+mfile.open ( path , ios::in);
 
 if (mfile.is_open())
 {
@@ -562,7 +562,7 @@ return vlines ;
 
 
 =====================================================================================================================
-/////////////////////////////////////////////////////⚠️⚠️⚠️  split string
+/////////////////////////////////////////////////////⚠️⚠️⚠️  split string         (✅✅✅  print , to string , to vector , to struct )
 vector<string> SplitString(string S1, string Delim)
 {
 vector<string> vString;#include<iostream>

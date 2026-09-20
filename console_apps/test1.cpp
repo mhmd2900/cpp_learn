@@ -1,174 +1,57 @@
 #include<iostream>
 #include<string>
-#include<array>
 #include<vector>
-#include<fstream>
-#include<iomanip>
 #include"../general/mlib.h"
-using namespace std ;
+
+using std::cout ;
+using std::cin ;
+using std::string ;
+using std::vector ;
+using std::endl ;
 
 
 
+enum enuser { accountant = 1 , auditor = 2 , other = 3 } ;
+enum enmenu { show = 1 , find = 2 , update = 3 , add = 4 , del = 5 , exit_app = 6 } ;
 
-struct strclientdata 
+enuser current_user ;
+
+void check_permission ()
 {
-string name ;
-int pin ;
-int balance ;
-};
-
-const string file_name = "E:/m5.txt";               //✅✅✅
-strclientdata stclientdata ;
-vector<strclientdata> vst_write_records ;
-vector<strclientdata> vst_read_records ;
-
-//////////////////////////////////////////////////////////////////////////
-void  _clientdata_to_records ( )
-{
-
-do 
-{
-cout << " enter name \n";
-getline( cin >> ws , stclientdata.name );
-cout << " enter pin \n";
-cin >> stclientdata.pin ;
-cout << "enter balance \n";
-cin >> stclientdata.balance ;
-
-vst_write_records.push_back(stclientdata);
-
-} while (mlib::want_to_repeat("add another client ?  \n    y   or   n   \n" ));
-
+int passcode = mlib::get_number(" enter your passcode \n ");
+if      ( passcode == 123456)  { cout << " welcome   ,   accountant\n" ;    current_user = accountant ; } 
+else if ( passcode == 123)     { cout << " welcome   ,   auditor \n"   ;    current_user = auditor    ; } 
+else                           { cout << " you are not authorized  \n" ;    current_user = other      ; } 
 }
 
 
 
-void records_to_file_ ( string file_name )
+void show_menu ()
 {
-fstream mfile ;
-mfile.open( file_name , ios::out );
+cout << "=================================================================\n";
+cout << "                       main menu screen                          \n";
+cout << "=================================================================\n";
+cout << "     [1] Show clients list. \n";
+cout << "     [2] Find client. \n";
+cout << "     [3] Update client. \n";
+cout << "     [4] Add client. \n";
+cout << "     [5] Remove client. \n";
+cout << "     [6] Exit. \n";
 
-if ( mfile.is_open())
-{
-for ( strclientdata & data : vst_write_records )                  //✅✅✅
-mfile << data.name << "#//#" << data.pin << "#//#" << data.balance << endl ;
-
-mfile.close();
-}
-}
-
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-
-strclientdata split_fields(string record)
-{
-strclientdata strecord ;
-string sep = "#//#";
-
-size_t pos = record.find(sep) ;
-strecord.name = record.substr( 0 , pos );
-record.erase(0 , pos+4);
-
-pos = record.find(sep) ;
-strecord.pin = stoi(record.substr( 0 , pos ));
-record.erase(0 , pos+4);
-
-strecord.balance = stoi(record);
-
-return strecord  ;
-}
-
-
-
-void file_to_records( string file_name)
-{
-
-string record ;
-fstream mfile ;
-
-strclientdata strecord ;
-vector<string> vrecord ;
-
-mfile.open(file_name , ios::in) ;
-if ( mfile.is_open())
-{
-while (getline ( mfile , record ))    
-{
-strecord  = split_fields(record);
-vst_read_records.push_back(strecord);
-}
-
-mfile.close();
-}
-}
-
-
-
-void print_fields ( strclientdata clientdata)
-{
-
-
-    cout << "|"  << left << setw(5) << clientdata.name     << 
-            "|"  << left << setw(5) << clientdata.pin      <<
-            "|"  << left << setw(7) << clientdata.balance  << "|" << endl;
-    cout << "____________________" << endl ;
-    
 
 }
 
 
 
 
-
-
-void print_records_( )
+int main()
 {
-    cout << "____________________" << endl ;
-    cout << "|"  << left << setw(5) << "name"   << "|"  << left << setw(5) << "pin"  << "|"  << left << setw(7) << "balance"  << "|" << endl;
-    cout << "____________________" << endl ;
-    
-
-auto iter = vst_read_records.begin();
-while ( iter != vst_read_records.end() )
-{
-print_fields(*iter);
-iter ++ ;
-}
-}
+check_permission () ;
 
 
 
-
-void check_pin ( int num )
-{
-strclientdata client ;
-bool found = 0 ;                                     //✅✅✅
-
-for ( strclientdata& data : vst_write_records )
-{
-if ( data.pin == num )
-{
-client = data ;
-cout << " yes available  , name is " << client.name << " balance is " << client.balance << endl ;
-found = 1 ;
-}
-}
-if (!found)
-cout << " not available \n";
-}
+show_menu ();
 
 
-//////////////////////////////////////////////////////////////////////////
-
-
-int main ()
-{
-_clientdata_to_records();
-records_to_file_ ( file_name );
-cout << endl ;
-
-file_to_records(file_name) ;
-print_records_();
-
-check_pin(99);
+system("pause");
 }
