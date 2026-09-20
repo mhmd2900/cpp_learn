@@ -19,9 +19,9 @@ enuser current_user ;
 void check_permission ()
 {
 int passcode = mlib::get_number(" enter your passcode \n ");
-if      ( passcode == 123456)  { cout << " welcome   ,   accountant\n" ;    current_user = accountant ; } 
-else if ( passcode == 123)     { cout << " welcome   ,   auditor \n"   ;    current_user = auditor    ; } 
-else                           { cout << " you are not authorized  \n" ;    current_user = other      ; } 
+if      ( passcode == 123)   { cout << " welcome   ,   accountant\n \n" ;    current_user = accountant ; } 
+else if ( passcode == 1)     { cout << " welcome   ,   auditor   \n \n" ;    current_user = auditor    ; } 
+else                         { cout << " you are not authorized  \n \n" ;    exit(0)                   ; } 
 }
 
 
@@ -39,6 +39,7 @@ cout << "     [5] Remove client. \n";
 cout << "     [6] Exit. \n";
 
 
+
 }
 
 
@@ -51,7 +52,6 @@ check_permission () ;
 
 
 show_menu ();
-
 
 system("pause");
 }
