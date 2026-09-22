@@ -112,12 +112,7 @@ void print_fields ( strclientdata clientdata)
             "|"  << left << setw(5) << clientdata.pin      <<
             "|"  << left << setw(7) << clientdata.balance  << "|" << endl;
     cout << "____________________" << endl ;
-    
-
 }
-
-
-
 
 
 

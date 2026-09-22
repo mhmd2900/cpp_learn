@@ -22,6 +22,13 @@
 namespace mlib
 {
 
+///////////////  pause screen
+void pause_screen()
+{
+std::cout << "\n Press Enter to return to main menu...\n" ;
+std::string dummy ;                   // this function depends on .ignore in   getnumber()
+std::getline(std::cin, dummy); 
+}
 
 ///////////////  reset screen
 // Cross-platform: Works on Windows, Mac, and Linux.
@@ -108,8 +115,8 @@ std::cout << message ;
 char ch ;
 
 if ( std::cin >> ch )  {     std::cin.ignore( std::numeric_limits<std::streamsize>::max() , '\n');  
-                    if (ch == 'y' || ch == 'Y') return true;   // target
-                    if (ch == 'n' || ch == 'N') return false;  // target
+                    if (tolower(ch) == 'y') return true;   // target
+                    if (tolower(ch) == 'n') return false;  // target
                     std::cout << "Invalid choice, please enter y or n\n";  }  // different choice
 else if ( std::cin.eof())          {  std::cout << " EOF , goodbye \n" ;  std::exit(0) ; }  // EOF
 else if ( std::cin.fail())         {  std::cin.clear();   std::cin.ignore( std::numeric_limits<std::streamsize>::max() , '\n'); std::cout << " failed input \n"; } // fail ( not char input )

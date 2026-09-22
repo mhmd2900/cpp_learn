@@ -345,6 +345,38 @@ cout << *p << "\n\n" ;  // 30
 
 ///////////////////////////////////////
 
+char c = 'e';
+char* pch = &c ;
+
+cout << &c  ;    //   e
+cout << pch ;    //   e
+cout << (void*)pch << endl ;  // to print the char address , use   (void*)
+cout << &pch << endl ;     // pointer address
+
+
+
+///////////////////////////////////////
+diff types of pointers despite same size ,
+ due to different function 
+ ( dereferencing to give value : int reads 4 consecutive bytes then calculator ,, char read only 1 byte then calculator then ascii )
+
+///////////////////////////////////////
+
+int a = 4 ;
+char c = 'e';
+
+int* p = &a ;
+cout << p << endl ;                  // int address
+cout << p + 1 << endl ;              // address + 4
+
+char* pp = (char*)p ;              
+cout << (void*)pp << endl ;          // char address 
+cout << (void*)(pp+1) << endl ;      // address + 1
+
+
+
+///////////////////////////////////////
+
 int arr[4] = { 10 , 20 , 30 , 40 }; // each item has specific address
 int* pp ;
 pp = arr;   // use arrays name not address to point to address of 1st array item    arr[0]
