@@ -325,7 +325,7 @@ cout << a << "\n" ;   // 11
 cout << b << "\n" ;    // 10
 cout << c << "\n\n" ;     // 11
 
-///////////////////////////////////////
+============================================================= 
 
 int* p ;
 p = &a ;                  // p takes only addresses , p takes only one address يصنع متغير جديد
@@ -343,6 +343,7 @@ a = 30 ;
 cout << *p << "\n\n" ;  // 30
 
 
+============================================================= 
 ///////////////////////////////////////
 
 char c = 'e';
@@ -360,46 +361,75 @@ diff types of pointers despite same size ,
  due to different function 
  ( dereferencing to give value : int reads 4 consecutive bytes then calculator ,, char read only 1 byte then calculator then ascii )
 
-///////////////////////////////////////
-
-int a = 4 ;
-char c = 'e';
-
-int* p = &a ;
-cout << p << endl ;                  // int address
-cout << p + 1 << endl ;              // address + 4
-
-char* pp = (char*)p ;              
-cout << (void*)pp << endl ;          // char address 
-cout << (void*)(pp+1) << endl ;      // address + 1
 
 
 
-///////////////////////////////////////
+============================================================= 
+///////////////////////////////////////    int arr[5]
+//Array-to-Pointer Decay
+//Whenever you use the name of an array in an expression (like *arr or arr + 1),
+// Array Decay: An array decay loses its size information and evaluates as a pointer to element 0 (&arr[0]), except when used with & (&arr), sizeof(arr), or string literal initialization.
 
-int arr[4] = { 10 , 20 , 30 , 40 }; // each item has specific address
+
+int arr[5] = { 10 , 20 , 30 , 40 , 50 };                  // each item has specific address
 int* pp ;
-pp = arr;   // use arrays name not address to point to address of 1st array item    arr[0]
-// pp     =  &arr[0]
-// pp + 1 =  &arr[1]
-// pp + 2 =  &arr[2]
-
-
-cout << &arr[0] << "\n" ;  // address
-cout << pp << "\n" ;       // same address   🧠🧠🧠
-
-cout << *(&arr[0]) << "\n" ;     // 10
-cout << *pp << "\n\n" ;          // 10        🧠🧠🧠
+pp = arr ;                                                 // arr = pp  ;  is wrong 
 
 
 
-cout << &arr[1] << "\n" ;   // address
-cout << pp +1  << "\n" ;    // same address    🧠🧠🧠
+// ⚠️⚠️⚠️  pointer only points to 1st item   , (pointer + 1)  points to next item
+// ⚠️⚠️⚠️  reference points to entire block  , (reference + 1)  points to next block
+// ⚠️⚠️⚠️  pointer reference + 1   go to next pointer
 
-cout << *(&arr[1]) << "\n" ;   // 20
-cout << *(pp +1) << "\n\n" ;   // 20            🧠🧠🧠
 
-///////////////////////////////////////
+// &pp                                                       🧠🧠🧠  address of pointer     ⚠️⚠️⚠️
+// &pp + 1                                                   🧠🧠🧠  address after poniter ( if 64-bit ( pointer is 8 bytes ) , so 8 bytes + )
+
+// &arr                                                      🧠🧠🧠  address of block       ⚠️⚠️⚠️
+// &arr + 1                                                  🧠🧠🧠  address after block ( 5 items , each 4 bytes , so 20 bytes + )
+
+// pp       = arr        =     &arr[0]                       🧠🧠🧠  address of 1st item    ⚠️⚠️⚠️
+// pp + 1   = arr + 1    =     &arr[1]                       🧠🧠🧠  address + 4     as int is 4 bytes
+// pp + 2   = arr + 2    =     &arr[2]                       🧠🧠🧠  address + 8
+
+
+// *pp          =   *arr         =   *(&arr[0])    =    pp[0]   =   arr[0]            🧠🧠🧠  10
+// *(pp + 1)    =   *(arr + 1)   =   *(&arr[1])    =    pp[1]   =   arr[1]            🧠🧠🧠  20
+
+
+============================================================= 
+///////////////////////////////////////     char arr[5]
+
+char arr[5] = {'a', 'b', 'c', 'd', '\0'};       // same as  char arr[] = "abcd";   which Automatically includes '\0'
+char* pp  ;
+pp = arr ;
+
+
+// &pp                                                       🧠🧠🧠  address of pointer   ⚠️⚠️⚠️
+// &pp + 1                                                   🧠🧠🧠  address after poniter ( if 64-bit ( pointer is 8 bytes ) , so 8 bytes + )
+
+// &arr                                                      🧠🧠🧠  address of block     ⚠️⚠️⚠️
+// &arr + 1                                                  🧠🧠🧠  address after block ( 5 items , each 1 byte , so 5 bytes + )
+
+// (void*)pp            = (void*)arr          =     (void*)&arr[0]         🧠🧠🧠  address of 1st element     ⚠️⚠️⚠️
+// (void*)(pp +1 )      = (void*)(arr +1)     =     (void*)&arr[1]         🧠🧠🧠  address + 1  , as char is 1 byte
+
+
+
+// pp       = arr        =     &arr[0]                       🧠🧠🧠  print string   ,   starting from arr[0]  till  find  \0
+// pp + 1   = arr + 1    =     &arr[1]
+// pp + 2   = arr + 2    =     &arr[2]
+
+
+
+// *pp          =   *arr         =   *(&arr[0])    =    pp[0]   =   arr[0]            🧠🧠🧠  a
+// *(pp + 1)    =   *(arr + 1)   =   *(&arr[1])    =    pp[1]   =   arr[1]            🧠🧠🧠  b
+
+
+
+
+============================================================= 
+///////////////////////////////////////    struct
 // struct employ {string name ;int grade ;};  global scope
 
 employ emp ;
@@ -429,6 +459,8 @@ cout << *(&emp.grade) << "\n" ;    // 85
 cout << (*ppp).grade << "\n" ;     // 85
 cout << ppp->grade << "\n\n" ;     // 85
 
+
+============================================================= 
 ///////////////////////////////////////  void pointer and casting
 
 void* pop ; 
