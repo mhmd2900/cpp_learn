@@ -176,6 +176,8 @@ cout << '|' << left << setw(15) << c.serial << '|' << left << setw(15) << c.name
 cout << "____________________________________________________________________________\n";
 
 cout << "\n Press any key to return to main menu . . .\n ";
+
+cout << "\n\n\n";
 system("pause > 0 ");
 }
 
@@ -209,8 +211,9 @@ cin >> pin ;
 
 } while ( mlib::want_to_repeat( "Do you want to show another client ?    y  or   n  \n"));
 
+cout << "\n\n\n";
 
-mlib::pause_screen();
+//mlib::pause_screen();
 }
 
 
@@ -270,24 +273,27 @@ int main()
 vector<stclient>all_clients ;
 all_clients = read_file();
 
-int choice = show_menu ();
+int choice = 0 ;
 
-switch ( choice )
+
+while ( choice != 6 )
 {
-case 1 :
-show_client_list(all_clients);
-break ;
+choice = show_menu ();
 
-case 2 :
-show_client(all_clients);
-break ;
+  switch ( choice )
+  {
+  case 1 :
+  show_client_list(all_clients);
+  break ;
 
+  case 2 :
+  show_client(all_clients);
+  break ;
 
-case 6 :
-return 0 ;
-}
-
-
+  case 6 :
+  break ;
+  }
+} 
 
 
 }

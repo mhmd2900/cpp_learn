@@ -315,7 +315,7 @@ dependent function               function internal call
 
 =====================================================================================================================
 =====================================================================================================================
-////////////////////////////////////////////////⚠️⚠️⚠️////////////////////////////////////  pointers
+////////////////////////////////////////////////////////////////////////////////////  reference
 int a = 10 ;
 int b = a ;
 int& c = a ;                 // alias ( neck name ) اسم دلع لنفس المتغير
@@ -326,6 +326,7 @@ cout << b << "\n" ;    // 10
 cout << c << "\n\n" ;     // 11
 
 ============================================================= 
+////////////////////////////////////////////////////////////////////////////////////  pointers
 
 int* p ;
 p = &a ;                  // p takes only addresses , p takes only one address يصنع متغير جديد
@@ -343,17 +344,22 @@ a = 30 ;
 cout << *p << "\n\n" ;  // 30
 
 
+
 ============================================================= 
-///////////////////////////////////////
+//////////////////////////////////////////////////////////////   pointer of pointer
 
-char c = 'e';
-char* pch = &c ;
+num = 10 , 
+*p      = &a  , 
+**pp    = &p  ,
+***ppp  = &pp ;
 
-cout << &c  ;    //   e
-cout << pch ;    //   e
-cout << (void*)pch << endl ;  // to print the char address , use   (void*)
-cout << &pch << endl ;     // pointer address
 
+// N.B :  same sequence         & = bare = * 
+
+//  num   = *p    = **pp  = ***ppp ;
+//  &num  =  p  = *pp   = **ppp;
+//  &p    =  pp = *ppp 
+//  &pp   =  ppp 
 
 
 ///////////////////////////////////////
@@ -362,13 +368,11 @@ diff types of pointers despite same size ,
  ( dereferencing to give value : int reads 4 consecutive bytes then calculator ,, char read only 1 byte then calculator then ascii )
 
 
-
-
 ============================================================= 
-///////////////////////////////////////    int arr[5]
+/////////////////////////////////////////////////////////////////////////////  pointer  int arr[5]
 //Array-to-Pointer Decay
 //Whenever you use the name of an array in an expression (like *arr or arr + 1),
-// Array Decay: An array decay loses its size information and evaluates as a pointer to element 0 (&arr[0]), except when used with & (&arr), sizeof(arr), or string literal initialization.
+// array decay loses its size information and evaluates as a pointer to element 0 (&arr[0]), except when used with & (&arr), sizeof(arr), or string literal initialization.
 
 
 int arr[5] = { 10 , 20 , 30 , 40 , 50 };                  // each item has specific address
@@ -398,7 +402,7 @@ pp = arr ;                                                 // arr = pp  ;  is wr
 
 
 ============================================================= 
-///////////////////////////////////////     char arr[5]
+///////////////////////////////////////////////////////////////////////////////  pointer   char arr[5]
 
 char arr[5] = {'a', 'b', 'c', 'd', '\0'};       // same as  char arr[] = "abcd";   which Automatically includes '\0'
 char* pp  ;
@@ -427,9 +431,56 @@ pp = arr ;
 
 
 
+============================================================= 
+///////////////////////////////////////////////////////////////////  pointer  function
+
+
+void fun ( int arr[] )  // taking a pointer {22,33,44}
+{
+cout << arr[0] << endl ;    // print index 0  ,,  which is 22 
+}
+
+
+void cal ( int x , int* y , int** z )  // x 3 (local)   ,  y 3 (pointer) ,  z 3 (pointer)
+{
+int d , f ;
+++ **z  ;       //  x 3 , y 4 , z 4    // y and z point to the original a , not x  [ increase of y or z , increases a ]  
+                                        // **z ++ not accepted   **z++ evaluates as ** (z++).
+d = **z ;       // d = 4
+f = *y + 1 ;    // f = 5      
+*y +=2  ;       // x 3 , y 6 , z 6      d = 4    f = 5    // pointers do not update local d or f // they point to only 1 address ( address of a )
+x +=5  ;        // x 8 , y 6 , z 6       d = 4    f = 5 ;
+
+cout << x + d + f << endl ;   //  8 + 4 + 5     = 17
+}
+
+
+
+int main()
+{
+
+int arr [] = { 11,22,33,44} ;
+fun ( arr + 1 );     
+// arrays automatically decay into pointers when passed to functions.  
+// Passing arr + 1 passes the address of the element at index 1 (22).
+cout << arr[0] << "\n\n" ;     // no change to arr itself ( change was only to a temporary pointer )   ,,  result is 11
+
+
+
+
+int a = 3 ;
+int* b  = &a ;
+int** c = &b ;
+cal ( a , b , c );  //   3 (local)   ,  3 (pointer) ,  3 (pointer)  
+cout << a + *b + **c << endl ;  // 6 + 6 + 6    =   18
+
+
+
+}
+
 
 ============================================================= 
-///////////////////////////////////////    struct
+///////////////////////////////////////////////////////////////////  pointer  struct
 // struct employ {string name ;int grade ;};  global scope
 
 employ emp ;
@@ -472,8 +523,11 @@ cout << *pint << "\n\n" ;
 
 ///////////////////////////////////////   new and delete
 
+int size = 5 ;
+
 int* ptr ;
 float* ptrf ;
+int* p = new int [size];
 
 ptr = new int ;
 ptrf = new float ;
@@ -486,6 +540,9 @@ cout << *ptrf << "\n";
 
 delete ptr ;
 delete ptrf ;
+delete p ;
+
+
 
 
 ///////////////////////////////////////   mixed example
