@@ -17,6 +17,10 @@ using std::left ;
 using std::right ;
 using std::fstream ;
 using std::ios ;
+using std::getline ;
+using std::ws ;
+// using std::stoi ;
+// using std::stod ;
 
 // ════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════
 
@@ -25,11 +29,11 @@ const string updated_path = "E:/m11.txt";
 const string added_path   = "E:/m12.txt";
 const string deleted_path = "E:/m13.txt";
 
-enum enaccess { show = 1<<0 , find = 1<<1 , update = 1<<2 , add = 1<<3 , del = 1<<4 , exit_app = 1<<5 } ;
+enum enaccess { showy = 1<<0 , find = 1<<1 , update = 1<<2 , add = 1<<3 , del = 1<<4 , exit_app = 1<<5 } ;
 enum enuser  
   { none       = 0 ,
-    auditor    = show | find | exit_app ,
-    accountant = show | find | update | add | del | exit_app }  ;  
+    auditor    = showy | find | exit_app ,
+    accountant = showy | find | update | add | del | exit_app }  ;  
 
 enuser current_user = none ;
 
@@ -45,7 +49,7 @@ bool activity = true ;
 
 
 // ════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════
-//                                                                        GENERAL
+//                                                                        active
 // ════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════
 
 string num_activity ( bool is_active )
@@ -65,9 +69,47 @@ else
 return 0 ;
 }
 
+// ════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════
 
 
-void write_file ( string path , vector<stclient>client , bool check = true )  // default parameter
+
+stclient login_or_update ( stclient& client , bool add = false )
+{
+
+          cout<< " enter serial \n";
+          cin >> client.serial ;
+
+          cout<< " enter name \n";
+          getline ( cin >> ws , client.name ) ;     // getline >> ws 
+          
+          if (add)
+          { cout<< " enter pin \n";
+          cin >> client.pin ; }
+
+          cout<< " enter balance \n";
+          cin >> client.balance ;
+          
+          cout<< " enter activity    , 1 active   , 0  not active \n";
+          cin >> client.activity ;
+          cout << "\n\n";
+
+return client ;
+}
+
+
+vector<stclient> struct_to_vst (stclient& client )
+{
+vector<stclient> records ;
+records.push_back(client) ;
+
+return records ;
+}
+
+
+
+
+
+void write_file ( string path , vector<stclient>& client , bool check = true )  // default parameter
 {
 fstream mfile ;
 mfile.open( path , ios::out | (check   ? ios::app   :  ios::trunc));
@@ -81,6 +123,7 @@ mfile.close();
 
 
 
+// ════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════
 
 stclient record_to_fields ( string& record , string sep = "#//#" ) 
 {
@@ -90,7 +133,7 @@ stclient field ;
 size_t pos = record.find(sep);
 string copy = record.substr( 0 , pos );
 
-field.serial = stoi(copy) ;
+field.serial = (copy.empty()) ? 0 : stoi(copy) ;
 record.erase( 0 , copy.size() + sep.size());
 
 pos = record.find(sep);
@@ -125,15 +168,35 @@ fstream mfile ;
 mfile.open( path , ios::in );
 if (mfile.is_open())
 {
-while ( getline (mfile , line ))
-{
-client = record_to_fields(line);
-vst_records.push_back(client);
-}
+  while ( getline (mfile , line ))
+  {
+  client = record_to_fields(line);
+  vst_records.push_back(client);
+  }
 mfile.close();
 }
 return vst_records ;
 }
+
+
+void show ( stclient client )
+{
+    {
+  cout << "______________________________________\n";
+  cout << "           client details         \n";
+  cout << "______________________________________\n";
+  cout << " serial    :  " << client.serial << "\n" ;
+  cout << " name      :  " << client.name << "\n" ;
+  cout << " pin       :  " << client.pin << "\n" ;
+  cout << " balance   :  " << client.balance << "\n" ;
+  cout << " activity  :  " << num_activity(client.activity) << "\n" ;
+  cout << "______________________________________\n";
+  }
+}
+
+
+
+// ════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════
 
 
 bool find_client ( string pin , vector<stclient>& vst_clients , stclient& client , bool update = false  )
@@ -144,7 +207,22 @@ if ( c.pin == pin )
 { 
 available = true ;  
 client = c ;
-}
+
+        if (update)   
+        {
+        do {
+             {    vector<stclient> record ;
+                  c = login_or_update(c) ;
+                  record = struct_to_vst(c);
+                  write_file ( updated_path , record )  ;
+                  show (c) ;
+             }
+           } while ( mlib::want_to_repeat(" press y to modify these data   ,,     press n if correct   \n" ) );
+                   write_file ( main_path , vst_clients , false )  ;
+        }   
+           break ;
+} 
+                  
 return available ;
 }
 
@@ -153,6 +231,9 @@ return available ;
 // ════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════
 //                                                                               CHOICES
 // ════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════
+
+
+// ════════════════════════════════════════════════════════════════════════════════ 1 ════════════════════════════════════════════════════════════════
 
 
 void show_client_list ( vector<stclient>& printed_records )
@@ -182,40 +263,85 @@ system("pause > 0 ");
 }
 
 
-
+// ════════════════════════════════════════════════════════════════════════════════════ 2 ════════════════════════════════════════════════════════════
 
 
 void show_client ( vector<stclient>& vst_clients )
 {
 string pin ;
 stclient client ;
-cout << "\n\n*********************************************************************\n";
+cout << "\n\n";
 do {
 cout << " Please , enter account PIN to search for .\n";
 cin >> pin ;
 
   if (find_client( pin , vst_clients , client ))
-  {
-  cout << "______________________________________\n";
-  cout << "           client details         \n";
-  cout << "______________________________________\n";
-  cout << " serial    :  " << client.serial << "\n" ;
-  cout << " name      :  " << client.name << "\n" ;
-  cout << " pin       :  " << client.pin << "\n" ;
-  cout << " balance   :  " << client.balance << "\n" ;
-  cout << " activity  :  " << num_activity(client.activity) << "\n" ;
-  cout << "______________________________________\n";
-  }
+   show ( client ) ;
+
   else
-  cout << " account does not exist \n";
+   cout << " account does not exist \n";
 
 } while ( mlib::want_to_repeat( "Do you want to show another client ?    y  or   n  \n"));
 
 cout << "\n\n\n";
 
-//mlib::pause_screen();
 }
 
+
+// ══════════════════════════════════════════════════════════════════════════════════════ 3 ══════════════════════════════════════════════════════════
+
+
+
+void update_client ( vector<stclient>& vst_clients )
+{
+string pin ;
+stclient client ;
+vector<stclient> record ;
+
+
+  do {
+        cout << "\n\n plz enter pin to update \n";
+        getline ( cin >> ws , pin);
+
+        if (find_client( pin , vst_clients , client , true ))
+        cout << "           ......update done successfully......         \n";
+
+        else
+        cout << " account does not exist \n";
+
+
+     } while ( mlib::want_to_repeat( "Do you want to update another client ?    y  or   n  \n"));
+
+
+
+cout << "\n\n\n";
+}
+
+
+// ═════════════════════════════════════════════════════════════════════════════════════════ 4 ═══════════════════════════════════════════════════════
+
+
+void delete_client ()
+{
+
+
+
+
+cout << "\n\n\n";
+}
+
+// ═════════════════════════════════════════════════════════════════════════════════════════ 5 ═══════════════════════════════════════════════════════
+
+
+
+void add_client ()
+{
+
+
+
+
+cout << "\n\n\n";
+}
 
 
 
@@ -290,11 +416,17 @@ choice = show_menu ();
   show_client(all_clients);
   break ;
 
+  case 3 :
+  update_client(all_clients);
+  break ;
+ 
+
   case 6 :
   break ;
   }
 } 
 
+cout << " We are happy for this visit     Thank you  ";
 
 }
 
