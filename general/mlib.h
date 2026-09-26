@@ -106,17 +106,23 @@ else if ( std::cin.fail())         { std::cin.clear();   std::cin.ignore( std::n
 } 
 }
 
+
+
+
+
 ///////////////  want to repeat
-bool want_to_repeat (const std::string& message) // boolean names should be questionable
+bool want_to_repeat (const std::string& message , char repeat = 'y' , char no_repeat = 'n' ) // boolean names should be questionable
 {
+repeat    = tolower(static_cast<unsigned char>(repeat)) ;
+no_repeat = tolower(static_cast<unsigned char>(no_repeat)) ;
 while ( true )
 {
 std::cout << message ;
 char ch ;
 
 if ( std::cin >> ch )  {     std::cin.ignore( std::numeric_limits<std::streamsize>::max() , '\n');  
-                    if (tolower(ch) == 'y') return true;   // target
-                    if (tolower(ch) == 'n') return false;  // target
+                    if (tolower(static_cast<unsigned char>(ch)) ==  repeat ) return true;   // target
+                    if (tolower(static_cast<unsigned char>(ch)) ==  no_repeat) return false;  // target
                     std::cout << "Invalid choice, please enter y or n\n";  }  // different choice
 else if ( std::cin.eof())          {  std::cout << " EOF , goodbye \n" ;  std::exit(0) ; }  // EOF
 else if ( std::cin.fail())         {  std::cin.clear();   std::cin.ignore( std::numeric_limits<std::streamsize>::max() , '\n'); std::cout << " failed input \n"; } // fail ( not char input )

@@ -217,7 +217,7 @@ client = c ;
                   write_file ( updated_path , record )  ;
                   show (c) ;
              }
-           } while ( mlib::want_to_repeat(" press y to modify these data   ,,     press n if correct   \n" ) );
+           } while ( mlib::want_to_repeat( " are these enetred data correct ?    y  or   n  \n"  , 'n'  ,  'y'  ) );
                    write_file ( main_path , vst_clients , false )  ;
         }   
            break ;
@@ -296,7 +296,7 @@ void update_client ( vector<stclient>& vst_clients )
 {
 string pin ;
 stclient client ;
-vector<stclient> record ;
+//vector<stclient> record ;
 
 
   do {
@@ -310,7 +310,7 @@ vector<stclient> record ;
         cout << " account does not exist \n";
 
 
-     } while ( mlib::want_to_repeat( "Do you want to update another client ?    y  or   n  \n"));
+     } while ( mlib::want_to_repeat( "Do you want to update another client ?    y  or   n  \n"  ) );
 
 
 
