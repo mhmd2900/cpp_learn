@@ -30,8 +30,6 @@ cout << *p << "\n\n" ;  // 30
 
 
 ============================================================= 
-//////////////////////////////////////////////////////////////   pointer of pointer
-
 num = 10 , 
 *p      = &a  , 
 **pp    = &p  ,
@@ -143,10 +141,10 @@ int arr[2][3] = { {10, 20, 30}, {40, 50, 60} };     // row-major order block (2 
 //int *ppp = &arr[0][0];   //✅
 // ppp       =  &arr[0][0]=    *arr                         🧠🧠🧠  address of element [0][0]
 // ppp + 1✅ =  &arr[0][1]=    *arr + 1                     🧠🧠🧠  address + 4     as int is 4 bytes
-// ppp + 3   =  &arr[1][0]=    *arr + 3                     🧠🧠🧠  address + 12    (moves to row 1, col 0)
+// ppp + 3   =  &arr[1][0]=     *arr + 3                     🧠🧠🧠  address + 12    (moves to row 1, col 0)
 // 2D array row-pointer decay ( *pp gives pointer to row's 1st element )
-// *pp       =  *arr       =    &arr[0][0]                  🧠🧠🧠  address of element [0][0]
-// *(pp + 1) =  *(arr + 1) =    &arr[1][0]                  🧠🧠🧠  address of element [1][0]
+// *pp✅       =  *arr       =    &arr[0][0]                🧠🧠🧠  address of element [0][0]
+// *(pp + 1) ✅=  *(arr + 1) =    &arr[1][0]                🧠🧠🧠  address of element [1][0]
 
 
 
@@ -157,16 +155,20 @@ int arr[2][3] = { {10, 20, 30}, {40, 50, 60} };     // row-major order block (2 
 
 // ⚠️⚠️⚠️ 2D array has 3 ways of dereferencing values ( row 1, col 2 -> value 60 )
 
-// (*p)[1][2]           =   *(*(*p + 1) + 2)                   =   60
+// (*p)[1][2]           =   *(*(*p + 1) + 2)                      =   60
 
-// (*(pp + 1))[2]    =   *(*(pp + 1) + 2)    =   pp[1][2]✅    =   60
-// *(arr[1] + 2)     =   *(*(arr + 1) + 2)   =   arr[1][2]      =   60
+// (*(pp + 1))[2]    =   *(*(pp + 1) + 2)✅   =   pp[1][2]✅     =   60
+// *(arr[1] + 2)     =   *(*(arr + 1) + 2)     =   arr[1][2]      =   60
 
-// *(ppp + 1*3 + 2)  =   *(ppp + 5)           =   ppp[5] ✅     =   60
+// *(ppp + 1*3 + 2)  =   *(ppp + 5)           =   ppp[5] ✅       =   60
 
 
 ============================================================= 
 ///////////////////////////////////////////////////////////////////  pointer  function
+-- take pointer as an argument   ::    targeting a specific starting position inside a raw array, pointers are preferred over references because you can directly shift the starting address
+
+-- return pointer   ::    pointer allows you to physically hold and pass around a raw memory address, whereas a reference acts immediately as an alias to the underlying object.
+
 
 
 void fun ( int arr[] )  // taking a pointer {22,33,44}
@@ -195,6 +197,12 @@ int main()
 
 int arr [] = { 11,22,33,44} ;
 fun ( arr + 1 );     
+🧠🧠🧠 array is like a pointer but it is in stack only
+             array                                                                    pointer to heap                   
+  1. compiler oblige you to write its size ( as it has a limited stack )  ,,, take size from user ( run time )
+  2. it can not point to different array or pointer                       ,,, change pointing
+  3. it is erased after function ends                   ,,, if a huge size (e.g 4 tera) , program will crash  , so better to delete               
+
 // arrays automatically decay into pointers when passed to functions.  
 // Passing arr + 1 passes the address of the element at index 1 (22).
 cout << arr[0] << "\n\n" ;     // no change to arr itself ( change was only to a temporary pointer )   ,,  result is 11
@@ -208,9 +216,41 @@ int** c = &b ;
 cal ( a , b , c );  //   3 (local)   ,  3 (pointer) ,  3 (pointer)  
 cout << a + *b + **c << endl ;  // 6 + 6 + 6    =   18
 
-
-
 }
+
+
+
+============================================================= 
+///////////////////////////////////////////////////////////////////  stack to heap
+// 🧠🧠🧠 heap will put data in ram , virtual memory of hard disc , ...  , so its so big
+// alaways should be a variable in stack holding whatever in heap
+// what start with  new   is in heap
+// what is in heap ( even a pointer ) has no name , and called by the name of stack pointer 
+
+// 2 pointers in stack           each pointing to array of 3 elements in heap
+int* p[2] ;
+p[0] = new int [3]{10 ,11 ,12};
+p[1] = new int [3]{13 ,14 ,15};
+
+cout << p[1][1] << endl ; // 14
+delete[] p[0] ;    // Frees the array from the heap
+delete[] p[1] ;
+//p[0] = nullptr; // Resets the stack variable so it points to nothing , no need as it is usually deleted after end of its function
+//p[1] = nullptr; // Resets the stack variable ( not remove it )
+
+//=================================
+
+// 1 pointer in stack            pointing to 2 pointers in heap        each pointing to array of 3 elements in heap [2D array]
+int** pp = new int* [2] ;
+pp[0] = new int [3]{10 ,11 ,12};
+pp[1] = new int [3]{13 ,14 ,15};
+
+cout << pp[1][2] << endl ; // 15
+delete [] pp[0];
+delete [] pp[1];
+
+delete [] pp ;
+//pp = nullptr; // Resets the stack variable 
 
 
 ============================================================= 
