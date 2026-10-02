@@ -29,11 +29,11 @@ const string updated_path = "E:/m11.txt";
 const string added_path   = "E:/m12.txt";
 const string deleted_path = "E:/m13.txt";
 
-enum enaccess { showy = 1<<0 , find = 1<<1 , update = 1<<2 , add = 1<<3 , del = 1<<4 , exit_app = 1<<5 } ;
+enum enaccess { findx = 1<<0 , showx = 1<<1 , updatex = 1<<2 , addx = 1<<3 , delx = 1<<4 , exit_appx = 1<<5 } ;
 enum enuser  
   { none       = 0 ,
-    auditor    = showy | find | exit_app ,
-    accountant = showy | find | update | add | del | exit_app }  ;  
+    auditor    = findx | showx | exit_appx ,
+    accountant = findx | showx | updatex | addx | delx | exit_appx }  ;  
 
 enuser current_user = none ;
 
@@ -125,61 +125,44 @@ mfile.close();
 
 // ════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════
 
-// stclient record_to_fields ( string& record , string sep = "#//#" ) 
-// {
-// vector<stclient>vst_fields ;
-// stclient field ;
-
-// size_t pos = record.find(sep);
-// string copy = ( pos == record.npos) ? record : record.substr( 0 , pos );
-
-// field.serial = (copy.empty()) ? 0 : stoi(copy) ;
-// record.erase( 0 , copy.size() + sep.size());
-
-// pos = record.find(sep);
-// copy = record.substr( 0 , pos );
-// field.name = (copy.empty()) ? "" : copy ;
-// record.erase( 0 , copy.size() + sep.size());
-
-// pos = record.find(sep);
-// copy = record.substr( 0 , pos );
-// field.pin = (copy.empty()) ? "" : copy ;
-// record.erase( 0 , copy.size() + sep.size());
-
-// pos = record.find(sep);
-// copy = record.substr( 0 , pos );
-// field.balance = (copy.empty()) ? 0 : stod(copy) ;
-// record.erase( 0 , copy.size() + sep.size());
-
-// if(!record.empty())
-// field.activity = (record.empty()) ? 0 : num_activity(record) ;
-
-// vst_fields.push_back(field);
-// return field ;
-// }
 
 
-// split string         string to vs
-// fields_to_record      vs to st
-// record_to_records     st to vst 
+vector<string> split_string ( string sentence , const string separator )
+{
+vector<string>vWords ;
+size_t pos = 0 ;
+string word ;
+  while ( ( pos = sentence.find(separator) ) != sentence.npos )
+  {
+  word = sentence.substr(0 , pos);
+  vWords.push_back(word) ;
+  sentence.erase( 0 , pos + separator.size() );
+  }
+if (!sentence.empty())
+vWords.push_back(sentence) ;
+return vWords ;
+}
 
 
-
-
-
-
-
-
-
-
-
-
-
+stclient fields_to_record ( vector<string> vRecord )
+{
+stclient stRecord ;
+//if (!vRecord.empty())
+{
+stRecord.serial    = stoi(vRecord[0]) ;
+stRecord.name      = vRecord[1] ;
+stRecord.pin       = vRecord[2] ;
+stRecord.balance   = stod(vRecord[3]) ;
+stRecord.activity  = num_activity(vRecord[4]) ;
+}
+return stRecord ;
+}
 
 
 vector<stclient> read_file ( string path = main_path )
 {
-vector<stclient> vst_records ;
+vector<string> vWords ;
+vector<stclient> vFile ;
 stclient client ;
 string line ;
 fstream mfile ;
@@ -189,12 +172,14 @@ if (mfile.is_open())
   while ( getline (mfile , line ))
   {
     if (line.empty()) continue;
-  client = record_to_fields(line);
-  vst_records.push_back(client);
+    //if (!line.empty() && line.back()=='\r') line.pop_back();
+  vWords = split_string(line , "#//#") ;
+  client = fields_to_record(vWords);
+  vFile.push_back(client);
   }
 mfile.close();
 }
-return vst_records ;
+return vFile ;
 }
 
 
@@ -218,17 +203,9 @@ void show ( stclient client )
 // ════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════
 
 
-bool find_client ( string pin , vector<stclient>& vst_clients , stclient& client , bool update = false  )
-{
-bool available = false ;
-for (auto& c : vst_clients )
-if ( c.pin == pin ) 
-{ 
-available = true ;  
-client = c ;
 
-        if (update)   
-        {
+void update ( vector<stclient>& vstFile , stclient& c  )
+{
         do {
              {    vector<stclient> record ;
                   c = login_or_update(c) ;
@@ -237,14 +214,40 @@ client = c ;
                   show (c) ;
              }
            } while ( mlib::want_to_repeat( " are these enetred data correct ?    y  or   n  \n"  , 'n'  ,  'y'  ) );
-                   write_file ( main_path , vst_clients , false )  ;
-        }   
-           break ;
-} 
-                  
-return available ;
+                   write_file ( main_path , vstFile , false )  ; 
 }
 
+
+
+
+
+
+bool find_proceed_client ( string pin , vector<stclient>& vstFile , stclient& client , enaccess access = enaccess::findx )
+{
+bool available = false ;
+for (auto& c : vstFile )
+if ( c.pin == pin ) 
+{ 
+available = true ;  
+client = c ;
+
+        if (access == enaccess::updatex )      update ( vstFile , c  ) ;
+        // {
+        // do {
+        //      {    vector<stclient> record ;
+        //           c = login_or_update(c) ;
+        //           record = struct_to_vst(c);
+        //           write_file ( updated_path , record )  ;
+        //           show (c) ;
+        //      }
+        //    } while ( mlib::want_to_repeat( " are these enetred data correct ?    y  or   n  \n"  , 'n'  ,  'y'  ) );
+        //            write_file ( main_path , vstFile , false )  ;
+        // }   
+        //    break ;
+        // } 
+}        
+return available ;
+}
 
 
 // ════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════
@@ -255,11 +258,11 @@ return available ;
 // ════════════════════════════════════════════════════════════════════════════════ 1 ════════════════════════════════════════════════════════════════
 
 
-void show_client_list ( vector<stclient>& printed_records )
+void show_client_list ( vector<stclient>& vstFile )
 {
 cout << "\n\n*********************************************************************\n";
 
-int siz = printed_records.size()  ;
+int siz = vstFile.size()  ;
 cout << right << setw(40) << " Client list ( " << siz << " )  client" ; 
 if ( siz > 1 ) cout << 's' ;
 cout << endl ;
@@ -270,7 +273,7 @@ cout << '|' << left << setw(15) << " serial" << '|' << left << setw(15) << " nam
 cout << "____________________________________________________________________________\n\n";
 
 
-for ( auto&c : printed_records )
+for ( auto&c : vstFile )
 cout << '|' << left << setw(15) << c.serial << '|' << left << setw(15) << c.name<< '|' << left << setw(15) << c.pin << 
         '|' << left << setw(15) << c.balance << '|' << left << setw(10) << c.activity << '|'  << endl ;
 cout << "____________________________________________________________________________\n";
@@ -285,7 +288,7 @@ system("pause > 0 ");
 // ════════════════════════════════════════════════════════════════════════════════════ 2 ════════════════════════════════════════════════════════════
 
 
-void show_client ( vector<stclient>& vst_clients )
+void show_client ( vector<stclient>& vstFile )
 {
 string pin ;
 stclient client ;
@@ -294,7 +297,7 @@ do {
 cout << " Please , enter account PIN to search for .\n";
 cin >> pin ;
 
-  if (find_client( pin , vst_clients , client ))
+  if (find_proceed_client( pin , vstFile , client ))
    show ( client ) ;
 
   else
@@ -311,7 +314,7 @@ cout << "\n\n\n";
 
 
 
-void update_client ( vector<stclient>& vst_clients )
+void update_client ( vector<stclient>& vstFile )
 {
 string pin ;
 stclient client ;
@@ -322,7 +325,7 @@ stclient client ;
         cout << "\n\n plz enter pin to update \n";
         getline ( cin >> ws , pin);
 
-        if (find_client( pin , vst_clients , client , true ))
+        if (find_proceed_client( pin , vstFile , client , enaccess::updatex ))
         cout << "           ......update done successfully......         \n";
 
         else
@@ -339,6 +342,13 @@ cout << "\n\n\n";
 
 // ═════════════════════════════════════════════════════════════════════════════════════════ 4 ═══════════════════════════════════════════════════════
 
+void add_client  ( vector<stclient>& vstFile )
+{
+
+}
+
+
+// ═════════════════════════════════════════════════════════════════════════════════════════ 5 ═══════════════════════════════════════════════════════
 
 void delete_client ()
 {
@@ -349,18 +359,6 @@ void delete_client ()
 cout << "\n\n\n";
 }
 
-// ═════════════════════════════════════════════════════════════════════════════════════════ 5 ═══════════════════════════════════════════════════════
-
-
-
-void add_client ()
-{
-
-
-
-
-cout << "\n\n\n";
-}
 
 
 
@@ -415,8 +413,8 @@ return choice ;
 int main()
 {
 //check_permission () ;
-vector<stclient>all_clients ;
-all_clients = read_file();
+vector<stclient>vstFile ;
+vstFile = read_file();
 
 int choice = 0 ;
 
@@ -428,15 +426,15 @@ choice = show_menu ();
   switch ( choice )
   {
   case 1 :
-  show_client_list(all_clients);
+  show_client_list(vstFile);
   break ;
 
   case 2 :
-  show_client(all_clients);
+  show_client(vstFile);
   break ;
 
   case 3 :
-  update_client(all_clients);
+  update_client(vstFile);
   break ;
  
 
