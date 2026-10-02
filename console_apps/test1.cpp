@@ -125,38 +125,56 @@ mfile.close();
 
 // ════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════
 
-stclient record_to_fields ( string& record , string sep = "#//#" ) 
-{
-vector<stclient>vst_fields ;
-stclient field ;
+// stclient record_to_fields ( string& record , string sep = "#//#" ) 
+// {
+// vector<stclient>vst_fields ;
+// stclient field ;
 
-size_t pos = record.find(sep);
-string copy = record.substr( 0 , pos );
+// size_t pos = record.find(sep);
+// string copy = ( pos == record.npos) ? record : record.substr( 0 , pos );
 
-field.serial = (copy.empty()) ? 0 : stoi(copy) ;
-record.erase( 0 , copy.size() + sep.size());
+// field.serial = (copy.empty()) ? 0 : stoi(copy) ;
+// record.erase( 0 , copy.size() + sep.size());
 
-pos = record.find(sep);
-copy = record.substr( 0 , pos );
-field.name = copy ;
-record.erase( 0 , copy.size() + sep.size());
+// pos = record.find(sep);
+// copy = record.substr( 0 , pos );
+// field.name = (copy.empty()) ? "" : copy ;
+// record.erase( 0 , copy.size() + sep.size());
 
-pos = record.find(sep);
-copy = record.substr( 0 , pos );
-field.pin = copy ;
-record.erase( 0 , copy.size() + sep.size());
+// pos = record.find(sep);
+// copy = record.substr( 0 , pos );
+// field.pin = (copy.empty()) ? "" : copy ;
+// record.erase( 0 , copy.size() + sep.size());
 
-pos = record.find(sep);
-copy = record.substr( 0 , pos );
-field.balance = stod(copy) ;
-record.erase( 0 , copy.size() + sep.size());
+// pos = record.find(sep);
+// copy = record.substr( 0 , pos );
+// field.balance = (copy.empty()) ? 0 : stod(copy) ;
+// record.erase( 0 , copy.size() + sep.size());
 
-if(!record.empty())
-field.activity = num_activity(record) ;
+// if(!record.empty())
+// field.activity = (record.empty()) ? 0 : num_activity(record) ;
 
-vst_fields.push_back(field);
-return field ;
-}
+// vst_fields.push_back(field);
+// return field ;
+// }
+
+
+// split string         string to vs
+// fields_to_record      vs to st
+// record_to_records     st to vst 
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 vector<stclient> read_file ( string path = main_path )
@@ -170,6 +188,7 @@ if (mfile.is_open())
 {
   while ( getline (mfile , line ))
   {
+    if (line.empty()) continue;
   client = record_to_fields(line);
   vst_records.push_back(client);
   }
