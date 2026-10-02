@@ -80,7 +80,7 @@ stclient login_or_update ( stclient& client , bool add = false )
           cin >> client.serial ;
 
           cout<< " enter name \n";
-          getline ( cin >> ws , client.name ) ;     // getline >> ws 
+          getline ( cin >> ws , client.name ) ;   
           
           if (add)
           { cout<< " enter pin \n";
@@ -214,10 +214,23 @@ void update ( vector<stclient>& vstFile , stclient& c  )
                   show (c) ;
              }
            } while ( mlib::want_to_repeat( " are these enetred data correct ?    y  or   n  \n"  , 'n'  ,  'y'  ) );
-                   write_file ( main_path , vstFile , false )  ; 
+    write_file ( main_path , vstFile , false )  ; 
 }
 
 
+void add ( vector<stclient>& vstFile , stclient& client  )
+{
+        do {
+             {                                            
+                  client = login_or_update(client , true ) ;
+                  vstFile.push_back(client);
+                  write_file ( added_path , vstFile )  ;
+                  show (client) ;
+             }
+           } while ( mlib::want_to_repeat( " are these enetred data correct ?    y  or   n  \n"  , 'n'  ,  'y'  ) );
+    write_file ( main_path , vstFile , false )  ; 
+
+}
 
 
 
@@ -229,22 +242,10 @@ for (auto& c : vstFile )
 if ( c.pin == pin ) 
 { 
 available = true ;  
-client = c ;
-
-        if (access == enaccess::updatex )      update ( vstFile , c  ) ;
-        // {
-        // do {
-        //      {    vector<stclient> record ;
-        //           c = login_or_update(c) ;
-        //           record = struct_to_vst(c);
-        //           write_file ( updated_path , record )  ;
-        //           show (c) ;
-        //      }
-        //    } while ( mlib::want_to_repeat( " are these enetred data correct ?    y  or   n  \n"  , 'n'  ,  'y'  ) );
-        //            write_file ( main_path , vstFile , false )  ;
-        // }   
-        //    break ;
-        // } 
+//client = c ;
+if      (access == enaccess::updatex )      update ( vstFile , c  ) ;
+else if (access == enaccess::addx )         add    ( vstFile , client  ) ;
+//else if (access == enaccess::delx )         del   ( vstFile , client  ) ;
 }        
 return available ;
 }
@@ -318,8 +319,6 @@ void update_client ( vector<stclient>& vstFile )
 {
 string pin ;
 stclient client ;
-//vector<stclient> record ;
-
 
   do {
         cout << "\n\n plz enter pin to update \n";
@@ -344,7 +343,25 @@ cout << "\n\n\n";
 
 void add_client  ( vector<stclient>& vstFile )
 {
+string pin ;
+stclient client ;
 
+  do {
+        cout << "\n\n plz enter pin to add \n";
+        getline ( cin >> ws , pin);
+
+        if (!find_proceed_client( pin , vstFile , client , enaccess::addx ))
+        cout << "           ......added successfully......         \n";
+
+        else
+        cout << " account does exists already \n";
+
+
+     } while ( mlib::want_to_repeat( "Do you want to add another client ?    y  or   n  \n"  ) );
+
+
+
+cout << "\n\n\n";
 }
 
 
@@ -436,8 +453,15 @@ choice = show_menu ();
   case 3 :
   update_client(vstFile);
   break ;
- 
 
+  case 4 :
+  add_client(vstFile);
+  break ;
+
+  // case 5 :
+  // delete_client(vstFile);
+  // break ;
+ 
   case 6 :
   break ;
   }
