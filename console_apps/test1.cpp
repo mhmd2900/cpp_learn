@@ -204,8 +204,12 @@ void show ( stclient client )
 
 
 
-void update ( vector<stclient>& vstFile , stclient& c  )
+void update ( string pin , vector<stclient>& vstFile , stclient& client )
 {
+
+for (auto& c : vstFile )
+if ( c.pin == pin ) 
+{ 
         do {
              {    vector<stclient> record ;
                   c = login_or_update(c) ;
@@ -214,40 +218,57 @@ void update ( vector<stclient>& vstFile , stclient& c  )
                   show (c) ;
              }
            } while ( mlib::want_to_repeat( " are these enetred data correct ?    y  or   n  \n"  , 'n'  ,  'y'  ) );
+}
     write_file ( main_path , vstFile , false )  ; 
+    cout << "           ......update done successfully......         \n";
 }
 
 
-void add ( vector<stclient>& vstFile , stclient& client  )
+void add ( string pin , vector<stclient>& vstFile , stclient& client )
 {
+  vector<stclient> record ;  
+  client.pin = pin ;
+
         do {
-             {                                            
-                  client = login_or_update(client , true ) ;
-                  vstFile.push_back(client);
-                  write_file ( added_path , vstFile )  ;
+             {              
+                                         
+                  client = login_or_update(client ) ;
+                   record = struct_to_vst(client);
                   show (client) ;
              }
            } while ( mlib::want_to_repeat( " are these enetred data correct ?    y  or   n  \n"  , 'n'  ,  'y'  ) );
+    vstFile.push_back(client) ;
+    write_file ( added_path , record )  ;
     write_file ( main_path , vstFile , false )  ; 
 
 }
 
 
 
-
-bool find_proceed_client ( string pin , vector<stclient>& vstFile , stclient& client , enaccess access = enaccess::findx )
+void del ( string pin , vector<stclient>& vstFile , stclient& client )
 {
-bool available = false ;
+
+// vector<stclient>::iterator it = vstFile.begin() ;
+
+for ( auto it = vstFile.begin() ; it != vstFile.end() ;  )
+{
+
+
+}
+
+
+}
+
+
+
+
+
+
+bool find ( string pin , vector<stclient>& vstFile )
+{
 for (auto& c : vstFile )
-if ( c.pin == pin ) 
-{ 
-available = true ;  
-//client = c ;
-if      (access == enaccess::updatex )      update ( vstFile , c  ) ;
-else if (access == enaccess::addx )         add    ( vstFile , client  ) ;
-//else if (access == enaccess::delx )         del   ( vstFile , client  ) ;
-}        
-return available ;
+if ( c.pin == pin )   return true ;
+return false ;
 }
 
 
@@ -298,7 +319,7 @@ do {
 cout << " Please , enter account PIN to search for .\n";
 cin >> pin ;
 
-  if (find_proceed_client( pin , vstFile , client ))
+  if (find( pin , vstFile ))
    show ( client ) ;
 
   else
@@ -324,8 +345,8 @@ stclient client ;
         cout << "\n\n plz enter pin to update \n";
         getline ( cin >> ws , pin);
 
-        if (find_proceed_client( pin , vstFile , client , enaccess::updatex ))
-        cout << "           ......update done successfully......         \n";
+        if ( find( pin , vstFile )) 
+        update ( pin , vstFile , client ) ;
 
         else
         cout << " account does not exist \n";
@@ -350,27 +371,39 @@ stclient client ;
         cout << "\n\n plz enter pin to add \n";
         getline ( cin >> ws , pin);
 
-        if (!find_proceed_client( pin , vstFile , client , enaccess::addx ))
-        cout << "           ......added successfully......         \n";
+        if ( ! find( pin , vstFile )) 
+        add ( pin , vstFile , client ) ;
 
         else
-        cout << " account does exists already \n";
+        cout << " account already exists \n";
 
 
      } while ( mlib::want_to_repeat( "Do you want to add another client ?    y  or   n  \n"  ) );
 
 
-
 cout << "\n\n\n";
-}
+ }
 
 
 // ═════════════════════════════════════════════════════════════════════════════════════════ 5 ═══════════════════════════════════════════════════════
 
-void delete_client ()
+void delete_client  ( vector<stclient>& vstFile )
 {
+string pin ;
+stclient client ;
+
+  do {
+        cout << "\n\n plz enter pin to delete \n";
+        getline ( cin >> ws , pin);
+
+        if ( find( pin , vstFile )) 
+        del ( pin , vstFile , client ) ;
+
+        else
+        cout << " account does not exists \n";
 
 
+     } while ( mlib::want_to_repeat( "Do you want to add another client ?    y  or   n  \n"  ) );
 
 
 cout << "\n\n\n";
@@ -458,9 +491,9 @@ choice = show_menu ();
   add_client(vstFile);
   break ;
 
-  // case 5 :
-  // delete_client(vstFile);
-  // break ;
+  case 5 :
+  delete_client(vstFile);
+  break ;
  
   case 6 :
   break ;
