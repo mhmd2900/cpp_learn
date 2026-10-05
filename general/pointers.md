@@ -367,34 +367,29 @@ else if ( st == "all")
 ///////////////////////////////////////⚠️⚠️⚠️   iterators
 // <algorithm>
 vector<int>vnum { 11,22,33,44,55,66};
-vector<int>::iterator it ;
 vector<int>::iterator iter ;
-it = vnum.begin() ; 
 iter = vnum.begin() ; 
 
-for ( ; it != vnum.end() ; it ++ )
- cout << *it << "\n";
-
-cout << endl ;
+for ( ; iter != vnum.end() ; iter ++ )
+cout << *iter << "\n\n";
 
 advance ( iter , 3 );     
-cout << *iter << "\n";     // 44
+cout << *iter << "\n";     // 44     { 11,22,33,44,55,66};
 
 advance ( iter , -2 );
-cout << *iter << "\n";    // 22
+cout << *iter << "\n\n";    // 22        { 11,22,33,44,55,66};
 
-cout << endl ;
 
-// .erase(start, end) removes elements starting at start up to, but not including, end // also Re-assign the Iterator
+vnum.erase ( iter , iter+ 2) ;         // from   { 11,22,33,44,55,66};   to     { 11,44,55,66};
+cout << *iter << endl << endl;         // 44     
+cout << *vnum.begin() << endl ;        // 11
+cout << *(vnum.begin()+1) <<"\n\n";    // 44
 
-vnum.erase ( iter , iter+ 2) ;  
-cout << *iter << endl;      // 44
-
-cout << endl ;
-
-vnum.erase ( iter , vnum.end()- 2) ;   //vnum.begin() points to 33 (index 0).    //vnum.end() is the position after the last element (66).
-cout << *iter << endl;               // 55
-cout << *vnum.begin() << endl;      // 11
+vnum.erase ( iter , vnum.end()- 2) ;   // from   { 11,44,55,66};    to    { 11,55,66};
+cout << *iter << endl;                  // 55
+cout << *vnum.begin() << endl;          // 11
+cout << *(vnum.begin()+1) << endl;      // 55
+cout << *(vnum.begin()+2) << endl;      // 66
 
 int count_times = count(vnum.begin() , vnum.end() , 55 ); // specific number repitition
 reverse(vnum.begin() , vnum.end()  );   // reverse order
