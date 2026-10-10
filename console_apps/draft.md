@@ -19,7 +19,10 @@
 // function underscores pre and post
 // 1st getline ( cin >>ws  , ... );
 // pass array decay to pointer , if needing only some of its elements
+// bool function return expression ( not return true )
+// int function return ternary operator ( not return true )
 
 // system("pause");
 
+///////////////////////////////////////////////
 
