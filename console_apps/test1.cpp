@@ -9,7 +9,7 @@ string convert_text ( int num )
 string ones[20] = { "" , "one " , "two " , "three " , "four " , "five " , "six " , "seven " , "eight " , "nine " , "ten " ,
 "eleven " , "twelve " , "thirteen " , "fourteen " , "fifteen " , "sixteen " , "seventeen " , 
 "eighteen " , "nineteen " } ;
-string twenties[10] = { "" , "" , "twenty " , "thirty " , "forty " , "fifty " , "sixty " , "seventy " ,
+string ties[10] = { "" , "" , "twenty " , "thirty " , "forty " , "fifty " , "sixty " , "seventy " ,
     "eighty " , "ninety " };
 
 
@@ -20,7 +20,7 @@ else if ( num >= 1 && num <= 19 )
 return ones[num] ;
 
 else if ( num >= 20 && num <= 99 )
-return twenties[num/10]  + convert_text(num %10);
+return ties[num/10]  + convert_text(num %10);
 
 else if ( num >= 100 && num <= 199 )
 return "hundred " + convert_text(num %100);

@@ -2,27 +2,31 @@
 // structure of vectors , enums , arrays
 // dynamic array of vectors
 
-
 // static global variable e.g file
 // static local variable vs reference vs pointer
 // index vs range vs iterator_based loops
 // size_t  for counters
 
-// ternary operator
+// ternary operator  ( function return ,  assignment )
 // bitwise
 
 /////////////////////////////////////////////////////   functions
 // declaration without definition for later organization
-// default parameters ( even only bool true )
-// function overload ( enum parameter )
+// take input into string array , keep possible output in int array ( unneeded value at begining )
+// default parameters ( bool , enum )
+// function overload ( enum parameter , opposite parameters )
 // function internal call vs pass by parameter
 // function underscores pre and post
 // 1st getline ( cin >>ws  , ... );
 // pass array decay to pointer , if needing only some of its elements
 // bool function return expression ( not return true )
-// int function return ternary operator ( not return true )
+// return {DayOrderInYear, Month, year};     elements of struct as a default
+
+
+// exception types
+// try & catch
 
 // system("pause");
 
-///////////////////////////////////////////////
+
 

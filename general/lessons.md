@@ -191,6 +191,7 @@ char name[] = "mhmd";
 printf(" my name is %s \n" , name ) ;        //mhmd     
 printf(" my name is %6s \n" , name ) ;       //  mhmd      
 printf(" my name is %*s \n\n" , 6 , name ) ; //  mhmd      🧠🧠
+printf(" %6s %6s %6s %6s %6s %6s %6s " , "sun" , "mon" , "tues" , "wedn" , "thurs" , "fri" , "sat" );
 
 char ch = 'c';
 printf("first letter is %c \n" , 'm');        //first letter is m      
