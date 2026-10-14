@@ -5,12 +5,36 @@
 using namespace std ;
 
 
+struct stdate1 {
+short day = 28 ;
+short month = 2 ;
+short year = 2001 ;
+};
+
+struct stdate2 {
+short day = 1 ;
+short month = 1 ;
+short year = 2022 ;
+};
+
+
+// bool which_is ()
+// {
+// stdate1 date1 ;
+// stdate2 date2 ;
+// // return ( date1.year < date2.year) ?  true   :  
+// //                                     ( date1.year == date2.year  
+// //                                       ? ( date1.month < date2.month ? true :
+// //                                         (date1.month == date2.month  ?
+// //                                             date1.day < date2.day  : false))      
+// //                                   : false ) ;
+// return date1.year == date2.year ? (  date1.month == date2.month ? ( date1.day == date2.day ):false ):false;
+// }
+
 bool is_leap (int year)
 {
 return ( (year%400 == 0) || (year%4 == 0 && year%100 != 0)) ;
 }
-
-
 
 int dayscount_in_month ( int month , int year )
 {
@@ -19,125 +43,73 @@ return ( month == 2 ?  (is_leap(year ) ? 29 :  28)
                     : days[month]               ) ;
 }
 
+bool last_day ( stdate1& date1  )
+{ 
+int day =  dayscount_in_month( date1.month , date1.year ) ;
+return date1.day == day ;
+}
 
-
-int day_index ( int day , int month , int year )
+bool last_month ( stdate1& date1 )
 {
-//string week_days[] = {"sunday" , "monday" , "tuesday" , "wednesday" , "thursday" , "friday" , "saturday"};
-int y , d , m , a ;
-a = (14 - month ) / 12 ;
-y = year - a ;
-m = month + 12*a - 2 ;
-d = (day + y + y/4 - y/100 + y/400 + 31*m/12 ) % 7 ;
-return d ;
-//return week_days[d];
+return date1.month == 12 ;
+}
+
+void add_one ( stdate1& date1 )
+{
+int d = date1.day , m = date1.month  , y = date1.year ;
+// d = last_day(date1) ? ( d = 1 , ( last_month (date1) ? ( m = 1 , y ++ )  : m ++    ))     :  d ++ ;
+last_day(date1) ? ( d = 1 , last_month (date1) ?  ( m = 1 , y ++  )  : m++  )   : d++   ;
+
+// cout << d << "/" << m << "/" << y ;
+printf(" \n  %i / %i / %i " , d , m , y );
 }
 
 
-void print ( int month )
+void daycount_daydate ( int count , int day , int month , int year )
 {
-string week_days[] = {"" , "Jan" , "Feb" , "Mar" , "Apr" , "May" , "June" , "July" , "Aug", "Sep", "Oct", "Nov", "Dec"};
-cout << "\n\n======================  "<< week_days[month] << "  ======================" << endl ;
-printf(" %6s %6s %6s %6s %6s %6s %6s " , "sun" , "mon" , "tues" , "wedn" , "thurs" , "fri" , "sat" );
-cout << endl ;
-}
-
-
-void cal_month ( int month , int year , int day = 1 )
-{
-vector<int>days(dayscount_in_month(month,year));
-for ( int i = 0 ; i < days.size() ; i++)
-days.at(i) = i + 1 ;
-
-int d_index = day_index ( 1 , month , year );
-
-
-print ( month );
-
-for ( int i = 0 ; i < d_index ; i ++ )
-printf(" %6s" , " ") ;
- 
-
-for ( int x = 0 ; x < days.size() ; x ++ )
-{
-printf(" %5d " , days[x]) ;
-if (( d_index + days[x]) %7 == 0 )   cout << endl ;
-}
-
-cout << "\n==================================================\n" << endl ;
-}
-
-
-void cal_year ( int year )
-{
-cout << "\n\n======================  Calendar"<< year << "  ======================" << endl ; 
-for ( int i = 1 ; i < 13 ; i ++ )
-cal_month( i , 2030 );
-}
-
-void daydate_daycount( int day , int month , int year)
-{
-int count = 0  ;
-for ( int i = 1 ; i < month ; i++ )
-count += dayscount_in_month(i , year) ;
+int month_count = month ;
 count += day ;
-cout << count << endl ;
-}
+int year_count = is_leap(year+1) ? 366  : 365 ;
 
-void daycount_daydate ( int count , int year )
-{
-int month = 1 ;
-for ( ; month < 12 ; month++ )
-{
-int dd = dayscount_in_month( month , year) ;
-if ( count <= dd )    break ;
-count -= dd ;
-}
+    if ( month <= 2)
+    while ( count > year_count ) 
+    {
+    year_count = is_leap(year) ? 366  : 365 ;
+    count -= year_count ;
+    year ++ ; 
+    }
 
-cout << " day is " << count << "/" << month << "/" << year << "\n" ;
-}
+    else
+    while ( count > year_count ) 
+    {
+    year_count = is_leap(year+1) ? 366  : 365 ;
+    count -= year_count ;
+    year ++ ; 
+    }
 
+while ( true )
+    {
+    int dd = dayscount_in_month ( month_count , year) ;
+    if  ( count <= dd )    break ;
+
+    count -= dd ;
+    month_count++ ;
+
+        if ( month_count > 12 )
+        {
+        month_count = 1 ;
+        year ++ ;
+        }
+    }
+printf(" exact day is %i/%i/%i " , count , month_count , year  ) ;
+}
 
 
 
 int main()
 {
-//cal_year( 2030 );
-//daydate_daycount( 20  ,   9  , 2022 );
-daycount_daydate(263 , 2022);
+stdate1 date1 ;
+daycount_daydate(1 , 28 , 2 , 2000);
+add_one ( date1 );
 }
 
-
-
-
-
-
-
-
-
-// void count ( int& days , int& hours , int& minutes , int& seconds )
-// {
-// hours = days * 24 ;
-// minutes = hours * 60 ;
-// seconds = minutes * 60 ;
-// }
-
-
-
-// int year = 2000 ;
-// int days = 0 ;
-
-// days = (is_leap(year)) ? 366 : 365 ;
-
-// days = dayscount_in_month ( 2 , 2000 ) ;
-
-// int hours = 0 ;
-// int minutes = 0 ;
-// int seconds = 0 ;
-
-// count ( days , hours , minutes , seconds ) ;
-//cout << days << endl << hours << endl << minutes << endl << seconds ;
-
-
-
-//cout << day_index(1,9,2022) << endl ;

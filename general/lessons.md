@@ -85,7 +85,7 @@ git checkout  commit number
 //////////////////// ⚠️⚠️⚠️ternary operator
 a == b ? c = 6 : c= 66 ;
 c = ( a==b ) ? 6 : 66 ;
-
+last_day(date1) ? ( d = 1 , last_month (date1) ?  ( m = 1 , y ++  )  : m++  )   : d++   ; // add with , not && or ;
 
 ============================================================= 
 ////////////////////////////    ⚠️⚠️⚠️input 

@@ -23,6 +23,8 @@
 // return {DayOrderInYear, Month, year};     elements of struct as a default
 
 
+// output mixed variables and literals , use printf
+
 // exception types
 // try & catch
 
