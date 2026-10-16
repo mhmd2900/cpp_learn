@@ -20,7 +20,9 @@
 // 1st getline ( cin >>ws  , ... );
 // pass array decay to pointer , if needing only some of its elements
 // bool function return expression ( not return true )
+// function return ( its bool parameter in ternary ) to give result
 // return {DayOrderInYear, Month, year};     elements of struct as a default
+// if passed struct as a parameter , make aliases for its elements
 
 
 // output mixed variables and literals , use printf
