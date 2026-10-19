@@ -10,7 +10,6 @@ using namespace std ;
 
 int main()
 {
-mdates::print(10);
 
 
 
