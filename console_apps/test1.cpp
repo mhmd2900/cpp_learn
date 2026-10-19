@@ -35,7 +35,7 @@ enum enaccess { showx = 1 , findx = 2 , updatex = 3 , addx = 4 , delx = 5 , tran
 enum enacc    { findxx = 1<<0 , showxx = 1<<1 , updatexx = 1<<2 , addxx = 1<<3 , delxx = 1<<4 , transxx = 1<<5 , exit_appxx = 1<<6 } ;
 enum enuser  
   { none       = 0 ,
-    auditor    = findxx | showxx | transxx  | exit_appxx ,
+    auditor    = findxx | showxx | transxx  | exit_appxx ,  // enacc is global variable , no need to write enacc::findxx
     accountant = findxx | showxx | updatexx | addxx | delxx | transxx | exit_appxx } ;  
 
 enuser current_user = none ;
@@ -54,16 +54,11 @@ string num_activity ( bool is_active );       // just declaration for later orga
 bool num_activity ( string is_active );       // function overloading   ✅✅✅
 
 
-
 // ════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════
 //                                                                     write
 // ════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════
-                                                                    // write 
-                                                                    // string → st → vst
-
-                                                                    // read
-                                                                    // string → vs → st → vst
-
+                                                                    // write  ( string → st → vst )
+                                                                    // read  ( string → vs → st → vst )
 
 stclient login_or_update ( stclient& client , bool add = false )
 {
@@ -84,17 +79,12 @@ stclient login_or_update ( stclient& client , bool add = false )
 return client ;
 }
 
-
 vector<stclient> struct_to_vst (stclient& client )
 {
 vector<stclient> records ;
 records.push_back(client) ;
 return records ;
 }
-
-
-
-
 
 void write_file ( string path , vector<stclient>& client , bool check = true )  // default parameter ✅✅✅
 {
@@ -110,7 +100,6 @@ for ( int i = 0 ; i < client.size() ; i++)
 mfile.close();
 }
 }
-
 
 
 // ════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════
@@ -134,7 +123,6 @@ vWords.push_back(sentence) ;
 return vWords ;
 }
 
-
 stclient fields_to_record ( vector<string> vRecord , int& count)
 {
 stclient stRecord ;
@@ -148,7 +136,6 @@ stRecord.activity  = num_activity(vRecord[4]) ;
 }
 return stRecord ;
 }
-
 
 vector<stclient> read_file ( string path = main_path )
 {
@@ -176,6 +163,7 @@ return vFile ;
 
 
 // ════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════
+
 void show ( stclient client ) ;                                   // just declaration for later organization ✅✅✅
 void update ( string pin , vector<stclient>& vstFile , stclient& client ); 
 void add ( string pin , vector<stclient>& vstFile , stclient& client );
@@ -191,7 +179,6 @@ if ( c.pin == pin )   return true ;
 return false ;
 }
 
-
 string num_activity ( bool is_active )
 {
 if ( is_active == 1 )
@@ -199,7 +186,6 @@ return "active" ;
 else 
 return "not active" ;
 }
-
 
 bool num_activity ( string is_active )      
 {
@@ -209,14 +195,11 @@ else
 return 0 ;
 }
 
-
 // ════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════
 //                                                                               CHOICES
 // ════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════
 
-
 // ════════════════════════════════════════════════════════════════════════════════ show list ════════════════════════════════════════════════════════════════
-
 
 void show_client_list ( vector<stclient>& vstFile )
 {
@@ -244,7 +227,6 @@ cout << "\n Press any key to return to main menu . . .\n ";
 cout << "\n\n\n";
 system("pause > 0 ");                       //✅✅✅ as there is no repeat option
 }
-
 
 // ════════════════════════════════════════════════════════════════════════════════════ show client ════════════════════════════════════════════════════════════
 void show ( stclient client )
@@ -286,7 +268,6 @@ do {
 
 }
 
-
 // ══════════════════════════════════════════════════════════════════════════════════════ update ══════════════════════════════════════════════════════════
 
 void update ( string pin , vector<stclient>& vstFile )
@@ -308,8 +289,6 @@ if ( c.pin == pin )
     cout << "           ......update done successfully......         \n";
 }
 
-
-
 void update_client ( vector<stclient>& vstFile )
 {
 system("cls");     
@@ -328,7 +307,6 @@ string pin ;
      } while ( mlib::want_to_repeat( "Do you want to update another client ?    y  or   n  \n"  ) );
 
 }
-
 
 // ═════════════════════════════════════════════════════════════════════════════════════════ add ═══════════════════════════════════════════════════════
 void add ( string pin , vector<stclient>& vstFile , stclient& client )
@@ -350,7 +328,6 @@ void add ( string pin , vector<stclient>& vstFile , stclient& client )
 
 }
 
-
 void add_client  ( vector<stclient>& vstFile )
 {
 system("cls");     
@@ -371,7 +348,6 @@ stclient client ;
      } while ( mlib::want_to_repeat( "Do you want to add another client ?    y  or   n  \n"  ) );
 
  }
-
 
 // ═════════════════════════════════════════════════════════════════════════════════════════ delete ═══════════════════════════════════════════════════════
 
@@ -400,7 +376,6 @@ vector<stclient> record ;
 
 }
 
-
 void delete_client  ( vector<stclient>& vstFile )
 {
 system("cls");     
@@ -423,10 +398,10 @@ string pin ;
 // system("pause > 0 ");                // ✅✅✅   no need to pause  as patient choose not to repeat
 }
 
+
 // ════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════
 //                                                                     transaction menu
 // ════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════
-
 
 
 void show_balances ( vector<stclient>& vstFile )
@@ -457,11 +432,6 @@ cout << " TOTAL BANK BALANCES IS         :    " << sum  ;
 cout << "\n\n Press any key to return to main menu . . .\n ";
 system("pause > 0 ");                 
 }
-
-
-
-
-
 
 void  do_deposit_withdraw ( string pin , vector<stclient>& vstFile , entrans trans )//✅✅✅  both same function 
 {  
@@ -497,9 +467,6 @@ show(c);
 system("cls");
 }
 
-
-
-
 void deposit_withdraw ( vector<stclient>& vstFile , entrans trans )
 {
 system("cls");     // ✅✅✅  at the beginning of all independent functions
@@ -520,8 +487,6 @@ string pin ;
    
 }
 
-
-
 entrans show_transaction_menu ( vector<stclient>& vstFile )
 {
 cout << "=================================================================\n";
@@ -537,9 +502,6 @@ cout << "=================================================================\n";
 int choice = mlib::get_number( " Choose which action to perform from  1  to  4  \n" , 1 , 4 ) ;
 return (entrans)choice ;
 }
-
-
-
 
 void transaction_menu  ( vector<stclient>& vstFile )
 {
@@ -576,7 +538,6 @@ system("cls");
 //                                                                       MENU
 // ════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════
 
-
 void check_permission ()
 {
 int passcode = mlib::get_number(" enter your passcode \n ");
@@ -584,9 +545,6 @@ if      ( passcode == 123)   { cout << " welcome   ,   accountant\n \n" ;    cur
 else if ( passcode == 1)     { cout << " welcome   ,   auditor   \n \n" ;    current_user = auditor    ; } 
 else                         { cout << " not a member , want to sign Up ? \n \n" ;    exit(0)          ; } 
 }
-
-
-
 
 enaccess show_menu ()
 {
@@ -607,7 +565,6 @@ int choice = mlib::get_number( " Choose which action to perform from  1  to  7  
 
 return (enaccess)choice ;
 }
-
 
 // *********************************************************************************************************************************************
 // *********************************************************************************************************************************************
@@ -699,7 +656,7 @@ choice = show_menu ();
   }
 } while ( choice != enaccess::exit_appx ) ;     // return to main menu ✅✅✅ spontaneously without calling specific function and chance for stack overflow
 
-cout << " We are happy for this visit     Thank you  ";
+cout << " We are happy for your visit     Thank you  ";
 
 }
 
