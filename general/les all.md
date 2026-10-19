@@ -393,7 +393,23 @@ cout << word ;
 
 
 
+string replace_str ( stdate& date , string word , string sep = "/" )
+{
+short pos = 0 ;
+string dd = "dd";
+string mm = "mm";
+string yyyy = "yyyy";
+if ( ( pos = word.find("dd") ) != word.npos )
+word = word.replace( pos , dd.size() , to_string(date.day) ) ;
 
+if ( ( pos = word.find("mm") ) != word.npos )
+word = word.replace( pos , mm.size() , to_string(date.month) ) ;
+
+if ( ( pos = word.find("yyyy") ) != word.npos )
+word = word.replace( pos , yyyy.size() , to_string(date.year) ) ;
+
+return word ;
+}
 
 
 
