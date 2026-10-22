@@ -257,7 +257,7 @@ mlib::reset_screen();
 do 
 {
 game ( );
-} while ( mlib::want_to_repeat(" do you want to repeat ?  [y/n] \n"));
+} while ( mlib::repeat_vs_proceed(" do you want to repeat ?  [y/n] \n"));
 
 
 return 0;

@@ -199,7 +199,6 @@ return 0 ;
 void show_client_list ( vector<stclient>& vstFile )
 {
 system("cls");     
-//cout << "\n\n*********************************************************************\n";
 
 int siz = vstFile.size()  ;
 cout << right << setw(40) << " Client list ( " << siz << " )  client" ; 
@@ -218,7 +217,6 @@ cout << '|' << left << setw(15) << i+1 << '|' << left << setw(15) << vstFile[i].
 cout << "____________________________________________________________________________\n";
 
 cout << "\n Press any key to return to main menu . . .\n ";
-//cout << "\n\n\n";
 system("pause > 0 ");                       //✅✅✅ as there is no repeat option
 }
 
@@ -229,7 +227,7 @@ void show ( stclient client )
   cout << "______________________________________\n";
   cout << "           client details         \n";
   cout << "______________________________________\n";
-  cout << " serial    :  " << client.serial << "\n" ;
+  //cout << " serial    :  " << client.serial << "\n" ;         // not yet added
   cout << " name      :  " << client.name << "\n" ;
   cout << " pin       :  " << client.pin << "\n" ;
   cout << " balance   :  " << client.balance << "\n" ;
@@ -258,7 +256,7 @@ do {
     else
       cout << " account does not exist \n";
 
-} while ( mlib::want_to_repeat( "Do you want to show another client ?    y  or   n  \n"));
+} while ( mlib::repeat_vs_proceed( "Do you want to show another client ?    y  or   n  \n"));
 
 }
 
@@ -266,19 +264,19 @@ do {
 
 void update ( string pin , vector<stclient>& vstFile )
 {
-
+vector<stclient> record ;
 for (auto& c : vstFile )
 if ( c.pin == pin ) 
 { 
         do {
-             {    vector<stclient> record ;
+             {    
                   c = login_or_update(c) ;
                   record = struct_to_vst(c);
-                  write_file ( updated_path , record )  ;
                   show (c) ;
              }
-           } while ( mlib::want_to_repeat( " are these enetred data correct ?    y  or   n  \n"  , 'n'  ,  'y'  ) );
-}
+           } while ( mlib::repeat_vs_proceed( " are these enetred data correct ?    y  or   n  \n"  , 'n'  ,  'y'  ) );
+  write_file ( updated_path , record )  ;
+}   
     write_file ( main_path , vstFile , false )  ; 
     cout << "           ......update done successfully......         \n";
 }
@@ -298,7 +296,7 @@ string pin ;
         cout << " account does not exist \n";
 
 
-     } while ( mlib::want_to_repeat( "Do you want to update another client ?    y  or   n  \n"  ) );
+     } while ( mlib::repeat_vs_proceed( "Do you want to update another client ?    y  or   n  \n"  ) );
 
 }
 
@@ -312,13 +310,14 @@ void add ( string pin , vector<stclient>& vstFile , stclient& client )
              {              
                                          
                   client = login_or_update(client ) ;
-                   record = struct_to_vst(client);
+                  record = struct_to_vst(client);
                   show (client) ;
              }
-           } while ( mlib::want_to_repeat( " are these enetred data correct ?    y  or   n  \n"  , 'n'  ,  'y'  ) );
-    vstFile.push_back(client) ;
+           } while ( mlib::repeat_vs_proceed( " are these enetred data correct ?    y  or   n  \n"  , 'n'  ,  'y'  ) );
     write_file ( added_path , record )  ;
+    vstFile.push_back(client) ;
     write_file ( main_path , vstFile , false )  ; 
+    cout << "           ......account added successfully......         \n";
 
 }
 
@@ -339,7 +338,7 @@ stclient client ;
         cout << " account already exists \n";
 
 
-     } while ( mlib::want_to_repeat( "Do you want to add another client ?    y  or   n  \n"  ) );
+     } while ( mlib::repeat_vs_proceed( "Do you want to add another client ?    y  or   n  \n"  ) );
 
  }
 
@@ -347,27 +346,24 @@ stclient client ;
 
 void del ( string pin , vector<stclient>& vstFile )
 {
-
 vector<stclient>::iterator it = vstFile.begin() ;
 vector<stclient> record ;
 
-        do {
-             it = vstFile.begin() ; // // <--- Reset finger back to item #1 every time!( when enterd data are not correct)
              for ( ; it != vstFile.end() ; it++)
-               {
                 if ( it->pin == pin ) 
                 {
                   record = struct_to_vst(*it);
-                  write_file ( deleted_path , record )  ;
                   show (*it) ;   
                   break ; 
                 }
-                } 
-           } while ( mlib::want_to_repeat( " are these enetred data correct ?    y  or   n  \n"  , 'n'  ,  'y'  ) );
 
-    vstFile.erase( it );  
-    write_file ( main_path , vstFile , false )  ; 
-
+      if ( mlib::repeat_vs_proceed( " sure to delete this acoount  ?  y to confirm     c to cancel "  , 'y' , 'c'))
+      {
+        write_file ( deleted_path , record )  ;
+        vstFile.erase( it );  
+        write_file ( main_path , vstFile , false )  ; 
+        cout << "           ......account deleted successfully......         \n";
+      }
 }
 
 void delete_client  ( vector<stclient>& vstFile )
@@ -386,12 +382,10 @@ string pin ;
         cout << " account does not exists \n";
 
 
-     } while ( mlib::want_to_repeat( "Do you want to delete another client ?    y  or   n  \n"  ) );
+     } while ( mlib::repeat_vs_proceed( "Do you want to delete another client ?    y  or   n  \n"  ) );
 
-// cout << "\n Press any key to return to main menu . . .\n ";
 // system("pause > 0 ");                // ✅✅✅   no need to pause  as patient choose not to repeat
 }
-
 
 // ════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════
 //                                                                     transaction menu
@@ -437,7 +431,7 @@ for ( auto& c : vstFile )
 if ( c.pin == pin )   
 {
 show(c);
-    if ( mlib::want_to_repeat(" this is the account . Do you need to perform a transaction ?  y  or   n  \n " , 'y' , 'n'))
+    if ( mlib::repeat_vs_proceed(" this is the account . Do you need to perform a transaction ?  y  or   n  \n " , 'y' , 'n'))
     {
     cout << " plz enter transaction amount \n ";
     cin >> tran ;
@@ -477,7 +471,7 @@ string pin ;
         cout << " account does not exists \n";
 
 
-     } while ( mlib::want_to_repeat( "Do you want to perform another transaction ?    y  or   n  \n"  ) );
+     } while ( mlib::repeat_vs_proceed( "Do you want to perform another transaction ?    y  or   n  \n"  ) );
    
 }
 
@@ -526,7 +520,6 @@ choice = show_transaction_menu(vstFile) ;
 system("cls");
 
 }
-
 
 // ════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════
 //                                                                       MENU
@@ -583,7 +576,8 @@ choice = show_menu ();
         if ( current_user == accountant || current_user == auditor )
         show_client_list(vstFile);
         else 
-        cout << " not allowed \n";
+        {cout << " not allowed \n";
+        system("pause");}
         }
         break ;
 
@@ -592,7 +586,8 @@ choice = show_menu ();
         if ( current_user == accountant || current_user == auditor )
         show_client(vstFile);
         else 
-        cout << " not allowed \n";
+        {cout << " not allowed \n";
+        system("pause");}
         }
         break ;
 
@@ -601,7 +596,8 @@ choice = show_menu ();
         if ( current_user == accountant || current_user == auditor )
         update_client(vstFile);
         else 
-        cout << " not allowed \n";
+        {cout << " not allowed \n";
+        system("pause");}
         }
         break ;
 
@@ -610,7 +606,8 @@ choice = show_menu ();
         if ( current_user == accountant )
         add_client(vstFile);
         else 
-        cout << " not allowed \n";
+        {cout << " not allowed \n";
+        system("pause");}
         }
         break ;
 
@@ -619,7 +616,8 @@ choice = show_menu ();
         if ( current_user == accountant )
         delete_client(vstFile);
         else 
-        cout << " not allowed \n";
+        {cout << " not allowed \n";
+        system("pause");}
         }
         break ;
 
@@ -628,7 +626,8 @@ choice = show_menu ();
         if ( current_user == accountant )
         transaction_menu(vstFile);
         else 
-        cout << " not allowed \n";
+        {cout << " not allowed \n";
+        system("pause");}
         }
         break ;
       
@@ -638,7 +637,6 @@ choice = show_menu ();
 } while ( choice != enaccess::ac_exit ) ;     // return to main menu ✅✅✅ spontaneously without calling specific function and chance for stack overflow
 
 cout << " We are happy for your visit     Thank you  ";
-
 }
 
 

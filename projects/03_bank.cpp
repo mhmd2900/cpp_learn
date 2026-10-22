@@ -282,7 +282,7 @@ do {
     else
       cout << " account does not exist \n";
 
-} while ( mlib::want_to_repeat( "Do you want to show another client ?    y  or   n  \n"));
+} while ( mlib::repeat_vs_proceed( "Do you want to show another client ?    y  or   n  \n"));
 
 }
 
@@ -302,7 +302,7 @@ if ( c.pin == pin )
                   write_file ( updated_path , record )  ;
                   show (c) ;
              }
-           } while ( mlib::want_to_repeat( " are these enetred data correct ?    y  or   n  \n"  , 'n'  ,  'y'  ) );
+           } while ( mlib::repeat_vs_proceed( " are these enetred data correct ?    y  or   n  \n"  , 'n'  ,  'y'  ) );
 }
     write_file ( main_path , vstFile , false )  ; 
     cout << "           ......update done successfully......         \n";
@@ -325,7 +325,7 @@ string pin ;
         cout << " account does not exist \n";
 
 
-     } while ( mlib::want_to_repeat( "Do you want to update another client ?    y  or   n  \n"  ) );
+     } while ( mlib::repeat_vs_proceed( "Do you want to update another client ?    y  or   n  \n"  ) );
 
 }
 
@@ -343,7 +343,7 @@ void add ( string pin , vector<stclient>& vstFile , stclient& client )
                    record = struct_to_vst(client);
                   show (client) ;
              }
-           } while ( mlib::want_to_repeat( " are these enetred data correct ?    y  or   n  \n"  , 'n'  ,  'y'  ) );
+           } while ( mlib::repeat_vs_proceed( " are these enetred data correct ?    y  or   n  \n"  , 'n'  ,  'y'  ) );
     vstFile.push_back(client) ;
     write_file ( added_path , record )  ;
     write_file ( main_path , vstFile , false )  ; 
@@ -368,7 +368,7 @@ stclient client ;
         cout << " account already exists \n";
 
 
-     } while ( mlib::want_to_repeat( "Do you want to add another client ?    y  or   n  \n"  ) );
+     } while ( mlib::repeat_vs_proceed( "Do you want to add another client ?    y  or   n  \n"  ) );
 
  }
 
@@ -393,7 +393,7 @@ vector<stclient> record ;
                   break ; 
                 }
                 } 
-           } while ( mlib::want_to_repeat( " are these enetred data correct ?    y  or   n  \n"  , 'n'  ,  'y'  ) );
+           } while ( mlib::repeat_vs_proceed( " are these enetred data correct ?    y  or   n  \n"  , 'n'  ,  'y'  ) );
 
     vstFile.erase( it );  
     write_file ( main_path , vstFile , false )  ; 
@@ -417,7 +417,7 @@ string pin ;
         cout << " account does not exists \n";
 
 
-     } while ( mlib::want_to_repeat( "Do you want to delete another client ?    y  or   n  \n"  ) );
+     } while ( mlib::repeat_vs_proceed( "Do you want to delete another client ?    y  or   n  \n"  ) );
 
 // cout << "\n Press any key to return to main menu . . .\n ";
 // system("pause > 0 ");                // ✅✅✅   no need to pause  as patient choose not to repeat
@@ -473,7 +473,7 @@ for ( auto& c : vstFile )
 if ( c.pin == pin )   
 {
 show(c);
-    if ( mlib::want_to_repeat(" this is the account . Do you need to perform a transaction ?  y  or   n  \n " , 'y' , 'n'))
+    if ( mlib::repeat_vs_proceed(" this is the account . Do you need to perform a transaction ?  y  or   n  \n " , 'y' , 'n'))
     {
     cout << " plz enter transaction amount \n ";
     cin >> tran ;
@@ -516,7 +516,7 @@ string pin ;
         cout << " account does not exists \n";
 
 
-     } while ( mlib::want_to_repeat( "Do you want to perform another transaction ?    y  or   n  \n"  ) );
+     } while ( mlib::repeat_vs_proceed( "Do you want to perform another transaction ?    y  or   n  \n"  ) );
    
 }
 
