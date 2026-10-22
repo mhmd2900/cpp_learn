@@ -6,15 +6,36 @@
 #include "../general/mdates.h"
 using namespace std ;
 
-enum entrans  { depositx , withdrawx  , balancesx  , returnx } ;
-enum enacc    { findxx = 1<<0 , showxx = 1<<1 , updatexx = 1<<2 , addxx = 1<<3 , delxx = 1<<4 , transxx = 1<<5 , exit_appxx = 1<<6 } ;
 
-enum entest { ahmed = depositx };
+
+
+enum enaccess { read = 1 << 0 , write = 1 << 1 , share = 1 << 2 };
+short admin = read | write | share ;
+short user = 15 ;
+short non = 2 ;
+short all = -1 ;
+
+
+
 
 
 int main()
 {
-cout << returnx ;
+int pr ;
+cout << "enter\n";
+cin >> pr ;
+
+
+
+
+if ( pr & read )
+cout << " yes \n " ;
+else
+cout << " no \n " ;
+
+
+
+
 
 
 

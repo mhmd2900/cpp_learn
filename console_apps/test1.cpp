@@ -29,25 +29,94 @@ const string updated_path = "E:/m11.txt";
 const string added_path   = "E:/m12.txt";
 const string deleted_path = "E:/m13.txt";
 const string active_path  = "E:/m14.txt";
+const string active_path  = "E:/users.txt";
 
+enum enusers        { users_show = 1 , users_find = 2 , users_update = 3 , users_add = 4 , users_del = 5 , users_return = 6  } ;
 enum entransaction  { tr_deposit = 1 , tr_withdraw = 2 , tr_balance = 3 , tr_return = 4 } ;
-enum enaccess       { ac_show = 1 , ac_find = 2 , ac_update = 3 , ac_add = 4 , ac_del = 5 , ac_trans = 6 , ac_exit = 7  } ;
-enum enprivilege    { pr_find = 1<<0 , pr_show = 1<<1 , pr_update = 1<<2 , pr_add = 1<<3 , pr_del = 1<<4 , pr_trans = 1<<5 , pr_exit = 1<<6 } ;
-enum enuser  
-  { none       = 0 ,
-    auditor    = pr_find | pr_show | pr_trans  | pr_exit ,  // enprivilege is global variable , no need to write enprivilege::pr_find
-    accountant = pr_find | pr_show | pr_update | pr_add | pr_del | pr_trans | pr_exit } ;  
+enum enmain         { main_show = 1 , main_find = 2 , main_update = 3 , main_add = 4 , main_del = 5 , main_trans = 6 , main_users = 7  , main_exit = 8  } ;
+enum enprivilege    { pr_show = 1<<0 , pr_find = 1<<1 , pr_update = 1<<2 , pr_add = 1<<3 , pr_del = 1<<4 , pr_trans = 1<<5 , pr_exit = 1<<6 } ;
 
-enuser current_user = none ;
+
+struct users
+{
+string username ;
+int password = 0 ;
+short privilege = 1 ;
+};
 
 struct stclient 
 {
-int serial  ;
+int serial = 0 ;
 string name ;
 string pin ;
 double balance ;
 bool activity = false ;
 };
+
+
+users admin = { "admin" , 1234 , -1 };
+vector<users>vstusers = {admin} ;
+
+
+
+void access_denied ()
+{
+cout << "************************\n";
+cout << "     Access denied      \n";
+cout << "plz , contact your admin\n";
+cout << "************************\n";
+}
+
+enusers users_menu ()
+{
+cout << "=================================================================\n";
+cout << "                         manage users                            \n";
+cout << "=================================================================\n";
+cout << "     [1] Users list. \n";
+cout << "     [2] Show user. \n";
+cout << "     [3] Update user. \n";
+cout << "     [4] Add user. \n";
+cout << "     [5] Remove user. \n";
+cout << "     [6] Main menu. \n";
+cout << "=================================================================\n";
+
+int choice = mlib::get_number( " Choose which action to perform from  1  to  6  \n" , 1 , 7 ) ;
+return (enusers)choice ;
+}
+
+
+
+users sign_up ( )
+{
+users new_user ;
+cout << "*************************************\n" ; 
+cout << "*************  SIGN UP  *************\n" ; 
+cout << "*************************************\n\n" ; 
+new_user.username = mlib::input_word(" enter username \n ") ;
+new_user.password = mlib::get_number (" enter password \n ") ;
+return new_user ;
+}
+
+bool can_login ( vector<users>& vstusers)
+{
+users login_user ;
+cout << "*************************************\n" ; 
+cout << "**************  LOGIN  **************\n" ; 
+cout << "*************************************\n\n" ; 
+login_user.username = mlib::input_word(" plz , enter your user name \n");
+login_user.password = mlib::get_number(" plz , enter your password  \n");
+
+for ( auto& u : vstusers )
+if ( u.username == login_user.username && u.password == login_user.password )
+return true ;
+return false ;
+}
+
+
+
+
+
+
 
 
 string num_activity ( bool is_active );       // just declaration for later organization 
@@ -57,7 +126,7 @@ bool num_activity ( string is_active );       // function overloading   ✅✅�
 //                                                     write  ( string → st → vst → print )
 // ════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════
 
-stclient login_or_update ( stclient& client , bool add = false )
+stclient update_add_client ( stclient& client , bool add = false )
 {
           cout<< " enter name \n";
           getline ( cin >> ws , client.name ) ;   
@@ -270,7 +339,7 @@ if ( c.pin == pin )
 { 
         do {
              {    
-                  c = login_or_update(c) ;
+                  c = update_add_client(c) ;
                   record = struct_to_vst(c);
                   show (c) ;
              }
@@ -309,7 +378,7 @@ void add ( string pin , vector<stclient>& vstFile , stclient& client )
         do {
              {              
                                          
-                  client = login_or_update(client ) ;
+                  client = update_add_client(client ) ;
                   record = struct_to_vst(client);
                   show (client) ;
              }
@@ -533,7 +602,7 @@ else if ( passcode == 1)     { cout << " welcome   ,   auditor   \n \n" ;    cur
 else                         { cout << " not a member , want to sign Up ? \n \n" ;    exit(0)          ; } 
 }
 
-enaccess show_menu ()
+enmain show_menu ()
 {
 cout << "=================================================================\n";
 cout << "                       main menu screen                          \n";
@@ -544,13 +613,14 @@ cout << "     [3] Update client. \n";
 cout << "     [4] Add client. \n";
 cout << "     [5] Remove client. \n";
 cout << "     [6] Transction menu. \n";
-cout << "     [7] Exit. \n";
+cout << "     [7] Manage users. \n";
+cout << "     [8] Logout. \n";
 cout << "=================================================================\n";
 
 
-int choice = mlib::get_number( " Choose which action to perform from  1  to  7  \n" , 1 , 7 ) ;
+int choice = mlib::get_number( " Choose which action to perform from  1  to  8  \n" , 1 , 7 ) ;
 
-return (enaccess)choice ;
+return (enmain)choice ;
 }
 
 // *********************************************************************************************************************************************
@@ -563,7 +633,7 @@ int main()
 check_permission () ;
 vector<stclient>vstFile ;
 vstFile = read_file();
-enaccess choice ;
+enmain choice ;
 
 do           // main() is clearly the boss. ✅✅✅ ماسكة خيوط اللعبة
 {
@@ -571,7 +641,7 @@ system("cls");
 choice = show_menu ();
   switch ( choice ) 
   {
-        case enaccess::ac_show :
+        case enmain::main_show :
         {
         if ( current_user == accountant || current_user == auditor )
         show_client_list(vstFile);
@@ -581,7 +651,7 @@ choice = show_menu ();
         }
         break ;
 
-        case enaccess::ac_find :
+        case enmain::main_find :
         {
         if ( current_user == accountant || current_user == auditor )
         show_client(vstFile);
@@ -591,7 +661,7 @@ choice = show_menu ();
         }
         break ;
 
-        case enaccess::ac_update :
+        case enmain::main_update :
         {
         if ( current_user == accountant || current_user == auditor )
         update_client(vstFile);
@@ -601,7 +671,7 @@ choice = show_menu ();
         }
         break ;
 
-        case enaccess::ac_add :
+        case enmain::main_add :
         {
         if ( current_user == accountant )
         add_client(vstFile);
@@ -611,7 +681,7 @@ choice = show_menu ();
         }
         break ;
 
-        case enaccess::ac_del :
+        case enmain::main_del :
         {
         if ( current_user == accountant )
         delete_client(vstFile);
@@ -621,7 +691,7 @@ choice = show_menu ();
         }
         break ;
 
-        case enaccess::ac_trans :
+        case enmain::main_trans :
         {
         if ( current_user == accountant )
         transaction_menu(vstFile);
@@ -631,10 +701,10 @@ choice = show_menu ();
         }
         break ;
       
-        case enaccess::ac_exit :
+        case enmain::main_exit :
         break ;
   }
-} while ( choice != enaccess::ac_exit ) ;     // return to main menu ✅✅✅ spontaneously without calling specific function and chance for stack overflow
+} while ( choice != enmain::main_exit ) ;     // return to main menu ✅✅✅ spontaneously without calling specific function and chance for stack overflow
 
 cout << " We are happy for your visit     Thank you  ";
 }
