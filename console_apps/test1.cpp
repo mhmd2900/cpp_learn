@@ -30,13 +30,13 @@ const string added_path   = "E:/m12.txt";
 const string deleted_path = "E:/m13.txt";
 const string active_path  = "E:/m14.txt";
 
-enum entrans  { depositx = 1 , withdrawx = 2 , balancesx = 3 , returnx = 4 } ;
-enum enaccess { showx = 1 , findx = 2 , updatex = 3 , addx = 4 , delx = 5 , transx = 6 , exit_appx = 7  } ;
-enum enacc    { findxx = 1<<0 , showxx = 1<<1 , updatexx = 1<<2 , addxx = 1<<3 , delxx = 1<<4 , transxx = 1<<5 , exit_appxx = 1<<6 } ;
+enum entransaction  { tr_deposit = 1 , tr_withdraw = 2 , tr_balance = 3 , tr_return = 4 } ;
+enum enaccess       { ac_show = 1 , ac_find = 2 , ac_update = 3 , ac_add = 4 , ac_del = 5 , ac_trans = 6 , ac_exit = 7  } ;
+enum enprivilege    { pr_find = 1<<0 , pr_show = 1<<1 , pr_update = 1<<2 , pr_add = 1<<3 , pr_del = 1<<4 , pr_trans = 1<<5 , pr_exit = 1<<6 } ;
 enum enuser  
   { none       = 0 ,
-    auditor    = findxx | showxx | transxx  | exit_appxx ,  // enacc is global variable , no need to write enacc::findxx
-    accountant = findxx | showxx | updatexx | addxx | delxx | transxx | exit_appxx } ;  
+    auditor    = pr_find | pr_show | pr_trans  | pr_exit ,  // enprivilege is global variable , no need to write enprivilege::pr_find
+    accountant = pr_find | pr_show | pr_update | pr_add | pr_del | pr_trans | pr_exit } ;  
 
 enuser current_user = none ;
 
@@ -53,12 +53,9 @@ bool activity = false ;
 string num_activity ( bool is_active );       // just declaration for later organization 
 bool num_activity ( string is_active );       // function overloading   ✅✅✅
 
-
 // ════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════
-//                                                                     write
+//                                                     write  ( string → st → vst → print )
 // ════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════
-                                                                    // write  ( string → st → vst )
-                                                                    // read  ( string → vs → st → vst )
 
 stclient login_or_update ( stclient& client , bool add = false )
 {
@@ -72,8 +69,7 @@ stclient login_or_update ( stclient& client , bool add = false )
           cout<< " enter balance \n";
           cin >> client.balance ;
           
-          cout<< " enter activity    , 1 active   , 0  not active \n";
-          cin >> client.activity ;
+          client.activity = mlib::get_number(" enter activity    , 1 active   , 0  not active \n" , 0 , 1) ;
           cout << "\n\n";
 
 return client ;
@@ -86,10 +82,10 @@ records.push_back(client) ;
 return records ;
 }
 
-void write_file ( string path , vector<stclient>& client , bool check = true )  // default parameter ✅✅✅
+void write_file ( string path , vector<stclient>& client , bool append = true )  // default parameter ✅✅✅
 {
 fstream mfile ;
-mfile.open( path , ios::out | (check   ? ios::app   :  ios::trunc));
+mfile.open( path , ios::out | (append   ? ios::app   :  ios::trunc)); //    bitwise OR operator |
 if ( mfile.is_open())
 {
 for ( int i = 0 ; i < client.size() ; i++)
@@ -103,9 +99,8 @@ mfile.close();
 
 
 // ════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════
-//                                                                     read
+//                                                     read  ( string → vs → st → vst )
 // ════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════
-
 
 vector<string> split_string ( string& sentence , const string separator )
 {
@@ -126,7 +121,7 @@ return vWords ;
 stclient fields_to_record ( vector<string> vRecord , int& count)
 {
 stclient stRecord ;
-//if (!vRecord.empty())
+if (!vRecord.empty())
 {
 stRecord.serial    = count ;
 stRecord.name      = vRecord[1] ;
@@ -164,11 +159,11 @@ return vFile ;
 
 // ════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════
 
-void show ( stclient client ) ;                                   // just declaration for later organization ✅✅✅
+void show   ( stclient client ) ;                                   // just declaration for later organization ✅✅✅
 void update ( string pin , vector<stclient>& vstFile , stclient& client ); 
-void add ( string pin , vector<stclient>& vstFile , stclient& client );
-void del ( string pin , vector<stclient>& vstFile , stclient& client );
-bool find ( string pin , vector<stclient>& vstFile ) ;
+void add    ( string pin , vector<stclient>& vstFile , stclient& client );
+void del    ( string pin , vector<stclient>& vstFile , stclient& client );
+bool find   ( string pin , vector<stclient>& vstFile ) ;
 
 
                                         //✅✅✅ Speed Performance : searching vst in RAM is better than searching the file itself in storage
@@ -204,7 +199,7 @@ return 0 ;
 void show_client_list ( vector<stclient>& vstFile )
 {
 system("cls");     
-cout << "\n\n*********************************************************************\n";
+//cout << "\n\n*********************************************************************\n";
 
 int siz = vstFile.size()  ;
 cout << right << setw(40) << " Client list ( " << siz << " )  client" ; 
@@ -218,13 +213,12 @@ cout << "_______________________________________________________________________
 
 
 for ( int i = 0 ; i < vstFile.size() ; i++)
-//for ( auto&c : vstFile )
 cout << '|' << left << setw(15) << i+1 << '|' << left << setw(15) << vstFile[i].name << '|' << left << setw(15) << vstFile[i].pin << 
         '|' << left << setw(15) << vstFile[i].balance << '|' << left << setw(10) << vstFile[i].activity << '|'  << endl ;
 cout << "____________________________________________________________________________\n";
 
 cout << "\n Press any key to return to main menu . . .\n ";
-cout << "\n\n\n";
+//cout << "\n\n\n";
 system("pause > 0 ");                       //✅✅✅ as there is no repeat option
 }
 
@@ -433,11 +427,11 @@ cout << "\n\n Press any key to return to main menu . . .\n ";
 system("pause > 0 ");                 
 }
 
-void  do_deposit_withdraw ( string pin , vector<stclient>& vstFile , entrans trans )//✅✅✅  both same function 
+void  do_deposit_withdraw ( string pin , vector<stclient>& vstFile , entransaction trans )//✅✅✅  both same function 
 {  
 int tran  ;
 vector<stclient> record ;
-//if (trans == entrans::withdrawx )   tran *= -1 ;
+//if (trans == entransaction::tr_withdraw )   tran *= -1 ;
 for ( auto& c : vstFile )
 {
 if ( c.pin == pin )   
@@ -447,7 +441,7 @@ show(c);
     {
     cout << " plz enter transaction amount \n ";
     cin >> tran ;
-    if (trans == entrans::withdrawx )   
+    if (trans == entransaction::tr_withdraw )   
     {
     if (tran > c.balance )  {cout << " insufficient balance \n";  return ;}
     else
@@ -467,7 +461,7 @@ show(c);
 system("cls");
 }
 
-void deposit_withdraw ( vector<stclient>& vstFile , entrans trans )
+void deposit_withdraw ( vector<stclient>& vstFile , entransaction trans )
 {
 system("cls");     // ✅✅✅  at the beginning of all independent functions
 string pin ;
@@ -487,7 +481,7 @@ string pin ;
    
 }
 
-entrans show_transaction_menu ( vector<stclient>& vstFile )
+entransaction show_transaction_menu ( vector<stclient>& vstFile )
 {
 cout << "=================================================================\n";
 cout << "                    transaction menu screen                      \n";
@@ -500,34 +494,34 @@ cout << "=================================================================\n";
 
 
 int choice = mlib::get_number( " Choose which action to perform from  1  to  4  \n" , 1 , 4 ) ;
-return (entrans)choice ;
+return (entransaction)choice ;
 }
 
 void transaction_menu  ( vector<stclient>& vstFile )
 {
-entrans choice ;
+entransaction choice ;
 
 do {
 system("cls");     
 choice = show_transaction_menu(vstFile) ;
     switch(choice)
       {
-        case entrans::depositx :
-        deposit_withdraw ( vstFile , depositx );
+        case entransaction::tr_deposit :
+        deposit_withdraw ( vstFile , tr_deposit );
         break ;
 
-        case entrans::withdrawx :                
-        deposit_withdraw ( vstFile , withdrawx );
+        case entransaction::tr_withdraw :                
+        deposit_withdraw ( vstFile , tr_withdraw );
         break ;
 
-        case entrans::balancesx :
+        case entransaction::tr_balance :
         show_balances ( vstFile );
         break ;
 
-        case entrans::returnx :
+        case entransaction::tr_return :
         break ;
       }
-}while ( choice != entrans::returnx ) ; 
+}while ( choice != entransaction::tr_return ) ; 
 
 system("cls");
 
@@ -584,8 +578,7 @@ system("cls");
 choice = show_menu ();
   switch ( choice ) 
   {
-
-        case enaccess::showx :
+        case enaccess::ac_show :
         {
         if ( current_user == accountant || current_user == auditor )
         show_client_list(vstFile);
@@ -594,10 +587,7 @@ choice = show_menu ();
         }
         break ;
 
-
-
-
-        case enaccess::findx :
+        case enaccess::ac_find :
         {
         if ( current_user == accountant || current_user == auditor )
         show_client(vstFile);
@@ -606,9 +596,7 @@ choice = show_menu ();
         }
         break ;
 
-
-
-        case enaccess::updatex :
+        case enaccess::ac_update :
         {
         if ( current_user == accountant || current_user == auditor )
         update_client(vstFile);
@@ -617,10 +605,7 @@ choice = show_menu ();
         }
         break ;
 
-
-
-
-        case enaccess::addx :
+        case enaccess::ac_add :
         {
         if ( current_user == accountant )
         add_client(vstFile);
@@ -629,9 +614,7 @@ choice = show_menu ();
         }
         break ;
 
-
-
-        case enaccess::delx :
+        case enaccess::ac_del :
         {
         if ( current_user == accountant )
         delete_client(vstFile);
@@ -640,8 +623,7 @@ choice = show_menu ();
         }
         break ;
 
-
-        case enaccess::transx :
+        case enaccess::ac_trans :
         {
         if ( current_user == accountant )
         transaction_menu(vstFile);
@@ -650,11 +632,10 @@ choice = show_menu ();
         }
         break ;
       
-
-        case enaccess::exit_appx :
+        case enaccess::ac_exit :
         break ;
   }
-} while ( choice != enaccess::exit_appx ) ;     // return to main menu ✅✅✅ spontaneously without calling specific function and chance for stack overflow
+} while ( choice != enaccess::ac_exit ) ;     // return to main menu ✅✅✅ spontaneously without calling specific function and chance for stack overflow
 
 cout << " We are happy for your visit     Thank you  ";
 
