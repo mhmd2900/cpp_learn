@@ -18,12 +18,12 @@
 // using std::numeric_limits;
 // using std::streamsize;
 
-struct users
-{
-string username ;
-int password = 0 ;
-short privilege = 1 ;
-};
+// struct users
+// {
+// std::string username ;
+// int password = 0 ;
+// short privilege = 1 ;
+// };
 
 
 namespace mlib

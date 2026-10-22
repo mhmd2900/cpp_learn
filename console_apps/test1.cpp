@@ -29,12 +29,12 @@ const string updated_path = "E:/m11.txt";
 const string added_path   = "E:/m12.txt";
 const string deleted_path = "E:/m13.txt";
 const string active_path  = "E:/m14.txt";
-const string active_path  = "E:/users.txt";
+const string users_path  = "E:/users.txt";
 
 enum enusers        { users_show = 1 , users_find = 2 , users_update = 3 , users_add = 4 , users_del = 5 , users_return = 6  } ;
 enum entransaction  { tr_deposit = 1 , tr_withdraw = 2 , tr_balance = 3 , tr_return = 4 } ;
 enum enmain         { main_show = 1 , main_find = 2 , main_update = 3 , main_add = 4 , main_del = 5 , main_trans = 6 , main_users = 7  , main_exit = 8  } ;
-enum enprivilege    { pr_show = 1<<0 , pr_find = 1<<1 , pr_update = 1<<2 , pr_add = 1<<3 , pr_del = 1<<4 , pr_trans = 1<<5 , pr_exit = 1<<6 } ;
+enum enprivilege    { pr_show = 1<<0 , pr_find = 1<<1 , pr_update = 1<<2 , pr_add = 1<<3 , pr_del = 1<<4 , pr_trans = 1<<5 , pr_users = 1<<6 , pr_exit = 1<<7 } ;
 
 
 struct users
@@ -53,11 +53,17 @@ double balance ;
 bool activity = false ;
 };
 
-
 users admin = { "admin" , 1234 , -1 };
 vector<users>vstusers = {admin} ;
 
 
+void show_user ( users& user )
+{
+cout << "==============================\n";
+cout << " username : " << user.username << "\n";
+cout << " password : " << user.password << "\n";
+cout << "==============================\n";
+}
 
 void access_denied ()
 {
@@ -65,19 +71,20 @@ cout << "************************\n";
 cout << "     Access denied      \n";
 cout << "plz , contact your admin\n";
 cout << "************************\n";
+system("pause");
 }
 
-enusers users_menu ()
+enusers users_menu ( vector<users>&vstusers)
 {
 cout << "=================================================================\n";
 cout << "                         manage users                            \n";
 cout << "=================================================================\n";
-cout << "     [1] Users list. \n";
-cout << "     [2] Show user. \n";
-cout << "     [3] Update user. \n";
-cout << "     [4] Add user. \n";
-cout << "     [5] Remove user. \n";
-cout << "     [6] Main menu. \n";
+cout << "     1)  Users list. \n";
+cout << "     2)  Show user. \n";
+cout << "     3)  Update user. \n";
+cout << "     4)  Add user. \n";
+cout << "     5)  Remove user. \n";
+cout << "     6)  Main menu. \n";
 cout << "=================================================================\n";
 
 int choice = mlib::get_number( " Choose which action to perform from  1  to  6  \n" , 1 , 7 ) ;
@@ -85,38 +92,70 @@ return (enusers)choice ;
 }
 
 
-
-users sign_up ( )
+bool available_account ( users signin_user , vector<users>&vstusers ) 
 {
-users new_user ;
-cout << "*************************************\n" ; 
-cout << "*************  SIGN UP  *************\n" ; 
-cout << "*************************************\n\n" ; 
-new_user.username = mlib::input_word(" enter username \n ") ;
-new_user.password = mlib::get_number (" enter password \n ") ;
-return new_user ;
-}
-
-bool can_login ( vector<users>& vstusers)
-{
-users login_user ;
-cout << "*************************************\n" ; 
-cout << "**************  LOGIN  **************\n" ; 
-cout << "*************************************\n\n" ; 
-login_user.username = mlib::input_word(" plz , enter your user name \n");
-login_user.password = mlib::get_number(" plz , enter your password  \n");
-
 for ( auto& u : vstusers )
-if ( u.username == login_user.username && u.password == login_user.password )
+if ( u.username == signin_user.username && u.password == signin_user.password )
 return true ;
 return false ;
 }
 
 
+users sign_up ( )
+{
+users new_user ;
+do {
+system("cls");  
+cout << "*************************************\n" ; 
+cout << "*************  SIGN UP  *************\n" ; 
+cout << "*************************************\n\n" ; 
+new_user.username = mlib::input_word(" enter username \n ") ;
+new_user.password = mlib::get_number (" enter password \n ") ;
+show_user(new_user) ;
+} while (mlib::repeat_vs_proceed(" y  if  correct         r to repeat " , 'r' , 'y' ));
+
+cout << " \n welcome " << new_user.username << " \n Now , you are a member in HOSTILE BANK \n";
+return new_user ;
+}
 
 
+users sign_in  ( )
+{
+system("cls");  
+users login_user ;
+cout << "*************************************\n" ; 
+cout << "*************  SIGN IN  *************\n" ; 
+cout << "*************************************\n\n" ; 
+login_user.username = mlib::input_word(" plz , enter your user name \n");
+login_user.password = mlib::get_number(" plz , enter your password  \n");
 
+return login_user ;
+}
 
+users sign ()
+{
+cout << "\n\n============================++++++++++++++============================\n";
+cout << "================             HOSTILE BANK             ================\n";
+cout << "============================++++++++++++++============================\n\n";
+users user ;
+char ch = mlib::repeat_vs_proceed(" press  y   if you have an account ,  press   n   to sign up \n") ;
+      if (ch)   
+      { 
+        user = sign_in(); 
+        if (available_account( user , vstusers ))   return user ;
+        else        {cout<<" account is wrong \n  you can sign up \n";
+                    system("pause");    
+                    sign_up() ;}
+                    vstusers.push_back(user); 
+      }   
+
+      else      
+      { 
+        user = sign_up();  
+        vstusers.push_back(user); 
+      }
+return user ;
+}
 
 
 string num_activity ( bool is_active );       // just declaration for later organization 
@@ -594,14 +633,6 @@ system("cls");
 //                                                                       MENU
 // ════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════
 
-void check_permission ()
-{
-int passcode = mlib::get_number(" enter your passcode \n ");
-if      ( passcode == 123)   { cout << " welcome   ,   accountant\n \n" ;    current_user = accountant ; } 
-else if ( passcode == 1)     { cout << " welcome   ,   auditor   \n \n" ;    current_user = auditor    ; } 
-else                         { cout << " not a member , want to sign Up ? \n \n" ;    exit(0)          ; } 
-}
-
 enmain show_menu ()
 {
 cout << "=================================================================\n";
@@ -618,7 +649,7 @@ cout << "     [8] Logout. \n";
 cout << "=================================================================\n";
 
 
-int choice = mlib::get_number( " Choose which action to perform from  1  to  8  \n" , 1 , 7 ) ;
+int choice = mlib::get_number( " Choose which action to perform from  1  to  8  \n" , 1 , 8 ) ;
 
 return (enmain)choice ;
 }
@@ -630,11 +661,15 @@ return (enmain)choice ;
 
 int main()
 {
-check_permission () ;
+// check_permission () ;
+
+
 vector<stclient>vstFile ;
 vstFile = read_file();
-enmain choice ;
 
+users current_user = sign();
+enmain choice ;
+if(available_account(current_user , vstusers))
 do           // main() is clearly the boss. ✅✅✅ ماسكة خيوط اللعبة
 {
 system("cls");     
@@ -642,71 +677,54 @@ choice = show_menu ();
   switch ( choice ) 
   {
         case enmain::main_show :
-        {
-        if ( current_user == accountant || current_user == auditor )
-        show_client_list(vstFile);
-        else 
-        {cout << " not allowed \n";
-        system("pause");}
-        }
+        if ( current_user.privilege & pr_show )              show_client_list(vstFile);
+        else                                                 access_denied ();
         break ;
 
         case enmain::main_find :
-        {
-        if ( current_user == accountant || current_user == auditor )
-        show_client(vstFile);
-        else 
-        {cout << " not allowed \n";
-        system("pause");}
-        }
+        if ( current_user.privilege & pr_find )              show_client(vstFile);
+        else                                                 access_denied ();
         break ;
 
+
         case enmain::main_update :
-        {
-        if ( current_user == accountant || current_user == auditor )
-        update_client(vstFile);
-        else 
-        {cout << " not allowed \n";
-        system("pause");}
-        }
+        if ( current_user.privilege & pr_update )             update_client(vstFile);
+        else                                                  access_denied ();
         break ;
 
         case enmain::main_add :
-        {
-        if ( current_user == accountant )
-        add_client(vstFile);
-        else 
-        {cout << " not allowed \n";
-        system("pause");}
-        }
+        if ( current_user.privilege & pr_add )                add_client(vstFile);
+        else                                                  access_denied ();
         break ;
 
         case enmain::main_del :
-        {
-        if ( current_user == accountant )
-        delete_client(vstFile);
-        else 
-        {cout << " not allowed \n";
-        system("pause");}
-        }
+        if ( current_user.privilege & pr_del )                delete_client(vstFile);
+        else                                                  access_denied ();
         break ;
 
         case enmain::main_trans :
-        {
-        if ( current_user == accountant )
-        transaction_menu(vstFile);
-        else 
-        {cout << " not allowed \n";
-        system("pause");}
-        }
+        if ( current_user.privilege & pr_trans )              transaction_menu(vstFile);
+        else                                                  access_denied ();
         break ;
-      
+
+        case enmain::main_users :
+        if ( current_user.privilege & pr_users )              users_menu(vstusers);
+        else                                                  access_denied ();
+        break ;
+
         case enmain::main_exit :
         break ;
   }
 } while ( choice != enmain::main_exit ) ;     // return to main menu ✅✅✅ spontaneously without calling specific function and chance for stack overflow
 
-cout << " We are happy for your visit     Thank you  ";
+else 
+{
+char ch = mlib::repeat_vs_proceed( " not a member , do want to sign Up ?  y   or   n \n"  , 'y' , 'n');
+if (ch != 0)     
+vstusers.push_back(sign_up()) ;
 }
 
+cout << " \n\n We are happy for your visit     Thank you  \n\n";
+cout << "===================================================";
+}
 

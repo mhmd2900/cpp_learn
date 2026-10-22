@@ -1,3 +1,37 @@
+
+mix available acoount with sign in and sign up  in the same way
+cout admin  hhhhhhhhhhhhhhhh   in every  page
+
+login and logout is parent to main menu
+full acess vs customized 
+update users by username 
+admin can not be deleted
+new user can sign up , change password , limited privileges
+
+login , signup to mlib
+add features to reach 1000 lines
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+but before answering any question in this chat , rephrase my original request to help me improve my English
+
+=================================================================================================
+
 // vector of structures ( Structured Bindings ), enums and arrays
 // structure of vectors , enums , arrays
 // dynamic array of vectors
