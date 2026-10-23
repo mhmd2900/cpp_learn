@@ -29,7 +29,7 @@ const string updated_path = "E:/m11.txt";
 const string added_path   = "E:/m12.txt";
 const string deleted_path = "E:/m13.txt";
 const string active_path  = "E:/m14.txt";
-const string users_path  = "E:/users.txt";
+const string users_path   = "E:/users.txt";
 
 enum enusers        { users_show = 1 , users_find = 2 , users_update = 3 , users_add = 4 , users_del = 5 , users_return = 6  } ;
 enum entransaction  { tr_deposit = 1 , tr_withdraw = 2 , tr_balance = 3 , tr_return = 4 } ;
@@ -37,11 +37,11 @@ enum enmain         { main_show = 1 , main_find = 2 , main_update = 3 , main_add
 enum enprivilege    { pr_show = 1<<0 , pr_find = 1<<1 , pr_update = 1<<2 , pr_add = 1<<3 , pr_del = 1<<4 , pr_trans = 1<<5 , pr_users = 1<<6 , pr_exit = 1<<7 } ;
 
 
-struct users
+struct stusers
 {
 string username ;
 int password = 0 ;
-short privilege = 1 ;
+int privilege = 1 ;
 };
 
 struct stclient 
@@ -53,11 +53,10 @@ double balance ;
 bool activity = false ;
 };
 
-users admin = { "admin" , 1234 , -1 };
-vector<users>vstusers = {admin} ;
 
 
-void show_user ( users& user )
+
+void show_user ( stusers& user )
 {
 cout << "==============================\n";
 cout << " username : " << user.username << "\n";
@@ -67,6 +66,7 @@ cout << "==============================\n";
 
 void access_denied ()
 {
+system("cls");
 cout << "************************\n";
 cout << "     Access denied      \n";
 cout << "plz , contact your admin\n";
@@ -74,92 +74,156 @@ cout << "************************\n";
 system("pause");
 }
 
-enusers users_menu ( vector<users>&vstusers)
+enusers users_menu ( vector<stusers>&vstusers , stusers& current_user )
 {
 cout << "=================================================================\n";
-cout << "                         manage users                            \n";
+cout << "                         manage stusers                    "<< current_user.username << "\n";
 cout << "=================================================================\n";
-cout << "     1)  Users list. \n";
-cout << "     2)  Show user. \n";
-cout << "     3)  Update user. \n";
-cout << "     4)  Add user. \n";
-cout << "     5)  Remove user. \n";
-cout << "     6)  Main menu. \n";
+cout << "     1.  Users list. \n";
+cout << "     2.  Show user. \n";
+cout << "     3.  Update user. \n";
+cout << "     4.  Add user. \n";
+cout << "     5.  Remove user. \n";
+cout << "     6.  Main menu. \n";
 cout << "=================================================================\n";
 
-int choice = mlib::get_number( " Choose which action to perform from  1  to  6  \n" , 1 , 7 ) ;
+int choice = mlib::get_number( " Choose which action to perform from  1  to  6  \n" , 1 , 6 ) ;
 return (enusers)choice ;
 }
 
 
-bool available_account ( users signin_user , vector<users>&vstusers ) 
+
+bool available_username ( stusers signup_user , vector<stusers>&vstusers ) 
+{
+for ( auto& u : vstusers )
+if ( u.username == signup_user.username )
+{
+  cout << " choose different username \n";
+  return true ;
+}
+return false ;
+}
+
+bool available_user     ( stusers signin_user , vector<stusers>&vstusers ) 
 {
 for ( auto& u : vstusers )
 if ( u.username == signin_user.username && u.password == signin_user.password )
 return true ;
+else
+cout << " invalid username/password    try again  \n\n";
 return false ;
 }
 
-
-users sign_up ( )
+stusers retrieve_user  ( stusers signin_user , vector<stusers>&vstusers ) 
 {
-users new_user ;
-do {
+for ( auto& u : vstusers )
+if ( signin_user.username == u.username && signin_user.password == u.password )
+{
+signin_user = u ;
+break ;
+}
+return signin_user ;
+} 
+
+
+stusers sign_up ( vector<stusers>&vstusers  )
+{
 system("cls");  
+stusers new_user ;
 cout << "*************************************\n" ; 
 cout << "*************  SIGN UP  *************\n" ; 
 cout << "*************************************\n\n" ; 
-new_user.username = mlib::input_word(" enter username \n ") ;
-new_user.password = mlib::get_number (" enter password \n ") ;
-show_user(new_user) ;
-} while (mlib::repeat_vs_proceed(" y  if  correct         r to repeat " , 'r' , 'y' ));
+ do {
+      do {                                                                // ✅✅✅ nested do while 
+            new_user.username = mlib::input_word(" enter username \n ") ;
+            new_user.password = mlib::get_number (" enter password \n ") ;
+          } while ( available_username ( new_user , vstusers ) ) ;
+    show_user(new_user) ;
+    } while (mlib::repeat_vs_proceed(" y  if  correct         r to repeat " , 'r' , 'y' ));
 
 cout << " \n welcome " << new_user.username << " \n Now , you are a member in HOSTILE BANK \n";
+vstusers.push_back(new_user);
 return new_user ;
 }
 
-
-users sign_in  ( )
+stusers sign_in  ( vector<stusers>&vstusers  )
 {
 system("cls");  
-users login_user ;
+stusers signin_user ;
 cout << "*************************************\n" ; 
 cout << "*************  SIGN IN  *************\n" ; 
 cout << "*************************************\n\n" ; 
-login_user.username = mlib::input_word(" plz , enter your user name \n");
-login_user.password = mlib::get_number(" plz , enter your password  \n");
-
-return login_user ;
+int count = 0 ;
+  do {                                                     
+        signin_user.username = mlib::input_word(" plz , enter your user name \n");
+        signin_user.password = mlib::get_number(" plz , enter your password  \n");
+        count ++ ;
+        if ( count >= 3 ) { cout << " multiple failed trials ,  thank you , good bye  ";  exit(0);}
+      } while ( !available_user ( signin_user , vstusers ) ) ;
+system("cls"); 
+show_user(signin_user) ;
+cout << " \n welcome back  " << signin_user.username  << "\n press any key to return to menu \n  ";
+system("pause>0") ;
+return retrieve_user ( signin_user , vstusers )  ;
 }
 
-users sign ()
+stusers sign     ( vector<stusers>&vstusers  )
 {
+system("cls");
+stusers user ;
 cout << "\n\n============================++++++++++++++============================\n";
 cout << "================             HOSTILE BANK             ================\n";
 cout << "============================++++++++++++++============================\n\n";
-users user ;
 char ch = mlib::repeat_vs_proceed(" press  y   if you have an account ,  press   n   to sign up \n") ;
-      if (ch)   
-      { 
-        user = sign_in(); 
-        if (available_account( user , vstusers ))   return user ;
-        else        {cout<<" account is wrong \n  you can sign up \n";
-                    system("pause");    
-                    sign_up() ;}
-                    vstusers.push_back(user); 
-      }   
-
-      else      
-      { 
-        user = sign_up();  
-        vstusers.push_back(user); 
-      }
+  user = ch   ?  sign_in(vstusers)   :  sign_up(vstusers); 
 return user ;
 }
 
 
 string num_activity ( bool is_active );       // just declaration for later organization 
 bool num_activity ( string is_active );       // function overloading   ✅✅✅
+
+// ════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════
+//                                                     write user ( string → st → vst → print )
+// ════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════
+
+stusers update_add_user ( stusers& user )
+{
+          cout<< " enter username \n";
+          getline ( cin >> ws , user.username ) ;   
+
+          cout<< " enter password \n";
+          cin >> user.password ;
+
+          // privilege
+
+          cout << "\n\n";
+
+return user ;
+}
+
+vector<stusers> struct_to_vst ( stusers& user )
+{
+vector<stusers> records ;
+records.push_back(user) ;
+return records ;
+}
+
+void write_file ( string path , vector<stusers>& users , bool append = true )  // default parameter ✅✅✅
+{
+fstream mfile ;
+mfile.open( path , ios::out | (append   ? ios::app   :  ios::trunc)); //    bitwise OR operator |
+if ( mfile.is_open())
+{
+for ( int i = 0 ; i < users.size() ; i++)
+  {
+  mfile << users[i].username << "#//#"  << users[i].password
+  << "#//#"  << users[i].privilege << endl ;
+  }
+mfile.close();
+}
+}
+
 
 // ════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════
 //                                                     write  ( string → st → vst → print )
@@ -190,16 +254,16 @@ records.push_back(client) ;
 return records ;
 }
 
-void write_file ( string path , vector<stclient>& client , bool append = true )  // default parameter ✅✅✅
+void write_file ( string path , vector<stclient>& clients , bool append = true )  // default parameter ✅✅✅
 {
 fstream mfile ;
 mfile.open( path , ios::out | (append   ? ios::app   :  ios::trunc)); //    bitwise OR operator |
 if ( mfile.is_open())
 {
-for ( int i = 0 ; i < client.size() ; i++)
+for ( int i = 0 ; i < clients.size() ; i++)
   {
-  mfile << (client[i].serial = i+1 )  << "#//#" << client[i].name << "#//#"  << client[i].pin 
-  << "#//#"  << client[i].balance << "#//#" << num_activity(client[i].activity) << endl ;
+  mfile << (clients[i].serial = i+1 )  << "#//#" << clients[i].name << "#//#"  << clients[i].pin 
+  << "#//#"  << clients[i].balance << "#//#" << num_activity(clients[i].activity) << endl ;
   }
 mfile.close();
 }
@@ -207,7 +271,7 @@ mfile.close();
 
 
 // ════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════
-//                                                     read  ( string → vs → st → vst )
+//                                                   read user ( string → vs → st → vst )
 // ════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════
 
 vector<string> split_string ( string& sentence , const string separator )
@@ -226,7 +290,48 @@ vWords.push_back(sentence) ;
 return vWords ;
 }
 
-stclient fields_to_record ( vector<string> vRecord , int& count)
+stusers user_fields_to_record ( vector<string> vUsers , int& count )
+{
+stusers user ;
+if (!vUsers.empty())
+{
+user.username      = vUsers[0] ;
+user.password      = stoi(vUsers[1]) ;
+user.privilege     = stoi(vUsers[2]) ;
+}
+return user ;
+}
+
+vector<stusers> user_read_file ( string path = main_path )
+{
+vector<string> vWords ;
+vector<stusers> vFile ;
+int count = 1 ;
+stusers user ;
+string line ;
+fstream mfile ;
+mfile.open( path , ios::in );
+if (mfile.is_open())
+{
+  while ( getline (mfile , line ))
+  {
+    if (line.empty()) continue;
+  vWords = split_string(line , "#//#") ;
+  user = user_fields_to_record(vWords , count );
+  vFile.push_back(user);
+  count ++ ;
+  }
+mfile.close();
+}
+return vFile ;
+}
+
+
+// ════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════
+//                                                     read  ( string → vs → st → vst )
+// ════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════
+
+stclient fields_to_record ( vector<string> vRecord , int& count )
 {
 stclient stRecord ;
 if (!vRecord.empty())
@@ -583,10 +688,10 @@ string pin ;
    
 }
 
-entransaction show_transaction_menu ( vector<stclient>& vstFile )
+entransaction show_transaction_menu ( vector<stclient>& vstFile , stusers& current_user )
 {
 cout << "=================================================================\n";
-cout << "                    transaction menu screen                      \n";
+cout << "                    transaction menu screen              " << current_user.username << "\n";
 cout << "=================================================================\n";
 cout << "     [1] Deposit. \n";
 cout << "     [2] Withdraw. \n";
@@ -599,13 +704,13 @@ int choice = mlib::get_number( " Choose which action to perform from  1  to  4  
 return (entransaction)choice ;
 }
 
-void transaction_menu  ( vector<stclient>& vstFile )
+void transaction_menu  ( vector<stclient>& vstFile , stusers& current_user )
 {
 entransaction choice ;
 
 do {
 system("cls");     
-choice = show_transaction_menu(vstFile) ;
+choice = show_transaction_menu(vstFile , current_user) ;
     switch(choice)
       {
         case entransaction::tr_deposit :
@@ -633,10 +738,11 @@ system("cls");
 //                                                                       MENU
 // ════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════
 
-enmain show_menu ()
+enmain show_menu ( stusers& current_user )
 {
+
 cout << "=================================================================\n";
-cout << "                       main menu screen                          \n";
+cout << "                       main menu screen                  "<< current_user.username << "\n";
 cout << "=================================================================\n";
 cout << "     [1] Show clients list. \n";
 cout << "     [2] Show client. \n";
@@ -644,7 +750,7 @@ cout << "     [3] Update client. \n";
 cout << "     [4] Add client. \n";
 cout << "     [5] Remove client. \n";
 cout << "     [6] Transction menu. \n";
-cout << "     [7] Manage users. \n";
+cout << "     [7] Manage stusers. \n";
 cout << "     [8] Logout. \n";
 cout << "=================================================================\n";
 
@@ -661,19 +767,20 @@ return (enmain)choice ;
 
 int main()
 {
-// check_permission () ;
 
+vector<stusers>vstusers = {{ "admin" , 1234 , -1 }} ;      //✅✅✅
+vstusers = user_read_file(users_path);
+stusers current_user = sign ( vstusers );
 
 vector<stclient>vstFile ;
 vstFile = read_file();
 
-users current_user = sign();
 enmain choice ;
-if(available_account(current_user , vstusers))
+
 do           // main() is clearly the boss. ✅✅✅ ماسكة خيوط اللعبة
 {
-system("cls");     
-choice = show_menu ();
+  system("cls");     
+  choice = show_menu (current_user);
   switch ( choice ) 
   {
         case enmain::main_show :
@@ -703,12 +810,12 @@ choice = show_menu ();
         break ;
 
         case enmain::main_trans :
-        if ( current_user.privilege & pr_trans )              transaction_menu(vstFile);
+        if ( current_user.privilege & pr_trans )              transaction_menu(vstFile , current_user);
         else                                                  access_denied ();
         break ;
 
         case enmain::main_users :
-        if ( current_user.privilege & pr_users )              users_menu(vstusers);
+        if ( current_user.privilege & pr_users )              users_menu(vstusers , current_user);
         else                                                  access_denied ();
         break ;
 
@@ -717,12 +824,6 @@ choice = show_menu ();
   }
 } while ( choice != enmain::main_exit ) ;     // return to main menu ✅✅✅ spontaneously without calling specific function and chance for stack overflow
 
-else 
-{
-char ch = mlib::repeat_vs_proceed( " not a member , do want to sign Up ?  y   or   n \n"  , 'y' , 'n');
-if (ch != 0)     
-vstusers.push_back(sign_up()) ;
-}
 
 cout << " \n\n We are happy for your visit     Thank you  \n\n";
 cout << "===================================================";
