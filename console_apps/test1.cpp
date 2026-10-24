@@ -307,7 +307,7 @@ stusers update_add_user ( stusers& user )                         //update passw
           cout << "\n\n";
 
 return user ;
-}
+}                                                    
 
 void update_user ( string username , vector<stusers>&vstusers )    // retrieve the exact user
 {
@@ -521,8 +521,8 @@ return vFile ;
 
 void show   ( stclient client ) ;                                   // just declaration for later organization ✅✅✅
 void update ( string pin , vector<stclient>& vstFile , stclient& client ); 
-void add    ( string pin , vector<stclient>& vstFile , stclient& client );
-void del    ( string pin , vector<stclient>& vstFile , stclient& client );
+void add_client    ( string pin , vector<stclient>& vstFile , stclient& client );
+void delete_client    ( string pin , vector<stclient>& vstFile , stclient& client );
 bool find   ( string pin , vector<stclient>& vstFile ) ;
 
 
@@ -657,7 +657,7 @@ string pin ;
 }
 
 // ═════════════════════════════════════════════════════════════════════════════════════════ add ═══════════════════════════════════════════════════════
-void add ( string pin , vector<stclient>& vstFile , stclient& client )
+void add_client ( string pin , vector<stclient>& vstFile , stclient& client )
 {
   vector<stclient> record ;  
   client.pin = pin ;
@@ -677,7 +677,7 @@ void add ( string pin , vector<stclient>& vstFile , stclient& client )
 
 }
 
-void add_client  ( vector<stclient>& vstFile )
+void pre_add_client  ( vector<stclient>& vstFile )
 {
 system("cls");     
 string pin ;
@@ -688,7 +688,7 @@ stclient client ;
         getline ( cin >> ws , pin);
 
         if ( ! find( pin , vstFile )) 
-        add ( pin , vstFile , client ) ;
+        add_client ( pin , vstFile , client ) ;
 
         else
         cout << " account already exists \n";
@@ -700,7 +700,7 @@ stclient client ;
 
 // ═════════════════════════════════════════════════════════════════════════════════════════ delete ═══════════════════════════════════════════════════════
 
-void del ( string pin , vector<stclient>& vstFile )
+void delete_client ( string pin , vector<stclient>& vstFile )
 {
 vector<stclient>::iterator it = vstFile.begin() ;
 vector<stclient> record ;
@@ -722,7 +722,7 @@ vector<stclient> record ;
       }
 }
 
-void delete_client  ( vector<stclient>& vstFile )
+void pre_delete_client  ( vector<stclient>& vstFile )
 {
 system("cls");     
 string pin ;
@@ -732,7 +732,7 @@ string pin ;
         getline ( cin >> ws , pin);
 
         if ( find( pin , vstFile )) 
-        del ( pin , vstFile ) ;
+        delete_client ( pin , vstFile ) ;
 
         else
         cout << " account does not exists \n";
@@ -774,7 +774,7 @@ cout << "\n\n Press any key to return to main menu . . .\n ";
 system("pause > 0 ");                 
 }
 
-void  do_deposit_withdraw ( string pin , vector<stclient>& vstFile , entransaction trans )//✅✅✅  both same function 
+void  deposit_withdraw ( string pin , vector<stclient>& vstFile , entransaction trans )//✅✅✅  both same function 
 {  
 int tran  ;
 vector<stclient> record ;
@@ -808,7 +808,7 @@ show(c);
 system("cls");
 }
 
-void deposit_withdraw ( vector<stclient>& vstFile , entransaction trans )
+void pre_deposit_withdraw ( vector<stclient>& vstFile , entransaction trans )
 {
 system("cls");     // ✅✅✅  at the beginning of all independent functions
 string pin ;
@@ -818,7 +818,7 @@ string pin ;
         getline ( cin >> ws , pin);
 
         if ( find ( pin , vstFile )) 
-        do_deposit_withdraw ( pin , vstFile , trans ) ;
+        deposit_withdraw ( pin , vstFile , trans ) ;
 
         else
         cout << " account does not exists \n";
@@ -828,7 +828,7 @@ string pin ;
    
 }
 
-entransaction show_transaction_menu ( vector<stclient>& vstFile , stusers& current_user )
+entransaction transaction_menu ( vector<stclient>& vstFile , stusers& current_user )
 {
 cout << "=================================================================\n";
 cout << "                    transaction menu screen              " << current_user.username << "\n";
@@ -844,21 +844,21 @@ int choice = mlib::get_number( " Choose which action to perform from  1  to  4  
 return (entransaction)choice ;
 }
 
-void transaction_menu  ( vector<stclient>& vstFile , stusers& current_user )
+void pre_transaction_menu  ( vector<stclient>& vstFile , stusers& current_user )
 {
 entransaction choice ;
 
 do {
 system("cls");     
-choice = show_transaction_menu(vstFile , current_user) ;
+choice = transaction_menu(vstFile , current_user) ;
     switch(choice)
       {
         case entransaction::tr_deposit :
-        deposit_withdraw ( vstFile , tr_deposit );
+        pre_deposit_withdraw ( vstFile , tr_deposit );
         break ;
 
         case entransaction::tr_withdraw :                
-        deposit_withdraw ( vstFile , tr_withdraw );
+        pre_deposit_withdraw ( vstFile , tr_withdraw );
         break ;
 
         case entransaction::tr_balance :
@@ -939,17 +939,17 @@ do           // main() is clearly the boss. ✅✅✅ ماسكة خيوط الل
         break ;
 
         case main_add :
-        if ( current_user.privilege & pr_add )                add_client(vstFile);
+        if ( current_user.privilege & pr_add )                pre_add_client(vstFile);
         else                                                  access_denied ();
         break ;
 
         case main_del :
-        if ( current_user.privilege & pr_del )                delete_client(vstFile);
+        if ( current_user.privilege & pr_del )                pre_delete_client(vstFile);
         else                                                  access_denied ();
         break ;
 
         case main_trans :
-        if ( current_user.privilege & pr_trans )              transaction_menu(vstFile , current_user);
+        if ( current_user.privilege & pr_trans )              pre_transaction_menu(vstFile , current_user);
         else                                                  access_denied ();
         break ;
 

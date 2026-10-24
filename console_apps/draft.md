@@ -8,6 +8,10 @@
 /update users by username 
 /full acess vs customized 
 
+
+pre_add_account
+cout << admin 1234
+admin at beginning of write file
 admin should be fixed
 change permissions
 admin can not be deleted
