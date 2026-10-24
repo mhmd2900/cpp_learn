@@ -4,10 +4,12 @@
 /admin privileges   
 /cout admin  hhhhhhhhhhhhhhhh   in every  page
 /search exact word
+/switch account
+/update users by username 
+/full acess vs customized 
 
-switch account
-update users by username 
-full acess vs customized 
+admin should be fixed
+change permissions
 admin can not be deleted
 
 
