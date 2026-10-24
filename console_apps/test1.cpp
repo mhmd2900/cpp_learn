@@ -91,9 +91,10 @@ return false ;
 bool available_user     ( stusers signin_user , vector<stusers>&vstusers ) 
 {
 for ( auto& u : vstusers )
+{
 if ( u.username == signin_user.username && u.password == signin_user.password )
 return true ;
-else
+}
 cout << " invalid username/password    try again  \n\n";
 return false ;
 }
@@ -132,7 +133,7 @@ return new_user ;
 
 stusers sign_in  ( vector<stusers>&vstusers  )
 {
-system("cls");  
+//system("cls");  
 stusers signin_user ;
 cout << "*************************************\n" ; 
 cout << "*************  SIGN IN  *************\n" ; 
@@ -153,7 +154,7 @@ return retrieve_user ( signin_user , vstusers )  ;
 
 stusers sign     ( vector<stusers>&vstusers  )
 {
-system("cls");
+//system("cls");
 stusers user ;
 cout << "\n\n============================++++++++++++++============================\n";
 cout << "================             HOSTILE BANK             ================\n";
