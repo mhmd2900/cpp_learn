@@ -2,17 +2,14 @@
 /int main not global
 /same format signin and signup
 /admin privileges   
-/cout admin  hhhhhhhhhhhhhhhh   in every  page
+/cout admin  hhhhhhhhhhhhhhhh   in every  page  , cout << admin 1234
 /search exact word
 /switch account
 /update users by username 
 /full acess vs customized 
+/pre_add_account
+/admin should be fixed
 
-
-pre_add_account
-cout << admin 1234
-admin at beginning of write file
-admin should be fixed
 change permissions
 admin can not be deleted
 

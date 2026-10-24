@@ -76,7 +76,7 @@ system("pause");
 }
 
 
-bool available_username ( string username , vector<stusers>&vstusers , bool signup = false ) // for search to update , for signup
+bool is_username_available ( string username , vector<stusers>&vstusers , bool signup = false ) // for search to update , for signup
 {
 for ( auto& u : vstusers )
 if ( username == u.username )
@@ -87,7 +87,7 @@ if ( username == u.username )
 return false ;
 }
 
-bool available_user     ( stusers signin_user , vector<stusers>&vstusers ) 
+bool is_user_available     ( stusers signin_user , vector<stusers>&vstusers ) 
 {
 for ( auto& u : vstusers )
 {
@@ -121,7 +121,7 @@ cout << "*************************************\n\n" ;
       do {                                                                // ✅✅✅ nested do while 
             new_user.username = mlib::input_word(" enter username \n ") ;
             new_user.password = mlib::get_number (" enter password \n ") ;
-          } while ( available_username ( new_user.username , vstusers , true ) ) ;
+          } while ( is_username_available ( new_user.username , vstusers , true ) ) ;
     show_signin(new_user) ;
     } while (mlib::repeat_vs_proceed(" y  if  correct         r to repeat " , 'r' , 'y' ));
 
@@ -143,7 +143,7 @@ int count = 0 ;
         signin_user.password = mlib::get_number(" plz , enter your password  \n");
         count ++ ;
         if ( count >= 3 ) { cout << " multiple failed trials ,  thank you , good bye  ";  exit(0);}
-      } while ( !available_user ( signin_user , vstusers ) ) ;
+      } while ( !is_user_available ( signin_user , vstusers ) ) ;
 system("cls"); 
 show_signin(signin_user) ;
 cout << " \n welcome back  " << signin_user.username  << "\n press any key to return to menu \n  ";
@@ -269,7 +269,7 @@ do {
     cout << " Please , enter username to search for .\n";
     getline ( cin , user.username );
 
-      if (available_username ( user.username , vstusers ))
+      if (is_username_available ( user.username , vstusers ))
               {
                 user = retrieve_user( user , vstusers );
                 show_user ( user );
@@ -292,7 +292,7 @@ mlib::repeat_vs_proceed(" allow transactions  (y/n) \n ")  ? user.privilege  |= 
 mlib::repeat_vs_proceed(" allow manage users  (y/n) \n ")  ? user.privilege  |= pr_users   :  user.privilege=user.privilege  ;
 }
 
-stusers update_add_user ( stusers& user )                         //update password and privileges
+stusers update_add_user ( stusers& user )                          //update password and privileges
 {
 
           cout<< " enter password \n";
@@ -335,7 +335,7 @@ stusers user ;
         cout << "\n\n enter username to update \n";
         getline ( cin >> ws , user.username );
 
-        if ( available_username( user.username , vstusers )) 
+        if ( is_username_available( user.username , vstusers )) 
         update_user ( user.username , vstusers ) ;
 
         else
@@ -519,15 +519,15 @@ return vFile ;
 
 // ════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════
 
-void show   ( stclient client ) ;                                   // just declaration for later organization ✅✅✅
-void update ( string pin , vector<stclient>& vstFile , stclient& client ); 
-void add_client    ( string pin , vector<stclient>& vstFile , stclient& client );
-void delete_client    ( string pin , vector<stclient>& vstFile , stclient& client );
-bool find   ( string pin , vector<stclient>& vstFile ) ;
+void show_client           ( stclient client ) ;                                   // just declaration for later organization ✅✅✅
+void update_client         ( string pin , vector<stclient>& vstFile , stclient& client ); 
+void add_client            ( string pin , vector<stclient>& vstFile , stclient& client );
+void delete_client         ( string pin , vector<stclient>& vstFile , stclient& client );
+bool is_client_available   ( string pin , vector<stclient>& vstFile ) ;
 
 
                                         //✅✅✅ Speed Performance : searching vst in RAM is better than searching the file itself in storage
-bool find ( string pin , vector<stclient>& vstFile ) 
+bool is_client_available ( string pin , vector<stclient>& vstFile ) 
 {
 for (auto& c : vstFile )
 if ( c.pin == pin )   return true ;
@@ -577,7 +577,7 @@ system("pause > 0 ");                       //✅✅✅ as there is no repeat op
 }
 
 // ════════════════════════════════════════════════════════════════════════════════════ show client ════════════════════════════════════════════════════════════
-void show ( stclient client )
+void show_client ( stclient client )
 {
     {
   cout << "______________________________________\n";
@@ -592,7 +592,7 @@ void show ( stclient client )
   }
 }
 
-void show_client ( vector<stclient>& vstFile )
+void pre_show_client ( vector<stclient>& vstFile )
 {
 system("cls");     
 string pin ;
@@ -601,12 +601,12 @@ do {
     cout << " Please , enter account PIN to search for .\n";
     cin >> pin ;
 
-      if ( find( pin , vstFile )) 
+      if ( is_client_available( pin , vstFile )) 
               {
                   for (auto& c : vstFile )
                   {
                   if ( c.pin == pin )  
-                    { show ( c ) ;  break ; }
+                    { show_client ( c ) ;  break ; }
                   }
               }
     else
@@ -618,7 +618,7 @@ do {
 
 // ══════════════════════════════════════════════════════════════════════════════════════ update ══════════════════════════════════════════════════════════
 
-void update ( string pin , vector<stclient>& vstFile )
+void update_client ( string pin , vector<stclient>& vstFile )
 {
 vector<stclient> record ;
 for (auto& c : vstFile )
@@ -628,7 +628,7 @@ if ( c.pin == pin )
              {    
                   c = update_add_client(c) ;
                   record = struct_to_vst(c);
-                  show (c) ;
+                  show_client (c) ;
              }
            } while ( mlib::repeat_vs_proceed( " are these enetred data correct ?    y  or   n  \n"  , 'n'  ,  'y'  ) );
   write_file ( updated_path , record )  ;
@@ -637,7 +637,7 @@ if ( c.pin == pin )
     cout << "           ......update done successfully......         \n";
 }
 
-void update_client ( vector<stclient>& vstFile )
+void pre_update_client ( vector<stclient>& vstFile )
 {
 system("cls");     
 string pin ;
@@ -645,8 +645,8 @@ string pin ;
         cout << "\n\n plz enter pin to update \n";
         getline ( cin >> ws , pin);
 
-        if ( find( pin , vstFile )) 
-        update ( pin , vstFile ) ;
+        if ( is_client_available( pin , vstFile )) 
+        update_client ( pin , vstFile ) ;
 
         else
         cout << " account does not exist \n";
@@ -667,7 +667,7 @@ void add_client ( string pin , vector<stclient>& vstFile , stclient& client )
                                          
                   client = update_add_client(client ) ;
                   record = struct_to_vst(client);
-                  show (client) ;
+                  show_client (client) ;
              }
            } while ( mlib::repeat_vs_proceed( " are these enetred data correct ?    y  or   n  \n"  , 'n'  ,  'y'  ) );
     write_file ( added_path , record )  ;
@@ -687,7 +687,7 @@ stclient client ;
         cout << "\n\n plz enter pin to add \n";
         getline ( cin >> ws , pin);
 
-        if ( ! find( pin , vstFile )) 
+        if ( ! is_client_available( pin , vstFile )) 
         add_client ( pin , vstFile , client ) ;
 
         else
@@ -709,7 +709,7 @@ vector<stclient> record ;
                 if ( it->pin == pin ) 
                 {
                   record = struct_to_vst(*it);
-                  show (*it) ;   
+                  show_client (*it) ;   
                   break ; 
                 }
 
@@ -731,7 +731,7 @@ string pin ;
         cout << "\n\n plz enter pin to delete \n";
         getline ( cin >> ws , pin);
 
-        if ( find( pin , vstFile )) 
+        if ( is_client_available( pin , vstFile )) 
         delete_client ( pin , vstFile ) ;
 
         else
@@ -783,7 +783,7 @@ for ( auto& c : vstFile )
 {
 if ( c.pin == pin )   
 {
-show(c);
+show_client(c);
     if ( mlib::repeat_vs_proceed(" this is the account . Do you need to perform a transaction ?  y  or   n  \n " , 'y' , 'n'))
     {
     cout << " plz enter transaction amount \n ";
@@ -817,7 +817,7 @@ string pin ;
         cout << "\n\n please , enter account PIN for performing transactions \n";
         getline ( cin >> ws , pin);
 
-        if ( find ( pin , vstFile )) 
+        if ( is_client_available ( pin , vstFile )) 
         deposit_withdraw ( pin , vstFile , trans ) ;
 
         else
@@ -831,7 +831,7 @@ string pin ;
 entransaction transaction_menu ( vector<stclient>& vstFile , stusers& current_user )
 {
 cout << "=================================================================\n";
-cout << "                    transaction menu screen              " << current_user.username << "\n";
+cout << "                    transaction menu screen              " << current_user.username << "   "  << current_user.password<< "\n";
 cout << "=================================================================\n";
 cout << "     [1] Deposit. \n";
 cout << "     [2] Withdraw. \n";
@@ -880,7 +880,7 @@ enmain show_menu ( stusers& current_user )
 {
 
 cout << "=================================================================\n";
-cout << "                       main menu screen                  "<< current_user.username << "\n";
+cout << "                       main menu screen                  "<< current_user.username  << "   " << current_user.password << "\n";
 cout << "=================================================================\n";
 cout << "     [1] Show clients list. \n";
 cout << "     [2] Show client. \n";
@@ -928,13 +928,13 @@ do           // main() is clearly the boss. ✅✅✅ ماسكة خيوط الل
         break ;
 
         case main_find :
-        if ( current_user.privilege & pr_find )              show_client(vstFile);
+        if ( current_user.privilege & pr_find )              pre_show_client(vstFile);
         else                                                 access_denied ();
         break ;
 
 
         case main_update :
-        if ( current_user.privilege & pr_update )             update_client(vstFile);
+        if ( current_user.privilege & pr_update )             pre_update_client(vstFile);
         else                                                  access_denied ();
         break ;
 
