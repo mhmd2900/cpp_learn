@@ -5,13 +5,11 @@
 /cout admin  hhhhhhhhhhhhhhhh   in every  page
 /search exact word
 
-full acess vs customized 
 update users by username 
+full acess vs customized 
 admin can not be deleted
 
 
-login , signup to mlib
-add features to reach 1000 lines
 
 
 

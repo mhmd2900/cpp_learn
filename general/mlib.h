@@ -18,44 +18,9 @@
 // using std::numeric_limits;
 // using std::streamsize;
 
-// struct users
-// {
-// std::string username ;
-// int password = 0 ;
-// short privilege = 1 ;
-// };
-
 
 namespace mlib
 {
-
-
-
-// users sign_up ( )
-// {
-// users new_user ;
-// cout << "*************************************\n" ; 
-// cout << "*************  SIGN UP  *************\n" ; 
-// cout << "*************************************\n\n" ; 
-// new_user.username = mlib::input_word(" enter username \n ") ;
-// new_user.password = mlib::get_number (" enter password \n ") ;
-// return new_user ;
-// }
-
-
-// bool can_login ( vector<users>& vstusers)
-// {
-// users login_user ;
-// cout << "*************************************\n" ; 
-// cout << "**************  LOGIN  **************\n" ; 
-// cout << "*************************************\n\n" ; 
-// login_user.username = mlib::input_word(" plz , enter your user name \n");
-// login_user.password = mlib::get_number(" plz , enter your password  \n");
-// for ( auto& u : vstusers )
-// if ( u.username == login_user.username && u.password == login_user.password )
-// return true ;
-// return false ;
-// }
 
 
 
