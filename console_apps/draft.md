@@ -9,12 +9,15 @@
 /full acess vs customized 
 /pre_add_account
 /admin should be fixed
-/vector of enums
+/vector of structures   client
+/session vs transasction
+/ ][my database
 
+option to skip function ??
 change permissions
 admin fixed privileges , modifiable password
 admin can not be deleted
-
+vector of enums   users
 
 
 

@@ -47,7 +47,8 @@ int privilege = 1 ;
 struct stclient_history
 {
 vector<double> v_amount ;
-vector<entransaction> v_trans ;
+vector<entransaction> v_trans ; //✅✅✅ structure of vst of vector of enums
+stusers user ;
 };
 
 struct stclient 
@@ -60,7 +61,23 @@ bool activity = false ;
 vector<stclient_history> v_history ;
 };
 
+string entransaction_to_string ( entransaction transaction )
+{
+switch ( transaction )
+{
+case tr_deposit :
+return " deposit " ;
+break ;
 
+case tr_withdraw :
+return " withdrawal " ;
+break ;
+
+default :
+return " non " ;
+break ;
+}
+}
 
 // ════════════════════════════════════════════════════════════════════  users  ═══════════════════════════=═══════════════════════════════════════
 
@@ -595,11 +612,23 @@ void show_client ( stclient client )
   cout << " activity  :  " << num_activity(client.activity) << "\n" ;
   cout << "______________________________________\n";
 
- double& amount = client.history.
+ vector<stclient_history>& history = client.v_history ;
 
-  cout << "\n\n -------------- transaction history -------------- \n" ;
-  for ( int i = 0 ; i < client.history.size() ; i ++ )
-  cout << i+1 << ". " << 
+
+ if ( !history.empty())
+ {
+  cout << "\n\n -------------------- transaction history -------------------- \n" ;
+  for ( int i = history.size() - 1   ; i >= 0    ; i -- )
+  {
+    cout << " session (" << i+1 << ")              by " << history[i].user.username << "\n";
+    for ( int j = history[i].v_trans.size() - 1 ; j >= 0  ; j--  )
+    {
+    cout << " transaction " << j+1 << "  :  " << entransaction_to_string (history[i].v_trans.at(j)) << 
+    "  "  << history[i].v_amount.at(j) << "\n" ;
+    }
+    cout << "--------------------\n" ;
+  }
+ }
 }
 
 void pre_show_client ( vector<stclient>& vstFile )
@@ -784,7 +813,7 @@ cout << "\n\n Press any key to return to main menu . . .\n ";
 system("pause > 0 ");                 
 }
 
-void  deposit_withdraw ( string pin , vector<stclient>& vstFile , entransaction trans )//✅✅✅  both same function 
+void  deposit_withdraw ( string pin , vector<stclient>& vstFile , entransaction trans , string username  )//✅✅✅  both same function 
 { 
 system("cls"); 
 double transaction_amount  ;
@@ -799,28 +828,32 @@ for ( auto& c : vstFile )
     if ( c.pin == pin )   
     {
     show_client(c);
-    if ( mlib::repeat_vs_proceed(" this is the account . Do you need to perform a transaction ?  y  or   n  \n " , 'y' , 'n'))
+    if ( mlib::repeat_vs_proceed(" is this the account ?     (y/n)  \n " , 'y' , 'n'))  //✅✅✅
         {   
-        cout << " plz enter transaction amount \n ";
-        cin >> transaction_amount ;
+          do
+            { cout << " plz enter transaction amount \n ";
+              cin >> transaction_amount ;
 
-            if ( trans == tr_withdraw )
-            {
-            if ( transaction_amount > c.balance )               { cout << " insufficient balance \n";  return ; }
-            else                                                { transaction_amount *= -1 ; }
-            }
+                  if ( trans == tr_withdraw )
+                  {
+                  if ( transaction_amount > c.balance )               { cout << " insufficient balance \n";  return ; }
+                  else                                                { transaction_amount *= -1 ; }
+                  }
 
-        client_history.v_trans.push_back(trans) ;
-        client_history.v_amount.push_back(transaction_amount) ; 
-        c.v_history.push_back(client_history);
+              cout << "old balance was " << c.balance << "    , now became  " << c.balance + transaction_amount  << "\n" ;
+              c.balance += transaction_amount ;                          // change every transaction    //✅✅✅
+              client_history.v_amount.push_back(transaction_amount) ;    // change every transaction
+              client_history.v_trans.push_back(trans) ;                  // change every transaction
+            } while ( mlib::repeat_vs_proceed ( " perform another transaction ?    (y/n) \n"));
 
-        cout << "old balance was " << c.balance << "    , now became  " << c.balance + transaction_amount  << "\n" ;
-        c.balance += transaction_amount ;
-        c.activity = 1 ;
-        
-        record = struct_to_vst(c);
-        write_file ( active_path , record )  ;
-        write_file ( main_path , vstFile , false )  ; 
+
+        client_history.user.username = username ;                  // change every session              //✅✅✅
+        c.v_history.push_back(client_history);                     // change every session
+        c.activity = 1 ;                                           // change every session
+        record = struct_to_vst(c);                                 // change every session
+        write_file ( active_path , record )  ;                     // change every session
+        write_file ( main_path , vstFile , false )  ;              // change every session
+
         }
     break ;
     }
@@ -829,22 +862,22 @@ for ( auto& c : vstFile )
 
 
 
-void pre_deposit_withdraw ( vector<stclient>& vstFile , entransaction trans )
+void pre_deposit_withdraw ( vector<stclient>& vstFile , entransaction trans , string username )
 {
 system("cls");     // ✅✅✅  at the beginning of all independent functions
 string pin ;
 
   do {
-        cout << "\n\n please , enter account PIN for performing transactions \n";
+        cout << "\n\n please , enter account PIN  \n";
         getline ( cin >> ws , pin);
 
         if ( is_client_available ( pin , vstFile )) 
-        deposit_withdraw ( pin , vstFile , trans ) ;
+        deposit_withdraw ( pin , vstFile , trans , username ) ;
 
         else
         cout << " account does not exists \n";
 
-     } while ( mlib::repeat_vs_proceed( "Do you want to perform another transaction ?    y  or   n  \n"  ) );
+     } while ( mlib::repeat_vs_proceed( " another account or another session  ?    (y/n)   \n"  ) );
    
 }
 
@@ -870,15 +903,15 @@ entransaction choice ;
 
 do {
 system("cls");     
-choice = transaction_menu(vstFile , current_user) ;
+choice = transaction_menu( vstFile , current_user) ;
     switch(choice)
       {
         case entransaction::tr_deposit :
-        pre_deposit_withdraw ( vstFile , tr_deposit );
+        pre_deposit_withdraw ( vstFile , tr_deposit , current_user.username );
         break ;
 
         case entransaction::tr_withdraw :                
-        pre_deposit_withdraw ( vstFile , tr_withdraw );
+        pre_deposit_withdraw ( vstFile , tr_withdraw , current_user.username );
         break ;
 
         case entransaction::tr_balance :

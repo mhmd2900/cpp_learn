@@ -7,45 +7,33 @@
 using namespace std ;
 
 
-// enum enaccess { read = 1 << 0 , write = 1 << 1 , share = 1 << 2 };
-// short admin = read | write | share ;
-// short user = 15 ;
-// short non = 2 ;
-// short all = -1 ;
+enum entransaction  { tr_deposit = 1 , tr_withdraw = 2 , tr_balance = 3 , tr_return = 4 } ;
 
 
-struct stfirst {
-    string name ;
-    //int grade ;
-};
-
-struct stsecond {
-    //string name ;
-    int grade ;
-};
-
-enum enusers    { users_show = 1 , users_find = 2 , users_update = 3 , users_add = 4 , users_del = 5 , users_return = 6  } ;
-
-
-void fun ( stfirst first )
+struct stclient_history
 {
-    cout << " welcome " ;
-}
+vector<double> v_amount ;
+vector<entransaction> v_trans ; //✅✅✅ structure of vst of vector of enums
+};
+
+struct stclient 
+{
+int serial = 0 ;
+string name ;
+string pin ;
+double balance ;
+bool activity = false ;
+vector<stclient_history> v_history ;
+};
 
 int main()
 {
-// stfirst first ; 
-// stsecond second ;
-// fun ( second );
-
-
-vector<enusers> ven_users ;
-
-ven_users.push_back(users_add) ;
-
-cout << ven_users.at(0) ;
 
 
 
+// stclient client ;
+// client.v_history.push
+// client.v_history[0].v_amount.at(0) = 1000 ;
 
+// cout << client.v_history[0].v_amount[0] ;
 }
