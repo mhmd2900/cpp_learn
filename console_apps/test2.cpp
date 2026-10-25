@@ -24,6 +24,7 @@ struct stsecond {
     int grade ;
 };
 
+enum enusers    { users_show = 1 , users_find = 2 , users_update = 3 , users_add = 4 , users_del = 5 , users_return = 6  } ;
 
 
 void fun ( stfirst first )
@@ -38,6 +39,11 @@ int main()
 // fun ( second );
 
 
+vector<enusers> ven_users ;
+
+ven_users.push_back(users_add) ;
+
+cout << ven_users.at(0) ;
 
 
 

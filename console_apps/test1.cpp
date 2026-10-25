@@ -44,6 +44,12 @@ int password = 0 ;
 int privilege = 1 ;
 };
 
+struct stclient_history
+{
+vector<double> v_amount ;
+vector<entransaction> v_trans ;
+};
+
 struct stclient 
 {
 int serial = 0 ;
@@ -51,6 +57,7 @@ string name ;
 string pin ;
 double balance ;
 bool activity = false ;
+vector<stclient_history> v_history ;
 };
 
 
@@ -579,17 +586,20 @@ system("pause > 0 ");                       //✅✅✅ as there is no repeat op
 // ════════════════════════════════════════════════════════════════════════════════════ show client ════════════════════════════════════════════════════════════
 void show_client ( stclient client )
 {
-    {
   cout << "______________________________________\n";
   cout << "           client details         \n";
   cout << "______________________________________\n";
-  //cout << " serial    :  " << client.serial << "\n" ;         // not yet added
   cout << " name      :  " << client.name << "\n" ;
   cout << " pin       :  " << client.pin << "\n" ;
   cout << " balance   :  " << client.balance << "\n" ;
   cout << " activity  :  " << num_activity(client.activity) << "\n" ;
   cout << "______________________________________\n";
-  }
+
+ double& amount = client.history.
+
+  cout << "\n\n -------------- transaction history -------------- \n" ;
+  for ( int i = 0 ; i < client.history.size() ; i ++ )
+  cout << i+1 << ". " << 
 }
 
 void pre_show_client ( vector<stclient>& vstFile )
@@ -775,38 +785,49 @@ system("pause > 0 ");
 }
 
 void  deposit_withdraw ( string pin , vector<stclient>& vstFile , entransaction trans )//✅✅✅  both same function 
-{  
-int tran  ;
+{ 
+system("cls"); 
+double transaction_amount  ;
 vector<stclient> record ;
-//if (trans == entransaction::tr_withdraw )   tran *= -1 ;
-for ( auto& c : vstFile )
-{
-if ( c.pin == pin )   
-{
-show_client(c);
-    if ( mlib::repeat_vs_proceed(" this is the account . Do you need to perform a transaction ?  y  or   n  \n " , 'y' , 'n'))
-    {
-    cout << " plz enter transaction amount \n ";
-    cin >> tran ;
-    if (trans == entransaction::tr_withdraw )   
-    {
-    if (tran > c.balance )  {cout << " insufficient balance \n";  return ;}
-    else
-    tran *= -1 ;
-    }
-    cout << "old balance was " << c.balance << "    , now became  " << c.balance + tran  << "\n" ;
-    c.balance += tran ;
-    c.activity = 1 ;
-                      record = struct_to_vst(c);
-                      write_file ( active_path , record )  ;
-                      write_file ( main_path , vstFile , false )  ; 
-    }
+stclient_history client_history ;
 
+
+for ( auto& c : vstFile )
+ {
+  vector<stclient_history>& history = c.v_history ;
+
+    if ( c.pin == pin )   
+    {
+    show_client(c);
+    if ( mlib::repeat_vs_proceed(" this is the account . Do you need to perform a transaction ?  y  or   n  \n " , 'y' , 'n'))
+        {   
+        cout << " plz enter transaction amount \n ";
+        cin >> transaction_amount ;
+
+            if ( trans == tr_withdraw )
+            {
+            if ( transaction_amount > c.balance )               { cout << " insufficient balance \n";  return ; }
+            else                                                { transaction_amount *= -1 ; }
+            }
+
+        client_history.v_trans.push_back(trans) ;
+        client_history.v_amount.push_back(transaction_amount) ; 
+        c.v_history.push_back(client_history);
+
+        cout << "old balance was " << c.balance << "    , now became  " << c.balance + transaction_amount  << "\n" ;
+        c.balance += transaction_amount ;
+        c.activity = 1 ;
+        
+        record = struct_to_vst(c);
+        write_file ( active_path , record )  ;
+        write_file ( main_path , vstFile , false )  ; 
+        }
     break ;
+    }
+  } 
 }
-}
-system("cls");
-}
+
+
 
 void pre_deposit_withdraw ( vector<stclient>& vstFile , entransaction trans )
 {
@@ -822,7 +843,6 @@ string pin ;
 
         else
         cout << " account does not exists \n";
-
 
      } while ( mlib::repeat_vs_proceed( "Do you want to perform another transaction ?    y  or   n  \n"  ) );
    
@@ -844,7 +864,7 @@ int choice = mlib::get_number( " Choose which action to perform from  1  to  4  
 return (entransaction)choice ;
 }
 
-void pre_transaction_menu  ( vector<stclient>& vstFile , stusers& current_user )
+void post_transaction_menu  ( vector<stclient>& vstFile , stusers& current_user )
 {
 entransaction choice ;
 
@@ -949,7 +969,7 @@ do           // main() is clearly the boss. ✅✅✅ ماسكة خيوط الل
         break ;
 
         case main_trans :
-        if ( current_user.privilege & pr_trans )              pre_transaction_menu(vstFile , current_user);
+        if ( current_user.privilege & pr_trans )              post_transaction_menu(vstFile , current_user);
         else                                                  access_denied ();
         break ;
 

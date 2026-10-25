@@ -9,8 +9,10 @@
 /full acess vs customized 
 /pre_add_account
 /admin should be fixed
+/vector of enums
 
 change permissions
+admin fixed privileges , modifiable password
 admin can not be deleted
 
 
@@ -36,13 +38,12 @@ but before answering any question in this chat , rephrase my original request to
 
 =================================================================================================
 
-// vector of structures ( Structured Bindings ), enums and arrays
-// structure of vectors , enums , arrays
+// structure of vector of enums 
 // dynamic array of vectors
 
-// static global variable e.g file
-// static local variable vs reference vs pointer
-// index vs range vs iterator_based loops
+// static local variable 
+// pointer
+// iterator_based loops
 // size_t  for counters
 
 // ternary operator  ( function return ,  assignment )
