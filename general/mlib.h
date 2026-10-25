@@ -125,7 +125,7 @@ char ch ;
 if ( std::cin >> ch )  {     std::cin.ignore( std::numeric_limits<std::streamsize>::max() , '\n');  
                     if (tolower(static_cast<unsigned char>(ch)) ==  repeat ) return true;   // target
                     if (tolower(static_cast<unsigned char>(ch)) ==  proceed) return false;  // target
-                    std::cout << "Invalid choice, please enter " << repeat << "or" << proceed << "\n";  }  // different choice
+                    std::cout << "Invalid choice, please enter " << repeat << " or " << proceed << "\n";  }  // different choice
 else if ( std::cin.eof())          {  std::cout << " EOF , goodbye \n" ;  std::exit(0) ; }  // EOF
 else if ( std::cin.fail())         {  std::cin.clear();   std::cin.ignore( std::numeric_limits<std::streamsize>::max() , '\n'); std::cout << " failed input \n"; } // fail ( not char input )
 }
