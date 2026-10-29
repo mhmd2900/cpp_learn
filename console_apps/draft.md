@@ -8,12 +8,12 @@
 /update users by username 
 /full acess vs customized 
 /pre_add_account
-/admin should be fixed
-/vector of structures   client
+/vector of structures of enums  
 /session vs transasction
 / ][my database
+/option to skip function ??
 
-option to skip function ??
+
 change permissions
 admin fixed privileges , modifiable password
 admin can not be deleted

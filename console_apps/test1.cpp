@@ -601,8 +601,31 @@ system("pause > 0 ");                       //✅✅✅ as there is no repeat op
 }
 
 // ════════════════════════════════════════════════════════════════════════════════════ show client ════════════════════════════════════════════════════════════
+
+void show_client_history ( stclient client )
+{
+   vector<stclient_history>& history = client.v_history ;
+    if ( !history.empty())                                           //✅✅✅ nested loop for struct of vst of vector of enums
+    {
+      cout << "\n\n -------------------- transaction history -------------------- \n" ;
+      for ( int i = history.size() - 1   ; i >= 0    ; i -- )
+      {
+        cout << " session (" << i+1 << ")              by " << history[i].user.username << "\n";
+        for ( int j = history[i].v_trans.size() - 1 ; j >= 0  ; j--  )
+        {
+        cout << " transaction " << j+1 << "  :  " << entransaction_to_string (history[i].v_trans.at(j)) << 
+        "  "  << history[i].v_amount.at(j) << "\n" ;
+        }
+        cout << "-----------------------------------------------------------------\n\n" ;
+      }
+    }
+    else
+    cout << " no available history \n\n";
+}
+
 void show_client ( stclient client )
 {
+  system("cls");
   cout << "______________________________________\n";
   cout << "           client details         \n";
   cout << "______________________________________\n";
@@ -615,20 +638,12 @@ void show_client ( stclient client )
  vector<stclient_history>& history = client.v_history ;
 
 
- if ( !history.empty())
- {
-  cout << "\n\n -------------------- transaction history -------------------- \n" ;
-  for ( int i = history.size() - 1   ; i >= 0    ; i -- )
-  {
-    cout << " session (" << i+1 << ")              by " << history[i].user.username << "\n";
-    for ( int j = history[i].v_trans.size() - 1 ; j >= 0  ; j--  )
-    {
-    cout << " transaction " << j+1 << "  :  " << entransaction_to_string (history[i].v_trans.at(j)) << 
-    "  "  << history[i].v_amount.at(j) << "\n" ;
-    }
-    cout << "--------------------\n" ;
-  }
- }
+ cout << " press  y   to see history if available , or  ENTER  to skip \n" ;
+ string str;
+ getline ( cin , str );
+
+ if ( str == "y"  ||  str == "Y" )    
+ show_client_history ( client );
 }
 
 void pre_show_client ( vector<stclient>& vstFile )
@@ -637,8 +652,9 @@ system("cls");
 string pin ;
 cout << "\n\n";
 do {
+   system("cls");
     cout << " Please , enter account PIN to search for .\n";
-    cin >> pin ;
+    getline ( cin , pin );
 
       if ( is_client_available( pin , vstFile )) 
               {
@@ -860,8 +876,6 @@ for ( auto& c : vstFile )
   } 
 }
 
-
-
 void pre_deposit_withdraw ( vector<stclient>& vstFile , entransaction trans , string username )
 {
 system("cls");     // ✅✅✅  at the beginning of all independent functions
@@ -1023,4 +1037,3 @@ do           // main() is clearly the boss. ✅✅✅ ماسكة خيوط الل
 cout << " \n\n We are happy for your visit     Thank you  \n\n";
 cout << "===================================================";
 }
-
