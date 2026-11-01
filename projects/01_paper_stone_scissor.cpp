@@ -186,7 +186,7 @@ mlib::reset_screen();
 do 
 {
 game();
-} while ( mlib::repeat_vs_proceed(" repeat ?      y or n \n"));
+} while ( mlib::do_or_not(" repeat ?      y or n \n"));
 
 
 return 0 ;

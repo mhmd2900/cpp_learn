@@ -113,19 +113,19 @@ else if ( std::cin.fail())         { std::cin.clear();   std::cin.ignore( std::n
 
 
 ///////////////  want to repeat
-bool repeat_vs_proceed (const std::string& message , char repeat = 'y' , char proceed = 'n' ) // boolean names should be questionable
+bool do_or_not (const std::string& message , char yes = 'y' , char no = 'n' ) // boolean names should be questionable
 {
-repeat    = tolower(static_cast<unsigned char>(repeat)) ;
-proceed   = tolower(static_cast<unsigned char>(proceed)) ;
+yes    = tolower(static_cast<unsigned char>(yes)) ;
+no   = tolower(static_cast<unsigned char>(no)) ;
 while ( true )
 {
 std::cout << message ;
 char ch ;
 
 if ( std::cin >> ch )  {     std::cin.ignore( std::numeric_limits<std::streamsize>::max() , '\n');  
-                    if (tolower(static_cast<unsigned char>(ch)) ==  repeat ) return true;   // target
-                    if (tolower(static_cast<unsigned char>(ch)) ==  proceed) return false;  // target
-                    std::cout << "Invalid choice, please enter " << repeat << " or " << proceed << "\n";  }  // different choice
+                    if (tolower(static_cast<unsigned char>(ch)) ==  yes ) return true;   // target
+                    if (tolower(static_cast<unsigned char>(ch)) ==  no) return false;  // target
+                    std::cout << "Invalid choice, please enter " << yes << " or " << no << "\n";  }  // different choice
 else if ( std::cin.eof())          {  std::cout << " EOF , goodbye \n" ;  std::exit(0) ; }  // EOF
 else if ( std::cin.fail())         {  std::cin.clear();   std::cin.ignore( std::numeric_limits<std::streamsize>::max() , '\n'); std::cout << " failed input \n"; } // fail ( not char input )
 }
@@ -133,25 +133,15 @@ else if ( std::cin.fail())         {  std::cin.clear();   std::cin.ignore( std::
 
 
 
-// bool proceed_vs_cancel (const std::string& message , char proceed = 'y' , char cancel = 'c' ) 
-// {
-// proceed    = tolower(static_cast<unsigned char>(proceed)) ;
-// cancel     = tolower(static_cast<unsigned char>(cancel)) ;
-// while ( true )
-// {
-// std::cout << message ;
-// char ch ;
 
-// if ( std::cin >> ch )  {     std::cin.ignore( std::numeric_limits<std::streamsize>::max() , '\n');  
-//                     if (tolower(static_cast<unsigned char>(ch)) ==  proceed ) return true;   // target
-//                     if (tolower(static_cast<unsigned char>(ch)) ==  cancel ) return false;  // target
-//                     std::cout << "Invalid choice, please enter y or n\n";  }  // different choice
-// else if ( std::cin.eof())          {  std::cout << " EOF , goodbye \n" ;  std::exit(0) ; }  // EOF
-// else if ( std::cin.fail())         {  std::cin.clear();   std::cin.ignore( std::numeric_limits<std::streamsize>::max() , '\n'); std::cout << " failed input \n"; } // fail ( not char input )
-// }
-// } 
-
-
+bool do_or_skip (const std::string& message , std::string key = "y" )
+{
+std::cout << message ;
+std::string choice ;
+std::getline ( std::cin , choice );
+if ( choice == "y"  ||  choice == "Y" )     return true ;
+return false ;
+}
 
 
 

@@ -12,11 +12,18 @@
 /session vs transasction
 / ][my database
 /option to skip function ??
+/do_or_not     do_or_skip
+/other users affecting admin
+/duplicate admin at beginning only 
+/change admin password
 
 
-change permissions
-admin fixed privileges , modifiable password
+-1   vs   255   vs  all permisisons
+forgot password
+admin fixed privileges , username , modifiable password 
 admin can not be deleted
+return to main menu from deep inside 
+change permissions
 vector of enums   users
 
 

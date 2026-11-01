@@ -1,39 +1,53 @@
 #include<iostream>
-#include<string>
-#include<vector>
-#include<cstdio>
-#include "../general/mlib.h"
-#include "../general/mdates.h"
-using namespace std ;
+
+using std::cout ;
+using std::cin ;
+using std::string ;
 
 
-enum entransaction  { tr_deposit = 1 , tr_withdraw = 2 , tr_balance = 3 , tr_return = 4 } ;
+enum enpermission { read = 1 << 0 ,  write = 1 << 1 ,  excute = 1 << 2  , del = 1 << 3 };
+enum ensymptoms   { fever = 1 << 0 , cough = 1 << 1 , vomiting = 1 << 2 , pain = 1 << 3 , 
+                    dizziness = 1 << 4 , itching = 1 << 5 , anuria = 1 << 6 };
 
-
-struct stclient_history
+int main ()
 {
-vector<double> v_amount ;
-vector<entransaction> v_trans ; //✅✅✅ structure of vst of vector of enums
-};
+short guest  = read ;
+short editor = read | write ;
+short admin  = read | write | excute | del ;
 
-struct stclient 
-{
-int serial = 0 ;
-string name ;
-string pin ;
-double balance ;
-bool activity = false ;
-vector<stclient_history> v_history ;
-};
+// editor = editor ^ ( write | excute ) ;  // ^ means revers ,, now editor lose write and receive excute 
+// admin  = admin  ^ ( guest & editor  ) ;  // now admin lose read
 
-int main()
-{
+
+//editor ^= (editor & read) ;
+
+editor = editor ^ (editor & del) ;
+editor = editor &~ del ;
 
 
 
-// stclient client ;
-// client.v_history.push
-// client.v_history[0].v_amount.at(0) = 1000 ;
+if ( editor & del )     cout << " can  \n ";
+else                       cout << " not  \n ";
 
-// cout << client.v_history[0].v_amount[0] ;
+
+
+// ----------------------------------------------------------------
+
+// short respiratory = fever | cough ;
+// short abdominal   = fever | vomiting | pain ;
+// short neuro       = itching | dizziness ;
+// short uro         = itching | anuria ;
+
+
+// short mhmd = fever | cough | vomiting | pain | itching  ;
+// short aly = fever | itching ;
+// short ready_for_discharge = 0 ;
+
+
+// mhmd = mhmd ^ ( respiratory | abdominal ); //  mhmd     itching
+// mhmd = mhmd ^ ( neuro & uro ); // mhmd  0 
+// if ( mhmd == ready_for_discharge )  cout << " can go \n " ;
+
+
+return 0 ;
 }
