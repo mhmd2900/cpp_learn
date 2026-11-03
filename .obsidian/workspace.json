@@ -11,14 +11,10 @@
             "id": "98ff6566b5cc307b",
             "type": "leaf",
             "state": {
-              "type": "markdown",
-              "state": {
-                "file": "general/lessons.md",
-                "mode": "source",
-                "source": false
-              },
+              "type": "empty",
+              "state": {},
               "icon": "lucide-file",
-              "title": "lessons"
+              "title": "New tab"
             }
           }
         ]
