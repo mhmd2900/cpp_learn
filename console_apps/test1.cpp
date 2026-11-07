@@ -279,7 +279,6 @@ return user ;
 }
 
 
-
 // ═════════════════════════════════════════════════════════════════════   users menu   ═════════════════════════════════════════════════════════════
 
 void show_user_details ( stusers& user )
@@ -315,7 +314,7 @@ do {
 } while ( mlib::do_or_not( "Do you want to show another user ?    y  or   n  \n"));
 }
 
-
+// ═══════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════
 
 void customize_permissions ( stusers& user )
 {                                                         // ✅✅✅   2 ways of removing permission ( whether available or not )
@@ -332,8 +331,14 @@ stusers update_add_user ( stusers& user )                          //update pass
           cout<< " enter new password \n";
           cin >> user.password ;
 
+          // admin can not change his privileges
+          if ( user.username == "admin")    
+          { 
+            show_user_details (user) ;
+            return user ;
+          }
           bool choice = mlib::do_or_not ( "do you want to give him full access  (y/n)" ) ;
-
+                                                  
           if (choice)
             user.privilege = -1 ;
           else 
@@ -342,16 +347,22 @@ stusers update_add_user ( stusers& user )                          //update pass
             cout << "\n\n";
 return user ;
 }                                                    
-// ═══════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════
-void update_user ( string username , vector<stusers>&vstusers )    // retrieve the exact user
+
+void update_user ( string username , vector<stusers>&vstusers , stusers& current_user)    // retrieve the exact user
 {
 vector<stusers> record ;
+                                                  // admin only can change his password
+if ( username == "admin"   &&    current_user.username != "admin" ) 
+{
+cout << " you can not modify   admin   credentials \n";
+return ;
+}
+
 for (auto& c : vstusers )
 if ( username == c.username ) 
 {  
     do {
       c = update_add_user(c) ;
-      //show_user_details (c) ;
       } while ( mlib::do_or_not(" are these credentials correct ?     (y/n) " , 'n'  , 'y')) ;
     record = struct_to_vst(c);
 break ;
@@ -360,7 +371,7 @@ break ;
     cout << "           ......update done successfully......         \n";
 }
 
-void pre_update_user ( vector<stusers>&vstusers )                  // is user available ?
+void pre_update_user ( vector<stusers>&vstusers , stusers& current_user )                  // is user available ?
 {
 system("cls");     
 stusers user ;
@@ -369,7 +380,7 @@ stusers user ;
         getline ( cin >> ws , user.username );
 
         if ( is_username_available( user.username , vstusers )) 
-        update_user ( user.username , vstusers ) ;
+        update_user ( user.username , vstusers , current_user) ;
 
         else
         cout << " user does not exist \n";
@@ -377,6 +388,101 @@ stusers user ;
      } while ( mlib::do_or_not( "Do you want to update another client ?    y  or   n  \n"  ) );
 
 }
+
+// ═══════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════
+
+void add_user ( string username , vector<stusers>& vstusers , stusers& user )
+{
+  vector<stusers> record ;  
+  user.username = username ;
+
+        do {
+             {              
+                                         
+                  user = update_add_user(user ) ;
+                  record = struct_to_vst(user);
+                  //show_user (user) ;
+             }
+           } while ( mlib::do_or_not( " is data correct ?  (y/n)   \n"  , 'n'  ,  'y'  ) );
+    vstusers.push_back(user) ;
+    user_write_file ( users_path , record )  ; 
+    cout << "           ......account added successfully......         \n";
+
+}
+
+void pre_add_user  ( vector<stusers>&vstusers  )
+{
+system("cls");     
+string username ;
+stusers user ;
+
+  do {
+        cout << "\n\n plz enter username to add \n";
+        getline ( cin >> ws , username);
+        
+        if ( ! is_username_available ( username , vstusers))
+        add_user ( username , vstusers  , user ) ;
+
+        else
+        cout << " user already exists \n";
+
+
+     } while ( mlib::do_or_not( "Do you want to add another user ?    y  or   n  \n"  ) );
+
+ }
+
+// ═════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════
+
+void delete_user ( string username , vector<stusers>& vstusers  )
+{
+vector<stusers>::iterator it = vstusers.begin() ;  // iterator of vst is struct
+vector<stusers> record ;
+
+             for ( ; it != vstusers.end() ; it++)
+                if ( it->username == username ) 
+                {
+                  show_user (*it) ;   
+                  break ; 
+                }
+
+      if ( mlib::do_or_not( " sure to delete this acoount  ?  (y/c) "  , 'y' , 'c'))
+      {
+        vstusers.erase( it );  
+        user_write_file ( users_path , vstusers , false )  ; 
+        cout << "           ......user deleted successfully......         \n";
+      }
+}
+
+void pre_delete_user  ( vector<stusers>&vstusers )
+{
+system("cls");     
+string username ;
+
+  do {
+        cout << "\n\n plz enter username to delete \n";
+        getline ( cin >> ws , username);
+
+       if ( username == "admin")
+       {
+        cout << " admin   can not be deleted \n";
+        system("pause > 0 "); 
+        return ;
+       }
+
+       else if ( is_username_available( username , vstusers )) 
+        delete_user ( username , vstusers ) ;
+
+        else
+        cout << " user does not exists \n";
+
+
+     } while ( mlib::do_or_not( "Do you want to delete another user  ?    y  or   n  \n"  ) );
+
+// system("pause > 0 ");                // ✅✅✅   no need to pause  as patient choose not to repeat
+}
+
+
+
 // ═══════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════
 void show_users_list ( vector<stusers>& vstusers )
 {
@@ -436,15 +542,15 @@ choice = show_users_menu(vstusers , current_user) ;
         break ;
 
         case users_update :
-        pre_update_user ( vstusers );
+        pre_update_user ( vstusers , current_user );
         break ;
 
         case users_add :
-        //show_balances ( vstFile );
+        pre_add_user  ( vstusers );
         break ;
 
         case users_del :
-        //show_balances ( vstFile );
+        pre_delete_user ( vstusers );
         break ;
 
         case users_return :
@@ -454,8 +560,6 @@ choice = show_users_menu(vstusers , current_user) ;
 
 system("cls");
 }
-
-
 
 
 // ════════════════════════════════════════════════════════════════════  clients    ══════════════════════════════════════════════════════════════════

@@ -16,15 +16,12 @@
 /other users affecting admin
 /duplicate admin at beginning only 
 /change admin password
+/-1   vs   255   vs  all permisisons
+/admin password modified by himself
+/admin privileges not modifiable 
+/admin can not be 
 
 
--1   vs   255   vs  all permisisons
-forgot password
-admin fixed privileges , username , modifiable password 
-admin can not be deleted
-return to main menu from deep inside 
-change permissions
-vector of enums   users
 
 
 
