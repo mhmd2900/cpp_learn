@@ -180,7 +180,7 @@ cout << arr[0] << endl ;    // print index 0  ,,  which is 22
 void cal ( int x , int* y , int** z )  // x 3 (local)   ,  y 3 (pointer) ,  z 3 (pointer)
 {
 int d , f ;
-++ **z  ;       //  x 3 , y 4 , z 4    // y and z point to the original a , not x  [ increase of y or z , increases a ]  
+++ **z  ;       //  x 3 , y 4 , z 4     // y and z point to the original a , not x  [ increase of y or z , increases a ]  
                                         // **z ++ not accepted   **z++ evaluates as ** (z++).
 d = **z ;       // d = 4
 f = *y + 1 ;    // f = 5      
@@ -196,12 +196,12 @@ int main()
 {
 
 int arr [] = { 11,22,33,44} ;
-fun ( arr + 1 );     
+fun ( arr + 1 );                                          // result is 22
 🧠🧠🧠 array is like a pointer but it is in stack only
              array                                                                    pointer to heap                   
   1. compiler oblige you to write its size ( as it has a limited stack )  ,,, take size from user ( run time )
   2. it can not point to different array or pointer                       ,,, change pointing
-  3. it is erased after function ends                   ,,, if a huge size (e.g 4 tera) , program will crash  , so better to delete               
+  3. it is erased after function ends                    ,,, if a huge size (e.g 4 tera) , program will crash  , so better to delete               
 
 // arrays automatically decay into pointers when passed to functions.  
 // Passing arr + 1 passes the address of the element at index 1 (22).
@@ -283,6 +283,26 @@ cout << &emp.grade << "\n" ;      // address
 cout << *(&emp.grade) << "\n" ;    // 85
 cout << (*ppp).grade << "\n" ;     // 85
 cout << ppp->grade << "\n\n" ;     // 85
+
+
+============================================================= 
+///////////////////////////////////////////////////////////////////  spy pointer  
+
+void fun ( int*& x  ,  vector<int>& vnums )
+{
+x = &vnums[1] ;
+cout << *x << endl ;
+}
+
+int main ()
+{
+int a =  4 , b = 5 , c = 6 ;
+int* p = nullptr ; 
+vector<int>vnums = { a,b,c};
+
+fun ( p , vnums );
+cout << *p << endl ; 
+}
 
 
 ============================================================= 

@@ -19,11 +19,13 @@
 /-1   vs   255   vs  all permisisons
 /admin password modified by himself
 /admin privileges not modifiable 
-/admin can not be 
+/admin can not be deleted
+/transaction positive
+/print history activity log
+/spy pointer to avoid double checking (find and act)
 
-
-
-
+features and techniques
+exception handling   in fields_to_record
 
 
 
