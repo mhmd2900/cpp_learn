@@ -23,9 +23,9 @@
 /transaction positive
 /print history activity log
 /spy pointer to avoid double checking (find and act)
+/features and techniques
 
-features and techniques
-exception handling   in fields_to_record
+
 
 
 

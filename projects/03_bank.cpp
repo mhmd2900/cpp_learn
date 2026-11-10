@@ -82,15 +82,18 @@ break ;
 
 
 // ═════════════════════════════════════════════════════════════════  🧠🧠🧠 USERS ═════════════════════════════════════════════════════════════════════════
+
 /////////////////features
 //admin password modified by himself
 //admin privileges not modifiable 
 //admin can not be deleted
+//cout user username and password ( intended to remind me )  in every menu
+//confirm adding admin of empty file only
 
 /////////////////techniques
-// using pointer to avoid double checking , needed only if available client ( show , update , delete , deposit_withdraw ) , useless in ( add )
-// delete_client is better to take pointer as a parameter as in update_client and will be simpler , but i used pin for training
-// deposit_withdrawal in same function , as it is very long and both deposit and withdrawal share 90 % of the code
+// 2 ways of removing permission ( whether available or not )
+// delete user : converted pointer to index , then index to iterator ( so can erase )
+
 // ═══════════════════════════════════════════════════════════   write user ( string → st → vst → print ) ══════════════════════════════════════════════════
 
 vector<stusers> struct_to_vst ( stusers& user )
@@ -198,44 +201,41 @@ system("pause");
 }
 
 
-bool is_username_available ( string username , vector<stusers>&vstusers , bool signup = false ) // for search to update , for signup
+bool is_username_available ( string username     , vector<stusers>&vstusers , stusers*& user_pointer , bool signup = false ) // for search to update , for signup
 {
 for ( auto& u : vstusers )
 if ( username == u.username )
 {
   if ( signup == true ) cout << " choose different username \n";
+  {
+  user_pointer = &u ;
   return true ;
+  }
 }
 return false ;
 }
 
-bool is_user_available     ( stusers signin_user , vector<stusers>&vstusers ) 
+bool is_user_available     ( stusers signin_user , vector<stusers>&vstusers , stusers*& user_pointer ) 
 {
 for ( auto& u : vstusers )
 {
 if ( u.username == signin_user.username && u.password == signin_user.password )
-return true ;
+  {
+  user_pointer = &u ;
+  return true ;
+  }
 }
 cout << " invalid username/password    try again  \n\n";
 return false ;
 }
-
-stusers retrieve_user  ( stusers signin_user , vector<stusers>&vstusers ) 
-{
-for ( auto& u : vstusers )
-if ( signin_user.username == u.username && signin_user.password == u.password )
-{
-signin_user = u ;
-break ;
-}
-return signin_user ;
-} 
 
 
 stusers sign_up ( vector<stusers>&vstusers  )
 {
 system("cls");  
 stusers new_user ;
+stusers* user_pointer ;
+
 cout << "*************************************\n" ; 
 cout << "*************  SIGN UP  *************\n" ; 
 cout << "*************************************\n\n" ; 
@@ -243,7 +243,7 @@ cout << "*************************************\n\n" ;
       do {                                                                // ✅✅✅ nested do while 
             new_user.username = mlib::input_word(" enter username \n ") ;
             new_user.password = mlib::get_number (" enter password \n ") ;
-          } while ( is_username_available ( new_user.username , vstusers , true ) ) ;
+          } while ( is_username_available ( new_user.username , vstusers , user_pointer , true ) ) ;
     show_user(new_user) ;
     } while (mlib::do_or_not(" correct or repeat  (y/r) " , 'r' , 'y' ));
 
@@ -256,6 +256,8 @@ stusers sign_in  ( vector<stusers>&vstusers  )
 {
 system("cls");  
 stusers signin_user ;
+stusers* user_pointer ;
+
 cout << "*************************************\n" ; 
 cout << "*************  SIGN IN  *************\n" ; 
 cout << "*************************************\n\n" ; 
@@ -265,12 +267,12 @@ int count = 0 ;
         signin_user.username = mlib::input_word(" plz , enter your user name \n");
         signin_user.password = mlib::get_number(" plz , enter your password  \n");
         count ++ ;
-      } while ( !is_user_available ( signin_user , vstusers ) ) ;
+      } while ( !is_user_available ( signin_user , vstusers , user_pointer ) ) ;
 system("cls"); 
-show_user(signin_user) ;
-cout << " \n welcome back  " << signin_user.username  << "\n press any key to return to menu \n  ";
+show_user(*user_pointer) ;
+cout << " \n welcome back  " << user_pointer->username  << "\n press any key to return to menu \n  ";
 system("pause>0") ;
-return retrieve_user ( signin_user , vstusers )  ;
+return *user_pointer ;
 }
 
 stusers sign     ( vector<stusers>&vstusers  )
@@ -307,29 +309,28 @@ void pre_show_user ( vector<stusers>& vstusers )
 {
 system("cls");     
 stusers user ;
+stusers* user_pointer = nullptr ; 
 cout << "\n\n";
 do {
     cout << " Please , enter username to search for .\n";
     getline ( cin , user.username );
 
-      if (is_username_available ( user.username , vstusers ))
-              {
-                user = retrieve_user( user , vstusers );
-                show_user_details ( user );
-              }
-    else
-      cout << " user does not exist \n";
+      if (is_username_available ( user.username , vstusers , user_pointer ))
+          show_user_details ( *user_pointer );
 
-} while ( mlib::do_or_not( "Do you want to show another user ?    y  or   n  \n"));
+      else
+          cout << " user does not exist \n";
+
+   } while ( mlib::do_or_not( "Do you want to show another user ?    y  or   n  \n"));
 }
 
 // ═══════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════
 
 void customize_permissions ( stusers& user )
 {                                                         // ✅✅✅   2 ways of removing permission ( whether available or not )
-mlib::do_or_not(" allow find client   (y/n) \n ")  ? user.privilege  |= pr_find    :  user.privilege &~ pr_find    ;
-mlib::do_or_not(" allow update client (y/n) \n ")  ? user.privilege  |= pr_update  :  user.privilege &~ pr_update  ;
-mlib::do_or_not(" allow add client    (y/n) \n ")  ? user.privilege  |= pr_add     :  user.privilege &~ pr_add     ;
+mlib::do_or_not(" allow find client   (y/n) \n ")  ? user.privilege  |= pr_find    :  user.privilege &= ~pr_find;   ;
+mlib::do_or_not(" allow update client (y/n) \n ")  ? user.privilege  |= pr_update  :  user.privilege &= ~pr_update  ;
+mlib::do_or_not(" allow add client    (y/n) \n ")  ? user.privilege  |= pr_add     :  user.privilege &= ~pr_add     ;
 mlib::do_or_not(" allow delete client (y/n) \n ")  ? user.privilege  |= pr_del     :  user.privilege ^= (user.privilege & pr_del)    ;
 mlib::do_or_not(" allow transactions  (y/n) \n ")  ? user.privilege  |= pr_trans   :  user.privilege ^= (user.privilege & pr_trans)  ;
 mlib::do_or_not(" allow manage users  (y/n) \n ")  ? user.privilege  |= pr_users   :  user.privilege ^= (user.privilege & pr_users)  ;
@@ -357,39 +358,37 @@ stusers update_add_user ( stusers& user )                          //update pass
 return user ;
 }                                                    
 
-void update_user ( string username , vector<stusers>&vstusers , stusers& current_user)    // retrieve the exact user
+void update_user ( stusers& user , vector<stusers>&vstusers , stusers& current_user)    // retrieve the exact user
 {
 vector<stusers> record ;
                                                   // admin only can change his password
-if ( username == "admin"   &&    current_user.username != "admin" ) 
+if ( user.username == "admin"   &&    current_user.username != "admin" ) 
 {
 cout << " you can not modify   admin   credentials \n";
 return ;
 }
 
-for (auto& c : vstusers )
-if ( username == c.username ) 
-{  
-    do {
-      c = update_add_user(c) ;
+  do {
+        user = update_add_user(user) ;
       } while ( mlib::do_or_not(" are these credentials correct ?     (y/n) " , 'n'  , 'y')) ;
-    record = struct_to_vst(c);
-break ;
-}   
-    user_write_file ( users_path , vstusers , false )  ; 
-    cout << "           ......update done successfully......         \n";
+      
+  record = struct_to_vst(user);
+  user_write_file ( users_path , vstusers , false )  ; 
+  cout << "           ......update done successfully......         \n";
+
 }
 
 void pre_update_user ( vector<stusers>&vstusers , stusers& current_user )                  // is user available ?
 {
 system("cls");     
 stusers user ;
+stusers* user_pointer = nullptr ; 
   do {
         cout << "\n\n enter username to update \n";
         getline ( cin >> ws , user.username );
 
-        if ( is_username_available( user.username , vstusers )) 
-        update_user ( user.username , vstusers , current_user) ;
+        if ( is_username_available( user.username , vstusers , user_pointer )) 
+        update_user ( *user_pointer , vstusers , current_user) ;
 
         else
         cout << " user does not exist \n";
@@ -406,11 +405,9 @@ void add_user ( string username , vector<stusers>& vstusers , stusers& user )
   user.username = username ;
 
         do {
-             {              
-                                         
+             {                                                  
                   user = update_add_user(user ) ;
                   record = struct_to_vst(user);
-                  //show_user (user) ;
              }
            } while ( mlib::do_or_not( " is data correct ?  (y/n)   \n"  , 'n'  ,  'y'  ) );
     vstusers.push_back(user) ;
@@ -424,12 +421,13 @@ void pre_add_user  ( vector<stusers>&vstusers  )
 system("cls");     
 string username ;
 stusers user ;
+stusers* user_pointer = nullptr ; 
 
   do {
         cout << "\n\n plz enter username to add \n";
         getline ( cin >> ws , username);
         
-        if ( ! is_username_available ( username , vstusers))
+        if ( ! is_username_available ( username , vstusers , user_pointer ))
         add_user ( username , vstusers  , user ) ;
 
         else
@@ -442,21 +440,18 @@ stusers user ;
 
 // ═════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════
 
-void delete_user ( string username , vector<stusers>& vstusers  )
+void delete_user ( stusers*& user , vector<stusers>& vstusers  )
 {
-vector<stusers>::iterator it = vstusers.begin() ;  // iterator of vst is struct
-vector<stusers> record ;
-
-             for ( ; it != vstusers.end() ; it++)
-                if ( it->username == username ) 
-                {
-                  show_user (*it) ;   
-                  break ; 
-                }
-
+   show_user (*user) ; 
       if ( mlib::do_or_not( " sure to delete this acoount  ?  (y/c) "  , 'y' , 'c'))
-      {
-        vstusers.erase( it );  
+      {  
+        // ✅✅✅ we need the user index to delete it using iterator
+        auto index = user - vstusers.data();  
+        // vstusers.data() returns a raw pointer to the very first element of the vector  
+        // user is a pointer holding the memory address of the specific user    
+        // index calculates the exact numerical position of that user inside the vector       
+        vstusers.erase( vstusers.begin() + index ); 
+        // vstusers.begin() gives an iterator pointing to the start of the vector         
         user_write_file ( users_path , vstusers , false )  ; 
         cout << "           ......user deleted successfully......         \n";
       }
@@ -466,6 +461,7 @@ void pre_delete_user  ( vector<stusers>&vstusers )
 {
 system("cls");     
 string username ;
+stusers* user_pointer = nullptr ; 
 
   do {
         cout << "\n\n plz enter username to delete \n";
@@ -478,8 +474,8 @@ string username ;
         return ;
        }
 
-       else if ( is_username_available( username , vstusers )) 
-        delete_user ( username , vstusers ) ;
+       else if ( is_username_available( username , vstusers , user_pointer )) 
+        delete_user ( user_pointer , vstusers ) ;
 
         else
         cout << " user does not exists \n";
@@ -573,13 +569,18 @@ system("cls");
 
 
 // ════════════════════════════════════════════════════════════════════  🧠🧠🧠 CLIENTS   ══════════════════════════════════════════════════════════════════
+
 /////////////////features
 // only allowed users can do
+// transaction inside session and new sessions
+// show client history of the same login time only
+// client history is always accessible in database
 
 /////////////////techniques
 // using pointer to avoid double checking , needed only if available client ( show , update , delete , deposit_withdraw ) , useless in ( add )
 // delete_client is better to take pointer as a parameter as in update_client and will be simpler , but i used pin for training
 // deposit_withdrawal in same function , as it is very long and both deposit and withdrawal share 90 % of the code
+// do_or_not     do_or_skip
 
 
 string num_activity ( bool is_active );       // just declaration for later organization 
