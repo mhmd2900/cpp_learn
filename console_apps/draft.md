@@ -1,35 +1,8 @@
-/login before and control main menu
-/int main not global
-/same format signin and signup
-/admin privileges   
-/cout admin  hhhhhhhhhhhhhhhh   in every  page  , cout << admin 1234
-/search exact word
-/switch account
-/update users by username 
-/full acess vs customized 
-/pre_add_account
-/vector of structures of enums  
-/session vs transasction
-/ ][my database
-/option to skip function ??
-/do_or_not     do_or_skip
-/other users affecting admin
-/duplicate admin at beginning only 
-/change admin password
-/-1   vs   255   vs  all permisisons
-/admin password modified by himself
-/admin privileges not modifiable 
-/admin can not be deleted
-/transaction positive
-/print history activity log
-/spy pointer to avoid double checking (find and act)
-/features and techniques
-
-
-
-
-
-
+// architecture before details , better naming
+// file pointer
+// empty line in file
+// login screen is the parent
+// features and techniques
 
 
 
@@ -44,7 +17,7 @@
 
 
 but before answering any question in this chat , rephrase my original request to help me improve my English
-
+Could you provide a concise yet challenging lab exercise to exercise focused on these concepts?
 =================================================================================================
 
 // structure of vector of enums 
@@ -74,9 +47,7 @@ but before answering any question in this chat , rephrase my original request to
 
 
 // output mixed variables and literals , use printf
-
-// exception types
-// try & catch
+// spy pointer
 
 // system("pause");
 

@@ -21,14 +21,21 @@ using std::ios ;
 using std::getline ;
 using std::ws ;
 
+/////////////////features
+/////////////////techniques
+// techniques
+// Scalability: If your file had millions of records, loading everything into RAM would be inefficient ( read and overwrite database directly )
+//     However, for an ATM project with dozens or even thousands of accounts, memory usage is completely negligible.
+
+
 
 // ═══════════════════════════════════════════════════════════════════  🧠🧠🧠 GLOBAL  ══════════════════════════════════════════════════════════════════════════════
 
-const string main_path    = "E:/m10.txt";  // or E:/m10.txt
-const string updated_path = "E:/m11.txt";
-const string added_path   = "E:/m12.txt";
-const string deleted_path = "E:/m13.txt";
-const string active_path  = "E:/m14.txt";
+const string main_path    = "E:/clients.txt"; 
+const string updated_path = "E:/update.txt";
+const string added_path   = "E:/add.txt";
+const string deleted_path = "E:/delete.txt";
+const string active_path  = "E:/active.txt";
 const string trans_path   = "E:/trans.txt";
 const string users_path   = "E:/users.txt";
 
@@ -450,7 +457,8 @@ void delete_user ( stusers*& user , vector<stusers>& vstusers  )
         // vstusers.data() returns a raw pointer to the very first element of the vector  
         // user is a pointer holding the memory address of the specific user    
         // index calculates the exact numerical position of that user inside the vector       
-        vstusers.erase( vstusers.begin() + index ); 
+        // index is std::string::difference_type  , an alias for std::ptrdiff_t , a signed integer type.
+        vstusers.erase ( vstusers.begin() + index ); 
         // vstusers.begin() gives an iterator pointing to the start of the vector         
         user_write_file ( users_path , vstusers , false )  ; 
         cout << "           ......user deleted successfully......         \n";

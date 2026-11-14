@@ -323,7 +323,7 @@ using std::fstream;
 using std::ios;
 
 
-
+const string path  = "E:/clients.txt";
 
 void write ( string path , vector<string>vlines , bool check = false )
 {
