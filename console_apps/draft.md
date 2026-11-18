@@ -1,10 +1,3 @@
-// architecture before details , better naming
-// file pointer
-// empty line in file
-// login screen is the parent
-// features and techniques
-
-
 
 
 
@@ -50,6 +43,6 @@ Could you provide a concise yet challenging lab exercise to exercise focused on 
 // spy pointer
 
 // system("pause");
-
+// empty line in file
 
 

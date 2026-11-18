@@ -425,3 +425,96 @@ vector<int>::iterator it = vnum.begin();       // searching , modifying elements
 In C++, iterators are an abstraction of pointers used to step through containers (like vector, list, set, etc.).
 range based loop                               by default                                             ✅✅✅
 iterator loop                                  erasing   ,   skipping   ,   backward traversal        ✅✅✅
+
+
+
+============================================================= 
+///////////////////////////////////////⚠️⚠️⚠️   spy char , modify string
+
+
+
+#include<iostream>
+#include<vector>
+#include<algorithm>
+using namespace std ;
+
+
+
+
+bool fun ( string& word , string delim , char*& name_start , int& name_length , char*& pin_start , int& pin_length )
+{
+int count = 0 ;
+size_t pos = 0 , start = 0 , length = 0;
+
+
+//     الترتيب مهم
+// start  ---> 0
+// pos    --->   index of beginning of coming delim ( .find )
+// length ---> number of chars between 2 sequntial delimits
+//        spy pointer at start  , and spy length of chars
+// new start after delim   --->   start =  pos + delim length
+
+    while (( pos = word.find ( delim , start )) != string::npos  )   
+    {
+
+        length = pos - start ;
+        cout << word.substr ( start , length ) << endl ;
+
+
+        if ( count == 1 )
+        {
+            name_start = &word[start];
+            name_length = (int)length ;              
+        }
+
+        else if ( count == 2 )
+        {
+            pin_start = &word[start];
+            pin_length = (int)length ;
+             if ((string(name_start, name_length) == "saged") && (string(pin_start, pin_length) == "A11"))
+             return true ;
+        }
+        count ++ ;
+        start = pos + delim.size() ;  // pos is beginning of delim , start is beginning after delim
+    }
+return false ;
+}
+
+
+
+void replace  ( string& word , char*& name_start , int& name_length , char*& pin_start , int& pin_length )
+{
+int name_index = name_start - word.data() ;
+int pin_index = pin_start - word.data() ;
+
+word.replace ( pin_index , pin_length , "A25"); // change pin first to not affect pointer position
+word.replace ( name_index , name_length , "hawawai");
+}
+
+
+
+
+int main ()
+{
+system ("cls") ;
+
+string word = "1#//#saged#//#A11#//#1132#//#active"; 
+string delim = "#//#";
+
+char* name_start = nullptr ;
+int name_length  = 0 ;
+
+char* pin_start = nullptr ;
+int pin_length  = 0 ;
+
+
+if ( fun ( word , delim , name_start , name_length , pin_start , pin_length ))
+replace ( word , name_start , name_length , pin_start , pin_length );
+
+
+cout << endl ;
+
+
+cout << word ;
+}
+

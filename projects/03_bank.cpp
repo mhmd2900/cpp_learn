@@ -463,6 +463,9 @@ void delete_user ( stusers*& user , vector<stusers>& vstusers  )
         user_write_file ( users_path , vstusers , false )  ; 
         cout << "           ......user deleted successfully......         \n";
       }
+
+    // auto index = iter - word.begin();  // substract two iterators 
+    // auto index = user - vstusers.data();   // substract two pointers
 }
 
 void pre_delete_user  ( vector<stusers>&vstusers )
