@@ -1,5 +1,8 @@
 
-
+// constructor
+// vector of classes
+// static , static const   
+// static function on top of static variables
 
 
 
@@ -12,6 +15,9 @@
 but before answering any question in this chat , rephrase my original request to help me improve my English
 Could you provide a concise yet challenging lab exercise to exercise focused on these concepts?
 =================================================================================================
+
+// cin.get()   not    system("pause");
+
 
 // structure of vector of enums 
 // dynamic array of vectors
@@ -42,7 +48,6 @@ Could you provide a concise yet challenging lab exercise to exercise focused on 
 // output mixed variables and literals , use printf
 // spy pointer
 
-// system("pause");
 // empty line in file
 
 

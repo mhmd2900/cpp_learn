@@ -315,6 +315,7 @@ int *pint = static_cast<int*>(pop) ;     // void can not hold value , needs cast
 cout << *pint << "\n\n" ;    
 
 
+============================================================= 
 ///////////////////////////////////////   new and delete
 
 int size = 5 ;
@@ -337,8 +338,17 @@ delete ptrf ;
 delete p ;
 
 
+// 1. Active heap allocation: While a heap block is allocated, the allocator
+//    won't hand out that same address for another new allocation.
+// 2. Clean up when done: Always `delete` heap memory when no longer needed
+//    to avoid a memory leak.
+// 3. Order matters: Don't set the pointer to `nullptr` before `delete`,
+//    or you'll lose the address needed to free the heap block (causing a leak).
+// 4. Prevent dangling pointers: After `delete`, set the pointer to `nullptr`
+//    so it doesn't hold a stale address that could be reused for new data.
 
 
+============================================================= 
 ///////////////////////////////////////   mixed example
 ////////// practically , void is not used , vector is used instead for dynamic array
 
